@@ -33,7 +33,7 @@ implementation of signin/signup/logout
 ## Additional Features
 - Set of options for template modifications
   - what color scheme to use, what kind of webpage they would like (single scrollable page vs. tabbed)
-- Send website template code to users (notification)
+- Send website template code to users (email)
 - Allow for more file type parsing instead of just PDF
 - Allow website auto-generated, and also resume and cover letter (in latex)
 
@@ -44,10 +44,9 @@ MERN STACK + GRAPHQL
 - MongoDB (database) 
 - GraphQL
 
-## Technicalities
-- Allowing users to edit and save their website in code,
-  ie, built-in code editor for these websites.
-- Sending emails
+## Top Technical Challenges
+- Parsing different file types in order to retrieve personal information
+- Sending emails (for authentication, email confirmation)
   (required to create a business email if we want to do this)
 - Auto generate website based on input forms
 - Storage of multiple users and multiple auto generated websites.
