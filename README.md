@@ -39,7 +39,7 @@ what color scheme to use, what kind of webpage they would like (single scrollabl
 - Allow edits to their personal website
 
 builtin editor
-- Allow website auto-generated, and also resume (in latex), cover letter, etc)
+- Allow website auto-generated, and also resume and cover letter (in latex)
 
 ## Technology
 MERN STACK + GRAPHQL
