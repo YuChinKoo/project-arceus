@@ -8,9 +8,10 @@ Manav Patel
 Yuanyuan Li
 
 ## Description
-The purpose of this web application is to allow users to auto-generate their portfolio website. The user is prompted to input information they would like to be added to a website, and then utilized and implemented into website templates of their choosing. If a template was not selected, a set of options will be given to the user  like what color scheme to use, what kind of webpage they would like (single scrollable page vs. tabbed), etc. This web application is a single-tenanted system, but supports user authentication for multiple users. Upon auto generating a personal website, this application will provide the auto generated code to the rightful users as that code will be owned and maintained by them.
+The purpose of this web application is to allow users to auto-generate their portfolio website. The user is prompted to input information they would like to be added to a website, and then utilized and implemented into website templates of their choosing. If a template was not selected, a set of options will be given to the user like what color scheme to use, what kind of webpage they would like (single scrollable page vs. tabbed), etc. This web application is a single-tenanted system, but supports user authentication for multiple users. Upon auto generating a personal website, this application will provide the auto generated code to the rightful users as that code will be owned and maintained by them.
 
 ## Key Features
+note: store input values in cookie so that if user wants to go back, the user would not have to put in those values again
 - Input form
 
 initial form for their experiences, etc
@@ -20,17 +21,19 @@ if they want to upload pdf instead of typing everything out, like this: https://
 - Storing user input information
 
 store as json object probably
-- Authentication and authorization
-
-signin/signup/logout
 - website templates
   
 bunch of website templates to choose from
-
-## Additional Features
 - Website auto-generated using templates
 
 generate code
+- Authentication and authorization (IF WE HAVE TIME)
+
+signin/signup/logout
+## Additional Features
+- set of options for template modifications
+
+what color scheme to use, what kind of webpage they would like (single scrollable page vs. tabbed)
 - Send website code to users (notification)
 
 send code
@@ -42,11 +45,11 @@ builtin editor
 other tools that can be auto generated
 
 ## Technology
+MERN STACK
 - React framework (frontend)
 - Expressjs (backend)
-- SQL? MongoDB? Redis? (database)
-- Docker (for deployment)
-- Digital Ocean (for cloud provider)
+- MongoDB (database) 
+- GraphQL
 
 ## Technicalities
 - Allowing users to edit and save their website in code
