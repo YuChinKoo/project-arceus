@@ -32,13 +32,10 @@ generate code
 implementation of signin/signup/logout
 ## Additional Features
 - Set of options for template modifications
-
-what color scheme to use, what kind of webpage they would like (single scrollable page vs. tabbed)
+  - what color scheme to use, what kind of webpage they would like (single scrollable page vs. tabbed)
 - Send website template code to users (notification)
-
 - Allow edits to their personal website
-
-builtin editor
+  - builtin editor
 - Allow website auto-generated, and also resume and cover letter (in latex)
 
 ## Technology
