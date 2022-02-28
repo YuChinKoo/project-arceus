@@ -34,8 +34,7 @@ implementation of signin/signup/logout
 - Set of options for template modifications
   - what color scheme to use, what kind of webpage they would like (single scrollable page vs. tabbed)
 - Send website template code to users (notification)
-- Allow edits to their personal website
-  - builtin editor
+- Allow for more file type parsing instead of just PDF
 - Allow website auto-generated, and also resume and cover letter (in latex)
 
 ## Technology
