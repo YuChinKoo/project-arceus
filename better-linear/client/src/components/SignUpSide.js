@@ -5,7 +5,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
+import { Link } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -131,9 +132,12 @@ export default function SignUpSide() {
               </Button>
               <Grid container>
               <Grid item>
-                <Link to="/signin" variant="body2">
+                <Link to="/signin" className="">
+                  Already have an account? Sign In
+                </Link>                
+                {/* <Link to="/signin" variant="body2">
                   {"Already have an account? Sign In"}
-                </Link>
+                </Link> */}
               </Grid>
             </Grid>
             </Box>
