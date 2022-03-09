@@ -24,7 +24,9 @@ mongoose.connect(
 
 const PersonModel = mongoose.model("user", {
     firstname: String,
-    lastname: String
+    lastname: String,
+    email: String,
+    password: String
 });
 
 const UserType = new GraphQLObjectType({
@@ -32,7 +34,8 @@ const UserType = new GraphQLObjectType({
     fields: {
         id: { type: GraphQLID },
         firstname: { type: GraphQLString },
-        lastname: { type: GraphQLString }
+        lastname: { type: GraphQLString },
+        email: { type: GraphQLString }
     }
 });
 
@@ -40,7 +43,7 @@ const schema = new GraphQLSchema({
     query: new GraphQLObjectType({
         name: "Query",
         fields: {
-            // name of the query: people
+            // name of the query: user
             user: {
                 // the type of response this query will return, here UserType
                 type: GraphQLList(UserType),
@@ -52,24 +55,24 @@ const schema = new GraphQLSchema({
             }
         }
     }),
-
-	// Mutation 1
-	// mutation: new GraphQLObjectType({
-	// 	name: "Create",
-	// 	fields: {
-	// 		user: {
-	// 			type: PersonType,
-	// 			args: {
-	// 				fname: { type: GraphQLString },
-	// 				lname: { type: GraphQLString },
-	// 			},
-	// 			resolve: (root, args, context, info) => {
-	// 				var user = new PersonModel(args);
-	// 				return people.save();
-	// 			}
-	// 		}
-	// 	}
-	// })
+	mutation: new GraphQLObjectType({
+		name: "Create",
+		fields: {
+			user: {
+				type: UserType,
+				args: {
+					firstname: { type: GraphQLString },
+					lastname: { type: GraphQLString },
+                    email: { type: GraphQLString },
+                    password: { type: GraphQLString }
+				},
+				resolve: (root, args, context, info) => {
+					var user = new PersonModel(args);
+					return user.save();
+				}
+			}
+		}
+	})
 });
 
 
