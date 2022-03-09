@@ -1,7 +1,6 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import './GettingGraphQLData.css';
 const GET_USER_INFO = gql`
 	{
 		user {
