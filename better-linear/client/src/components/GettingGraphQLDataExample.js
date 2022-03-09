@@ -5,8 +5,8 @@ const GET_USER_INFO = gql`
 	{
 		user {
 			id
-			fname
-			lname
+			firstname
+			lastname
 		}
 	}
 `;
@@ -21,9 +21,9 @@ function Users() {
     const usersList = data.user.map((user) => 
         <div key={user.id}>
             <div className="box">
-                {user.fname}
+                {user.firstname}
                 {user.lname}
-                {user.id}
+                {user.lastname}
             </div>
             <br/>
         </div>

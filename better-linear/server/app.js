@@ -23,16 +23,16 @@ mongoose.connect(
 .catch(err => console.error(err));
 
 const PersonModel = mongoose.model("user", {
-    fname: String,
-    lname: String
+    firstname: String,
+    lastname: String
 });
 
 const UserType = new GraphQLObjectType({
     name: "User",
     fields: {
         id: { type: GraphQLID },
-        fname: { type: GraphQLString },
-        lname: { type: GraphQLString }
+        firstname: { type: GraphQLString },
+        lastname: { type: GraphQLString }
     }
 });
 
@@ -51,7 +51,25 @@ const schema = new GraphQLSchema({
                 }
             }
         }
-    })
+    }),
+
+	// Mutation 1
+	// mutation: new GraphQLObjectType({
+	// 	name: "Create",
+	// 	fields: {
+	// 		user: {
+	// 			type: PersonType,
+	// 			args: {
+	// 				fname: { type: GraphQLString },
+	// 				lname: { type: GraphQLString },
+	// 			},
+	// 			resolve: (root, args, context, info) => {
+	// 				var user = new PersonModel(args);
+	// 				return people.save();
+	// 			}
+	// 		}
+	// 	}
+	// })
 });
 
 
