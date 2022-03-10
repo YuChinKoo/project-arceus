@@ -9,9 +9,9 @@ const typeDefs = gql`
     }
 
     type Query {
-        hello: String
         getAllUsers: [User]
         getUser(id: ID): User
+        me: User
     }
 
     input UserSignupInput {
