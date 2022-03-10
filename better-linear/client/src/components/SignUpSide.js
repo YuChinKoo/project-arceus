@@ -17,24 +17,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import gql from "graphql-tag";
 import { blue, deepOrange, green } from '@mui/material/colors';
 
-const SIGNUP_MUTATION = gql`
-    mutation SignupMutation(
-        $firstname: String!
-        $lastname: String!
-        $email: String!
-        $password: String!
-    ) {
-        signup(
-            firstname: $firstname
-            lastname: $lastname
-            email: $email
-            password: $password
-        ) {
-            token
-        }
-    }
-`;
-
 const theme = createTheme();
 
 export default function SignUpSide() {
