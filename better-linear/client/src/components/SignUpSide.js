@@ -13,7 +13,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import ErrorBox from './ErrorBox';
 
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
