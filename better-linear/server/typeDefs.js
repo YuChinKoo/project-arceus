@@ -9,22 +9,28 @@ const typeDefs = gql`
     }
 
     type Query {
-        hello: String
         getAllUsers: [User]
         getUser(id: ID): User
+        me: User
     }
 
-    input UserInput {
-        firstname: String 
-        lastname: String 
-        email: String 
-        password: String
+    input UserSignupInput {
+        firstname: String!
+        lastname: String!
+        email: String! 
+        password: String!
+    }
+
+    input UserLoginInput {
+        email: String!
+        password: String!
     }
 
     type Mutation {
-        createUser(user: UserInput): User
-        deleteUser(id: ID): String
+        createUser(user: UserSignupInput): User!
+        # deleteUser(id: ID): String
         updateUser(id: ID, firstname: String, lastname: String): User
+        loginUser(user: UserLoginInput): User!
     }
 `
 module.exports = typeDefs;
