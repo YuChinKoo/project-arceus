@@ -15,16 +15,46 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import { deepOrange } from '@mui/material/colors';
 
+import gql from 'graphql-tag';
+import { useMutation } from "@apollo/client";
+
 const theme = createTheme();
 
+const SIGN_IN_USER = gql`
+  mutation($user: UserLoginInput) {
+    loginUser(user: $user) {
+      id
+      firstname
+      lastname
+      email
+    }
+  }
+`
+
 export default function SignInSide() {
-  const handleSubmit = (event) => {
+  const [loginUser, {loading, error}] = useMutation(SIGN_IN_USER, {
+    onError: (err) => {
+      console.log(`Error! ${err}`);
+    }
+  });
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    let email = data.get('email');
+    let password = data.get('password');
     // eslint-disable-next-line no-console
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      email,
+      password
+    });
+    await loginUser({
+      variables: {
+        user: { email, password }
+      },
+      onCompleted: (data) => {
+        console.log(data);
+      }
     });
   };
 
