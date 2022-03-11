@@ -15,20 +15,49 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 
 import gql from "graphql-tag";
+import { useMutation } from "@apollo/client";
 import { blue, deepOrange, green } from '@mui/material/colors';
 
 const theme = createTheme();
 
+const CREATE_USER = gql`
+  mutation($user: UserSignupInput) {
+    createUser(user: $user) {
+      id
+      firstname
+      lastname
+      email
+    }
+  }
+`
+
 export default function SignUpSide() {
+  // Creating mutation hook called createUser
+  const [ createUser, { loading, error }] = useMutation(CREATE_USER);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const formData = new FormData(event.currentTarget);
+    let firstname = formData.get('firstname');
+    let lastname = formData.get('lastname');
+    let email = formData.get('email');
+    let password = formData.get('password');
     // eslint-disable-next-line no-console
     console.log({
-      firstname: data.get('firstname'),
-      lastname: data.get('lastname'),  
-      email: data.get('email'),
-      password: data.get('password'),
+      firstname,
+      lastname,
+      email,
+      password
+    });
+    createUser({
+      variables: { 
+        user: {
+          firstname,
+          lastname,
+          email,
+          password
+        }
+      }
     });
   };
 

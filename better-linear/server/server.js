@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const { ApolloServer, gql } = require('apollo-server-express');
 const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
@@ -40,13 +41,13 @@ async function startServer() {
     await apolloServer.start();
     
     const app = express();
-
+    app.use(cors({ origin: true, credentials: true }));
     app.use(cookieParser());
     
     apolloServer.applyMiddleware({ 
         app: app,
         cors: {
-            origin: 'https://studio.apollographql.com',
+            origin: ['http://localhost:3000/*', 'https://studio.apollographql.com'],
             credentials: true,
         }, 
     });

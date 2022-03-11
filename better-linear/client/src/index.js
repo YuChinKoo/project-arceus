@@ -9,7 +9,7 @@ import SignInSide from './components/SignInSide';
 import SignUpSide from './components/SignUpSide';
 
 const client = new ApolloClient({
-	uri: "http://localhost:3001/task_board",
+	uri: "http://localhost:4000/graphql",
   cache: new InMemoryCache(), 
 });
 
