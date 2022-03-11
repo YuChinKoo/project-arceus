@@ -33,9 +33,12 @@ const CREATE_USER = gql`
 
 export default function SignUpSide() {
   // Creating mutation hook called createUser
-  const [ createUser, { loading, error }] = useMutation(CREATE_USER);
-
-  const handleSubmit = (event) => {
+  const [ createUser, { loading, error }] = useMutation(CREATE_USER, {
+    onError: (err) => {
+      console.log(`Error! ${err}`);
+    }
+  });
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     let firstname = formData.get('firstname');
@@ -49,14 +52,13 @@ export default function SignUpSide() {
       email,
       password
     });
-    createUser({
+    await createUser({
       variables: { 
-        user: {
-          firstname,
-          lastname,
-          email,
-          password
-        }
+        user: { firstname, lastname, email, password }
+      },
+      onCompleted: (data) => {
+        // route back to sign in page
+        console.log(data);
       }
     });
   };

@@ -37,6 +37,10 @@ const resolvers = {
             // check if args exist
             const {firstname, lastname, email, password} = args.user;
             hashedPassword = await bcrypt.hash(password, 10);
+            const findExistingUser = await User.findOne({email});
+            if (findExistingUser) {
+                throw new Error('Email already exists');
+            }
             const user = new User({ firstname, lastname, email, hashedPassword});
             await user.save();
             return user;
