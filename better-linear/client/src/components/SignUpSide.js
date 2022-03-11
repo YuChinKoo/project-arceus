@@ -13,6 +13,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import ErrorBox from './ErrorBox';
 
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
@@ -33,12 +34,15 @@ const CREATE_USER = gql`
 
 export default function SignUpSide() {
 
+  const [ errorMessage, setErrorMessage ] = React.useState('');
+
   let navigate = useNavigate();
 
   // Creating mutation hook called createUser
   const [ createUser, { loading, error }] = useMutation(CREATE_USER, {
     onError: (err) => {
-      console.log(`Error! ${err}`);
+      setErrorMessage(`${err}`);
+      console.log(`${err}`);
     }
   });
   const handleSubmit = async (event) => {
@@ -48,6 +52,7 @@ export default function SignUpSide() {
     let lastname = formData.get('lastname');
     let email = formData.get('email');
     let password = formData.get('password');
+    setErrorMessage('');
     // eslint-disable-next-line no-console
     console.log({
       firstname,
@@ -156,6 +161,13 @@ export default function SignUpSide() {
                 <Link component={RouterLink} to="/signin" variant="body2">
                   {"Already have an account? Sign In"}
                 </Link>
+              </Grid>
+              <Grid>
+                {errorMessage && (
+                  <p className="error">
+                    {errorMessage}
+                  </p>
+                )}
               </Grid>
             </Grid>
             </Box>
