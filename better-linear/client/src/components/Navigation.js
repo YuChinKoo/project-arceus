@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Link} from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -9,8 +10,20 @@ import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
 
 
 export default function Navigation() {
-  const [value, setValue] = React.useState(0);
+  const state = {
+    value: 0,
+    pathMap:[
+      '/homepage/recents',
+      '/homepage/personal-task-board',
+      '/homepage/shared-task-board',
+      '/homepage/profile'
+    ]
+  };
 
+  let current_value = state.pathMap.indexOf(window.location.pathname);
+  if(current_value < 0) current_value = 0;
+
+  const [value, setValue] = React.useState(current_value);
   return (
     <Paper>
       <BottomNavigation
@@ -20,10 +33,26 @@ export default function Navigation() {
           setValue(newValue);
         }}
       >
-        <BottomNavigationAction label="Recents" icon={<RestoreIcon />} href="/homepage/recents"/>
-        <BottomNavigationAction label="Personal Task Board" icon={<CalendarViewMonthIcon />} href="/homepage/personal-task-board"/>
-        <BottomNavigationAction label="Shared Task Board" icon={<ShareIcon />} href="/homepage/shared-task-board"/>
-        <BottomNavigationAction label="Profile" icon={<PersonIcon />} href="/homepage/profile"/>
+        <BottomNavigationAction 
+            label="Recents" 
+            icon={<RestoreIcon />}
+            component={Link}
+            to={state.pathMap[0]} />
+          <BottomNavigationAction 
+            label="Personal Task Board" 
+            icon={<CalendarViewMonthIcon />} 
+            component={Link}
+            to={state.pathMap[1]}/>
+          <BottomNavigationAction 
+            label="Shared Task Board" 
+            icon={<ShareIcon />} 
+            component={Link}
+            to={state.pathMap[2]}/>
+          <BottomNavigationAction 
+            label="Profile" 
+            icon={<PersonIcon />} 
+            component={Link}
+            to={state.pathMap[3]}/>
       </BottomNavigation>
     </Paper> 
   );

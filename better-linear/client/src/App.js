@@ -9,9 +9,9 @@ import './App.css';
 function App() {
   return (
     <div className="center w85">
-      {/* <Header /> */}
+      <Header />
       <Homepage/>
-      {/* <div className="ph3 pv1 background-gray">
+      <div className="ph3 pv1 background-gray">
         <Routes>
           <Route 
             path="/signin" 
@@ -23,7 +23,7 @@ function App() {
             element={<SignUpSide/>}
           />
         </Routes>
-      </div> */}
+      </div>
 
     </div>
   );

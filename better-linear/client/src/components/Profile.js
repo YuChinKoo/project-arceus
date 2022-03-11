@@ -5,10 +5,9 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
+import { Link as RouterLink } from 'react-router-dom';
 
-function editProfile() {
-  
-}
+
 
 export default function Profile() {
 
@@ -27,7 +26,7 @@ export default function Profile() {
               example@mail.com
             </Box>
           </Typography>
-          <Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={editProfile} >
+          <Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} component={RouterLink} to='/homepage/profile'>
             Edit Profile
           </Button>
         </Box>

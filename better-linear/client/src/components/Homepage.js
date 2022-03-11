@@ -10,7 +10,6 @@ import TaskboardCard from './Taskboardcard';
 export default function Homepage() {
 
   return (
-    
     <Box sx={{maxWidth: 1170, margin: 'auto'}}>
       <Grid container spacing={3}>
         <Grid xs={3} item>
