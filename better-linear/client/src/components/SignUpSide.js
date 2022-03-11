@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
@@ -32,6 +32,9 @@ const CREATE_USER = gql`
 `
 
 export default function SignUpSide() {
+
+  let navigate = useNavigate();
+
   // Creating mutation hook called createUser
   const [ createUser, { loading, error }] = useMutation(CREATE_USER, {
     onError: (err) => {
@@ -59,6 +62,7 @@ export default function SignUpSide() {
       onCompleted: (data) => {
         // route back to sign in page
         console.log(data);
+        navigate("../signin", { replace: true });
       }
     });
   };

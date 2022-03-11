@@ -14,9 +14,12 @@ function App() {
       <div className="ph3 pv1 background-gray">
         <Routes>
           <Route 
+            path="/" 
+            element={<SignUpSide/>} 
+          />
+          <Route 
             path="/signin" 
             element={<SignInSide/>} 
-            
           />
           <Route
             path="/signup"
