@@ -11,6 +11,7 @@ import SignUpSide from './components/SignUpSide';
 const client = new ApolloClient({
 	uri: "http://localhost:4000/graphql",
   cache: new InMemoryCache(), 
+  credentials: 'include'
 });
 
 // Basic query to get database data and display
