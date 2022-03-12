@@ -15,10 +15,12 @@ const userExists = async (userId) => {
 const resolvers = {
     Query: {
         getAllUsers: async () => {
+            if (!context.req.userId) throw new Error("Unauthorized");
             const users = await User.find();
             return users;
         },
         getUser: async (parent, {id}, context, info) => {
+            if (!context.req.userId) throw new Error("Unauthorized");
             return await User.findById(id);
         },
         me: async (parent, args, context, info) => {
@@ -27,7 +29,6 @@ const resolvers = {
                 return null;
                 // throw new Error("You are not logged in!");
             } 
-            
             return User.findOne({_id: req.userId});
         }
     },
