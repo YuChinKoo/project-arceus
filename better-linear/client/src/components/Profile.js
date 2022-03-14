@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
 export default function Profile() {
 
@@ -12,7 +13,13 @@ export default function Profile() {
     <Card sx={{mt: 1, mb: 1}}>
       <CardContent>
         <Box display="flex" alignItems="center" justifyContent="center">
+    
           <Grid>
+            <Typography component='div'>
+              <Box sx={{fontSize: 25, mt: 1, mb: 1}}>
+                 Personal Information
+              </Box> 
+            </Typography>
             <TextField
               margin="normal"
               required
