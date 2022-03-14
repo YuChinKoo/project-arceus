@@ -2,10 +2,30 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
     type User {
-        id: ID
+        _id: ID
         firstname: String
         lastname: String
         email: String
+    }
+
+    type Task {
+        _id: ID,
+        taskTitle: String,
+        content: String
+    }
+
+    type Column {
+        _id: ID,
+        columnTitle: String,
+        tasks: [Task]
+    }
+
+    type Taskboard {
+        _id: ID
+        name: String
+        owner: String
+        helpers: [String]
+        columns: [Column]
     }
 
     type Query {
@@ -31,6 +51,9 @@ const typeDefs = gql`
         # deleteUser(id: ID): String
         updateUser(id: ID, firstname: String, lastname: String): User
         loginUser(user: UserLoginInput): User!
+        createTaskBoard(taskBoardName: String): Taskboard
+        createTaskBoardColumn(taskBoardId: ID, columnName: String): Taskboard
+        createTaskBoardTask(taskBoardId: ID, columnId: ID, taskName: String, taskContent: String): Taskboard
     }
 `
 module.exports = typeDefs;
