@@ -183,10 +183,16 @@ const resolvers = {
         deleteTaskBoardColumn: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
             let { taskBoardId, columnId } = args;
-            let taskBoard = await TaskBoard.findById(taskBoardId);
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
             // check if the logged in user is the owner of the taskboard
             if (!taskBoard) throw new Error("Taskboard does not exist");
-            let user = await User.findById(context.req.userId);
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
             // if (!user) throw new Error("User does not exist");
             if (user.email != taskBoard.owner) throw new Error("Unauthorized to modify this taskboard");
             
@@ -203,16 +209,24 @@ const resolvers = {
                 { _id: taskBoardId},
                 { $pull: { columns: {_id: columnId}} },
                 { new: true }
-            );
+            ).catch(function(err) {
+                throw new Error(err)
+            });
             return updatedTaskBoard;
         },
         deleteTaskBoardTask: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
             let { taskBoardId, columnId, taskId } = args;
-            let taskBoard = await TaskBoard.findById(taskBoardId);
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
             // check if the logged in user is the owner of the taskboard
             if (!taskBoard) throw new Error("Taskboard does not exist");
-            let user = await User.findById(context.req.userId);
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
             // if (!user) throw new Error("User does not exist");
             if (user.email != taskBoard.owner) throw new Error("Unauthorized: Not your taskboard");
             
@@ -232,7 +246,9 @@ const resolvers = {
                     arrayFilters: [ {"column._id": columnId} ],
                     new: true
                 }
-            );
+            ).catch(function(err) {
+                throw new Error(err)
+            });
             return updatedTaskBoard;
         }
     },
