@@ -1,7 +1,10 @@
 const User = require('./models/User.model');
+const { AuthenticationError, UserInputError } = require('apollo-server-express');
 const { TaskBoard, Column, Task } = require('./models/Taskboard.model');
 const bcrypt = require('bcrypt');
 const { sign } = require('jsonwebtoken');
+const validator = require('validator');
+
 
 require('dotenv').config();
 
@@ -15,65 +18,80 @@ require('dotenv').config();
 
 const resolvers = {
     Query: {
-        getAllUsers: async (parent, args, context, info) => {
-            if (!context.req.userId) throw new Error("Unauthorized");
-            const users = await User.find();
-            return users;
-        },
-        getUser: async (parent, {id}, context, info) => {
-            if (!context.req.userId) throw new Error("Unauthorized");
-            return await User.findById(id);
-        },
         me: async (parent, args, context, info) => {
             const { req } = context;
             if (!req.userId) {
                 return null;
-                // throw new Error("You are not logged in!");
-            } 
-            return User.findOne({_id: req.userId});
-        }
+            }
+            const foundUser = User.findOne({_id: req.userId})
+            .catch(function(err) {
+                throw new Error(err)
+            }); 
+            return foundUser;
+        },
+        getUser: async (parent, {id}, context, info) => {
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            const foundUser = await User.findById(id)
+            .catch(function(err) {
+                throw new Error(err)
+            }); 
+            return foundUser;
+        },
+        getAllUsers: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            const users = await User.find()
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            return users;
+        },
     },
 
     Mutation: {
         createUser: async (parent, args, context, info) => {
             // check if args exist
-            const {firstname, lastname, email, password} = args.user;
+            let {firstname, lastname, email, password} = args.user;
+            firstname = validator.escape(firstname);
+            lastname = validator.escape(lastname);
+            email = validator.escape(email);
+            password = validator.escape(password);
+            if (!validator.isEmail(email)) throw new UserInputError('Invalid email');
+            if (!validator.isAlpha(firstname) || firstname.length > 12) throw new UserInputError('Invalid firstname');
+            if (!validator.isAlpha(lastname) || lastname.length > 12) throw new UserInputError('Invalid lastname');
+            if (!validator.isAlphanumeric(password)  || password.length > 15) throw new UserInputError('Invalid password');
             hashedPassword = await bcrypt.hash(password, 10);
-            const findExistingUser = await User.findOne({email});
-            if (findExistingUser) {
-                throw new Error('Email already exists');
-            }
-            const user = new User({ firstname, lastname, email, hashedPassword});
+            let findExistingUser = await User.findOne({email})
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (findExistingUser) throw new UserInputError('Email already exists');
+            let user = new User({ firstname, lastname, email, hashedPassword});
             await user.save();
             return user;
         },
-        // deleteUser: async (parent, args, context, info) => {
-        //     const { id } = args;
-        //     await User.findByIdAndDelete(id);
-        //     return 'User account has been deleted';
-        // },
         updateUser: async (parent, args, context, info) => {
-            const { id, firstname, lastname } = args;
-            const user = await User.findByIdAndUpdate(
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            let { id, firstname, lastname } = args;
+            let user = await User.findByIdAndUpdate(
                 id, 
                 {firstname, lastname}, 
-                {new: true}
-            );
+                {new: true}).
+            catch(function(err) {
+                throw new Error(err)
+            });
             return user;
         },
         loginUser: async (parent, args, { res }, info) => {
-            const { email, password } = args.user;
-            const user = await User.findOne({email});
-            if (!user) {
-                throw new Error("Username not found");
-            }
-            
-            const validatePassword = await bcrypt.compare(password, user.hashedPassword);
-            if (!validatePassword) {
-                throw new Error("Wrong Password");
-            }
+            let { email, password } = args.user;
+            let user = await User.findOne({email})
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (!user) throw new UserInputError("Username not found");
+            let validatePassword = await bcrypt.compare(password, user.hashedPassword);
+            if (!validatePassword) throw new UserInputError("Incorrect Password");
             // jwt stuff
-            const accessToken = sign(
+            let accessToken = sign(
                 { userId: user.id }, 
                 process.env.ACCESS_TOKEN_SECRET, { 
                     expiresIn: "1d"
@@ -87,38 +105,58 @@ const resolvers = {
             return user;
         },
         createTaskBoard: async (parent, args, context, info) => {
-            if (!context.req.userId) throw new Error("Unauthorized");
-            const { taskBoardName } = args;
-            const user = await User.findById(context.req.userId);
-            const taskboard = new TaskBoard({ owner: user.email, name: taskBoardName });
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            let { taskBoardName } = args;
+            taskBoardName = validator.escape(taskBoardName);
+            if (taskBoardName.length > 20) throw new UserInputError("Taskboard name must be less than 20 characters");
+            let user = await User.findById(context.req.userId);
+            let taskboard = new TaskBoard({ owner: user.email, name: taskBoardName });
             await taskboard.save();
             return taskboard;
         },
         createTaskBoardColumn: async (parent, args, context, info) => {
-            if (!context.req.userId) throw new Error("Unauthorized");
-            const { taskBoardId, columnName } = args;
-            const taskBoard = await TaskBoard.findById(taskBoardId);
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            let { taskBoardId, columnName } = args;
+            columnName = validator.escape(columnName);
+            if (columnName.length > 20) throw new UserInputError("Taskboard column name must be less than 20 characters");
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
             // check if the logged in user is the owner of the taskboard
             if (!taskBoard) throw new Error("Taskboard does not exist");
-            const user = await User.findById(context.req.userId);
-            // if (!user) throw new Error("User does not exist");
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
             if (user.email != taskBoard.owner) throw new Error("Unauthorized: Not your taskboard");
-            const column = new Column({ columnTitle: columnName });
-            const updatedTaskBoard = await TaskBoard.findByIdAndUpdate(
+            let column = new Column({ columnTitle: columnName });
+            let updatedTaskBoard = await TaskBoard.findByIdAndUpdate(
                 { _id: taskBoardId },
                 { $push: {columns: column} },
-                { new: true }
-            );
+                { new: true })
+            .catch(function(err) {
+                throw new Error(err)
+            });
             return updatedTaskBoard;
         }, 
         createTaskBoardTask: async (parent, args, context, info) => {
-            if (!context.req.userId) throw new Error("Unauthorized");
-            const { taskBoardId, columnId, taskName, taskContent } = args;
-            const taskBoard = await TaskBoard.findById(taskBoardId);
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            let { taskBoardId, columnId, taskName, taskContent } = args;
+            taskName = validator.escape(taskName);
+            taskContent = validator.escape(taskContent);
+            if (taskName.length > 20) throw new UserInputError("Task name must be less than 20 characters");
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
             if (!taskBoard) throw new Error("Taskboard does not exist");
             // check if the logged in user is the owner of the task board
-            const user = await User.findById(context.req.userId);
-            if (user.email != taskBoard.owner) throw new Error("Unauthorized: Not your taskboard");
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (user.email != taskBoard.owner) throw new Error("Unauthorized to modify this taskboard");
             // check if the id of the column is in the taskboard
             let flag = false;
             for (const column of taskBoard.columns) {
@@ -128,24 +166,92 @@ const resolvers = {
                 }
             }
             if (!flag) throw new Error("Column does not exist"); 
-            const newTask = new Task({ taskTitle: taskName, content: taskContent });
-            
-            const updatedTaskBoard = await TaskBoard.findByIdAndUpdate(
+            let newTask = new Task({ taskTitle: taskName, content: taskContent });
+            let updatedTaskBoard = await TaskBoard.findByIdAndUpdate(
                 { _id : taskBoardId }, 
                 { $push: { "columns.$[column].tasks": newTask }}, 
                 { 
                     arrayFilters: [ {"column._id": columnId} ],
                     new: true,
                     lean: true
-                }
-            ).catch(function(err) {
+                })
+            .catch(function(err) {
                 throw new Error(err)
             })
             return updatedTaskBoard;
         },
+        deleteTaskBoardColumn: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            let { taskBoardId, columnId } = args;
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // check if the logged in user is the owner of the taskboard
+            if (!taskBoard) throw new Error("Taskboard does not exist");
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // if (!user) throw new Error("User does not exist");
+            if (user.email != taskBoard.owner) throw new Error("Unauthorized to modify this taskboard");
+            
+            // check if column exists
+            let flag = false;
+            for (const column of taskBoard.columns) {
+                if (column._id == columnId) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) throw new Error("Column does not exist"); 
+            let updatedTaskBoard = await TaskBoard.findByIdAndUpdate(
+                { _id: taskBoardId},
+                { $pull: { columns: {_id: columnId}} },
+                { new: true }
+            ).catch(function(err) {
+                throw new Error(err)
+            });
+            return updatedTaskBoard;
+        },
+        deleteTaskBoardTask: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            let { taskBoardId, columnId, taskId } = args;
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // check if the logged in user is the owner of the taskboard
+            if (!taskBoard) throw new Error("Taskboard does not exist");
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // if (!user) throw new Error("User does not exist");
+            if (user.email != taskBoard.owner) throw new Error("Unauthorized: Not your taskboard");
+            
+            // check if column exists
+            let flag = false;
+            for (const column of taskBoard.columns) {
+                if (column._id == columnId) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) throw new Error("Column does not exist"); 
+            let updatedTaskBoard = await TaskBoard.findByIdAndUpdate(
+                { _id: taskBoardId},
+                { $pull: { "columns.$[column].tasks": {_id: taskId}} },
+                {
+                    arrayFilters: [ {"column._id": columnId} ],
+                    new: true
+                }
+            ).catch(function(err) {
+                throw new Error(err)
+            });
+            return updatedTaskBoard;
+        }
     },
 };
 
 module.exports = resolvers;
-
-// createTaskBoardTask(taskBoardId: ID, columnId: ID, taskName: String, taskContent: String): Taskboard

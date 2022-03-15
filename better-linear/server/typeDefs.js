@@ -48,12 +48,13 @@ const typeDefs = gql`
 
     type Mutation {
         createUser(user: UserSignupInput): User!
-        # deleteUser(id: ID): String
         updateUser(id: ID, firstname: String, lastname: String): User
         loginUser(user: UserLoginInput): User!
         createTaskBoard(taskBoardName: String): Taskboard
         createTaskBoardColumn(taskBoardId: ID, columnName: String): Taskboard
         createTaskBoardTask(taskBoardId: ID, columnId: ID, taskName: String, taskContent: String): Taskboard
+        deleteTaskBoardColumn(taskBoardId: ID, columnId: ID): Taskboard
+        deleteTaskBoardTask(taskBoardId: ID, columnId: ID, taskId: ID): Taskboard
     }
 `
 module.exports = typeDefs;
