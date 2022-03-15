@@ -48,7 +48,6 @@ const typeDefs = gql`
 
     type Mutation {
         createUser(user: UserSignupInput): User!
-        # deleteUser(id: ID): String
         updateUser(id: ID, firstname: String, lastname: String): User
         loginUser(user: UserLoginInput): User!
         createTaskBoard(taskBoardName: String): Taskboard
