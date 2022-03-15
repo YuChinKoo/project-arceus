@@ -40,17 +40,17 @@ export default function Navigation() {
             component={Link}
             to={state.pathMap[0]} />
           <BottomNavigationAction 
-            label="Personal Task Board" 
+            label="My Task Boards" 
             icon={<CalendarViewMonthIcon />} 
             component={Link}
             to={state.pathMap[1]}/>
           <BottomNavigationAction 
-            label="Shared Task Board" 
+            label="Shared Task Boards" 
             icon={<ShareIcon />} 
             component={Link}
             to={state.pathMap[2]}/>
           <BottomNavigationAction 
-            label="Requests" 
+            label="Requested Boards" 
             icon={<PersonIcon />} 
             component={Link}
             to={state.pathMap[3]}/>

@@ -3,7 +3,8 @@ import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import PersonIcon from '@mui/icons-material/Person';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 
@@ -35,10 +36,10 @@ export default function Header(props) {
         }
         return (
             <Paper>
-                <BottomNavigation showLabels >
+                <BottomNavigation showLabels style={{"justify-content": "right"}}>
                     <BottomNavigationAction 
                         label="Sign-out" 
-                        icon={<PersonIcon />}
+                        icon={<LogoutIcon />}
                         onClick={signOut}/>
                 </BottomNavigation>
             </Paper> 
@@ -53,15 +54,15 @@ export default function Header(props) {
           };
         return (
             <Paper>
-                <BottomNavigation showLabels >
+                <BottomNavigation showLabels style={{"justify-content": "right"}}>
                     <BottomNavigationAction 
                         label="Sign-in" 
-                        icon={<PersonIcon />}
+                        icon={<LoginIcon />}
                         component={Link}
                         to={state.pathMap[0]} />
                         <BottomNavigationAction 
                         label="Sign-up" 
-                        icon={<PersonIcon />}
+                        icon={<LoginIcon />}
                         component={Link}
                         to={state.pathMap[1]} />
                 </BottomNavigation>

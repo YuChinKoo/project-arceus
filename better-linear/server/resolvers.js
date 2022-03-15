@@ -242,7 +242,6 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             });
-            // if (!user) throw new Error("User does not exist");
             if (user.email != taskBoard.owner) throw new Error("Unauthorized to modify this taskboard");
             
             // check if column exists
