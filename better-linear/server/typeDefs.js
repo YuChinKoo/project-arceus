@@ -50,9 +50,11 @@ const typeDefs = gql`
         createUser(user: UserSignupInput): User!
         updateUser(id: ID, firstname: String, lastname: String): User
         loginUser(user: UserLoginInput): User!
+        logoutUser(id: ID): String
         createTaskBoard(taskBoardName: String): Taskboard
         createTaskBoardColumn(taskBoardId: ID, columnName: String): Taskboard
         createTaskBoardTask(taskBoardId: ID, columnId: ID, taskName: String, taskContent: String): Taskboard
+        deleteTaskBoard(taskBoardId: ID): String
         deleteTaskBoardColumn(taskBoardId: ID, columnId: ID): Taskboard
         deleteTaskBoardTask(taskBoardId: ID, columnId: ID, taskId: ID): Taskboard
     }

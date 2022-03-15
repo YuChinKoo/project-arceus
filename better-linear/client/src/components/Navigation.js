@@ -16,6 +16,7 @@ export default function Navigation() {
       '/homepage/recents',
       '/homepage/personal-task-board',
       '/homepage/shared-task-board',
+      '/homepage/requests',
       '/homepage/profile'
     ]
   };
@@ -49,10 +50,15 @@ export default function Navigation() {
             component={Link}
             to={state.pathMap[2]}/>
           <BottomNavigationAction 
-            label="Profile" 
+            label="Requests" 
             icon={<PersonIcon />} 
             component={Link}
             to={state.pathMap[3]}/>
+          <BottomNavigationAction 
+            label="Profile" 
+            icon={<PersonIcon />} 
+            component={Link}
+            to={state.pathMap[4]}/>
       </BottomNavigation>
     </Paper> 
   );

@@ -8,7 +8,9 @@ import { Link as RouterLink } from 'react-router-dom';
 
 
 
-export default function Profile() {
+export default function Profile(props) {
+
+  const { _id, firstname, lastname, email } = props.userData;
 
   return(
     <Paper>
@@ -17,11 +19,11 @@ export default function Profile() {
           <PersonIcon sx={{ fontSize: 100 }}/>
         </Avatar>
         <Typography variant='h5'>
-          Yuanyuan Li
+          {firstname} {lastname}
         </Typography>
         <Typography componenet='div'>
           <Box sx={{fontSize: 16, m: 1}}>
-            example@mail.com
+            {email}
           </Box>
         </Typography>
       </Box>

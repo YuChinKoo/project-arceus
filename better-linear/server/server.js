@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
 const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
 const mongoose = require('mongoose');
@@ -30,6 +30,7 @@ async function startServer() {
             const accessToken = req.cookies['access-token'];
             const data = getTokenData(accessToken);
             req.userId = (data) ? data.userId : null;
+            req.token = data;
             console.log("requested by: " + req.userId);
             return {
                 req, 

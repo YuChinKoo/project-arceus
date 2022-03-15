@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { deepOrange } from '@mui/material/colors';
 
 import gql from 'graphql-tag';
@@ -23,7 +23,7 @@ const theme = createTheme();
 const SIGN_IN_USER = gql`
   mutation($user: UserLoginInput) {
     loginUser(user: $user) {
-      id
+      _id
       firstname
       lastname
       email
@@ -31,9 +31,13 @@ const SIGN_IN_USER = gql`
   }
 `
 
-export default function SignInSide() {
+export default function SignInSide(props) {
+
+  const [ errorMessage, setErrorMessage ] = React.useState('');
+
   const [loginUser, {loading, error}] = useMutation(SIGN_IN_USER, {
     onError: (err) => {
+      setErrorMessage(`${err}`);
       console.log(`Error! ${err}`);
     }
   });
@@ -53,6 +57,7 @@ export default function SignInSide() {
         user: { email, password }
       },
       onCompleted: (data) => {
+        window.location.reload();
         console.log(data);
       }
     });
@@ -127,6 +132,13 @@ export default function SignInSide() {
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
+                <Grid>
+                {errorMessage && (
+                  <p className="error">
+                    {errorMessage}
+                  </p>
+                )}
+              </Grid>
               </Grid>
             </Box>
           </Box>

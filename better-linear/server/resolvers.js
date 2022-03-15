@@ -100,16 +100,43 @@ const resolvers = {
             res.cookie("access-token", accessToken, { 
                 maxAge: 1000*60*60*24, //one day 
                 sameSite: "none", 
-                secure: true 
+                secure: true,
+                httpOnly: true
             });
             return user;
+        },
+        logoutUser: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            let { id } = args;
+            let { res } = context;
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // assign new token that expires immediately
+            let accessToken = sign(
+                { userId: user.id }, 
+                process.env.ACCESS_TOKEN_SECRET, { 
+                    expiresIn: 1
+                }
+            );
+            res.cookie("access-token", accessToken, { 
+                maxAge: 1,  
+                sameSite: "none", 
+                secure: true,
+                httpOnly: true
+            });
+            return "successfully signed out";
         },
         createTaskBoard: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
             let { taskBoardName } = args;
             taskBoardName = validator.escape(taskBoardName);
             if (taskBoardName.length > 20) throw new UserInputError("Taskboard name must be less than 20 characters");
-            let user = await User.findById(context.req.userId);
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
             let taskboard = new TaskBoard({ owner: user.email, name: taskBoardName });
             await taskboard.save();
             return taskboard;
@@ -179,6 +206,28 @@ const resolvers = {
                 throw new Error(err)
             })
             return updatedTaskBoard;
+        },
+        deleteTaskBoard: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            const { taskBoardId } = args;
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // check if the logged in user is the owner of the taskboard
+            if (!taskBoard) throw new Error("Taskboard does not exist");
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (user.email != taskBoard.owner) throw new Error("Unauthorized to modify this taskboard");
+            //delete the requested taskboard
+            await TaskBoard.deleteOne({_id: taskBoardId})
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            return "Taskboard deleted";
+
         },
         deleteTaskBoardColumn: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");

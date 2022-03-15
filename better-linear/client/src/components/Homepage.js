@@ -8,13 +8,12 @@ import Profilecard from './Profilecard'
 import Navigation from './Navigation';
 import TaskboardCard from './Taskboardcard';
 
-export default function Homepage() {
-
+export default function Homepage(props) {
   return (   
     <Box sx={{ flexGrow: 1}} display="flex" alignItems="center" justifyContent="center" >
       <Grid container spacing={2} justify="center" sx={{maxWidth: 1200, minWidth: 900}}>
         <Grid item xs={3}>
-          <Profilecard/>
+          <Profilecard userData={props.userData}/>
         </Grid>
         <Grid item xs={9}>
           <Navigation/>
