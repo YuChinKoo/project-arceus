@@ -143,9 +143,68 @@ const resolvers = {
             })
             return updatedTaskBoard;
         },
+        deleteTaskBoardColumn: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new Error("Unauthorized");
+            const { taskBoardId, columnId } = args;
+            const taskBoard = await TaskBoard.findById(taskBoardId);
+            // check if the logged in user is the owner of the taskboard
+            if (!taskBoard) throw new Error("Taskboard does not exist");
+            const user = await User.findById(context.req.userId);
+            // if (!user) throw new Error("User does not exist");
+            if (user.email != taskBoard.owner) throw new Error("Unauthorized: Not your taskboard");
+            
+            // check if column exists
+            let flag = false;
+            for (const column of taskBoard.columns) {
+                if (column._id == columnId) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) throw new Error("Column does not exist"); 
+            const updatedTaskBoard = await TaskBoard.findByIdAndUpdate(
+                { _id: taskBoardId},
+                { $pull: 
+                    {
+                        columns: {_id: columnId}
+                    }
+                },
+                {
+                    new: true
+                }
+            );
+            return updatedTaskBoard;
+        },
+        deleteTaskBoardTask: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new Error("Unauthorized");
+            const { taskBoardId, columnId, taskId } = args;
+            const taskBoard = await TaskBoard.findById(taskBoardId);
+            // check if the logged in user is the owner of the taskboard
+            if (!taskBoard) throw new Error("Taskboard does not exist");
+            const user = await User.findById(context.req.userId);
+            // if (!user) throw new Error("User does not exist");
+            if (user.email != taskBoard.owner) throw new Error("Unauthorized: Not your taskboard");
+            
+            // check if column exists
+            let flag = false;
+            for (const column of taskBoard.columns) {
+                if (column._id == columnId) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) throw new Error("Column does not exist"); 
+            const updatedTaskBoard = await TaskBoard.findByIdAndUpdate(
+                { _id: taskBoardId},
+                { $pull: { "columns.$[column].tasks": {_id: taskId}} },
+                {
+                    arrayFilters: [ {"column._id": columnId} ],
+                    new: true
+                }
+            );
+            return updatedTaskBoard;
+        }
     },
 };
 
 module.exports = resolvers;
-
-// createTaskBoardTask(taskBoardId: ID, columnId: ID, taskName: String, taskContent: String): Taskboard
