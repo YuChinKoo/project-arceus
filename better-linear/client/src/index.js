@@ -14,14 +14,6 @@ const client = new ApolloClient({
   credentials: 'include'
 });
 
-// Basic query to get database data and display
-// ReactDOM.render(
-//   <ApolloProvider client={client}>
-//     <GettingGraphQLDataExample />
-//   </ApolloProvider>,
-//   document.getElementById('root')
-// );
-
 ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>

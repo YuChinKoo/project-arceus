@@ -7,51 +7,47 @@ import Homepage from './components/Homepage';
 import './App.css';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
+import LoadingIcon from './components/LoadingIcon';
 
 const GET_CONTEXT = gql`
   query {
     me {
-      id
+      _id
       firstname
       lastname
       email
     }
   }
 `
-
 function App() {
+
   const { loading, error, data } = useQuery(GET_CONTEXT);
-  
-  if (loading) return "loading";
+  if (loading) return (<LoadingIcon />)
   if (error) return `Error! ${error.message}`;
   if (data.me) {
+    // Client with valid auth token
     return (
-      <div className="center w85">
-        <Header authorization={true} />
-        <Homepage/>
-        <div className="ph3 pv1 background-gray">
-          <Routes>
-            <Route 
-              path="/" 
-              element={<div>hello</div>} 
-            />
-          </Routes>
+      <div className="app center w85">
+        <div style={{marginBottom: "5px"}}>
+          <Header style={{marginBottom: "5px"}} authorization={true} userData={data.me}/>
         </div>
+        <Homepage userData={data.me}/>
       </div>
     );
   } else {
+    // No/invalid auth token
     return (
-      <div className="center w85">
+      <div className="app center w85">
         <Header authorization={false} />
         <div className="ph3 pv1 background-gray">
           <Routes>
             <Route 
               path="/" 
-              element={<SignUpSide/>} 
+              element={<SignInSide />} 
             />
             <Route 
               path="/signin" 
-              element={<SignInSide/>} 
+              element={<SignInSide />} 
             />
             <Route
               path="/signup"

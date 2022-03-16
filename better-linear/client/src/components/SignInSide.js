@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -12,7 +10,7 @@ import Grid from '@mui/material/Grid';
 import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { deepOrange } from '@mui/material/colors';
 
 import gql from 'graphql-tag';
@@ -23,7 +21,7 @@ const theme = createTheme();
 const SIGN_IN_USER = gql`
   mutation($user: UserLoginInput) {
     loginUser(user: $user) {
-      id
+      _id
       firstname
       lastname
       email
@@ -31,9 +29,15 @@ const SIGN_IN_USER = gql`
   }
 `
 
-export default function SignInSide() {
+export default function SignInSide(props) {
+
+  const [ errorMessage, setErrorMessage ] = React.useState('');
+
+  let navigate = useNavigate();
+
   const [loginUser, {loading, error}] = useMutation(SIGN_IN_USER, {
     onError: (err) => {
+      setErrorMessage(`${err}`);
       console.log(`Error! ${err}`);
     }
   });
@@ -43,16 +47,13 @@ export default function SignInSide() {
     const data = new FormData(event.currentTarget);
     let email = data.get('email');
     let password = data.get('password');
-    // eslint-disable-next-line no-console
-    console.log({
-      email,
-      password
-    });
     await loginUser({
       variables: {
         user: { email, password }
       },
       onCompleted: (data) => {
+        navigate("/homepage/my-task-boards", { replace: true });
+        window.location.reload();
         console.log(data);
       }
     });
@@ -127,6 +128,13 @@ export default function SignInSide() {
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
+                <Grid>
+                {errorMessage && (
+                  <p className="error">
+                    {errorMessage}
+                  </p>
+                )}
+              </Grid>
               </Grid>
             </Box>
           </Box>

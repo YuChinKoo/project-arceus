@@ -4,11 +4,10 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
-import { Link as RouterLink } from 'react-router-dom';
 
+export default function Profile(props) {
 
-
-export default function Profile() {
+  const { firstname, lastname, email } = props.userData;
 
   return(
     <Paper>
@@ -17,11 +16,11 @@ export default function Profile() {
           <PersonIcon sx={{ fontSize: 100 }}/>
         </Avatar>
         <Typography variant='h5'>
-          Yuanyuan Li
+          {firstname} {lastname}
         </Typography>
         <Typography componenet='div'>
           <Box sx={{fontSize: 16, m: 1}}>
-            example@mail.com
+            {email}
           </Box>
         </Typography>
       </Box>
