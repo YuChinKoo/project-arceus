@@ -37,6 +37,18 @@ const resolvers = {
             }); 
             return foundUser;
         },
+        getMyTaskBoards: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            const user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            }); 
+            const myTaskBoards = await TaskBoard.find({ owner: user.email })
+            .catch(function(err) {
+                throw new Error(err)
+            }); 
+            return myTaskBoards;
+        },
         getAllUsers: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
             const users = await User.find()

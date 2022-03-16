@@ -29,9 +29,10 @@ const typeDefs = gql`
     }
 
     type Query {
-        getAllUsers: [User]
-        getUser(id: ID): User
         me: User
+        getUser(id: ID): User
+        getMyTaskBoards: [Taskboard]
+        getAllUsers: [User]
     }
 
     input UserSignupInput {
