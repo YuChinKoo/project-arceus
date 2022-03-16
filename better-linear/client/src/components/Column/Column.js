@@ -17,6 +17,7 @@ function Column(props) {
           <span>{props.board?.cards?.length || 0}</span>
         </p>
         <Chip
+          color="primary"
           label="Delete Column"
           onClick={() => props.removeBoard()}
           variant="outlined"
@@ -41,8 +42,8 @@ function Column(props) {
               ))
             }
             <Editable
-              text="+ Add Card"
-              placeholder="Enter Card Title"
+              text="Add Task"
+              placeholder="Enter Task Title"
               displayClass="board_add-card"
               editClass="board_add-card_edit"
               onSubmit={(value) => props.addCard(props.board?.id, value)}
@@ -54,12 +55,12 @@ function Column(props) {
                 onDragEnd={() => props.dragEnded(props.board.id, "")}
                 onDragEnter={() => props.dragEntered(props.board.id, "")}
               >
-                <p>Empty</p>
+                <p>Empty Column</p>
               </div>
             
             <Editable
-              text="+ Add Card"
-              placeholder="Enter Card Title"
+              text="Add Task"
+              placeholder="Enter Task Title"
               displayClass="board_add-card"
               editClass="board_add-card_edit"
               onSubmit={(value) => props.addCard(props.board?.id, value)}

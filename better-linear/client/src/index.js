@@ -4,7 +4,6 @@ import App from './App';
 import { ApolloClient, InMemoryCache  } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
-import GettingGraphQLDataExample from "./components/GettingGraphQLDataExample";
 import Board from "./components/Board/Board";
 import './index.css';
 

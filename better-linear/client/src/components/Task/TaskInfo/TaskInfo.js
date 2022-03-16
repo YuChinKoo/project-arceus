@@ -13,10 +13,12 @@ function TaskInfo(props) {
   });
 
   const updateTitle = (value) => {
+    console.log(values)
     setValues({ ...values, title: value });
   };
 
   const updateComment = (value) => {
+    console.log(value)
     setValues({ ...values, comment: value });
   };
 
@@ -35,6 +37,7 @@ function TaskInfo(props) {
             <p>Title</p>
           </div>
           <Editable
+            editType="TaskInfo"
             defaultValue={values.title}
             text={values.title}
             placeholder="Enter Title"
@@ -47,6 +50,7 @@ function TaskInfo(props) {
             <p>Comment</p>
           </div>
           <Editable
+            editType="TaskInfo"
             defaultValue={values.comment}
             text={values.comment || "Add a Comment"}
             placeholder="Enter comment"

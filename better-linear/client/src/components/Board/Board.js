@@ -131,7 +131,13 @@ function Board(){
     return (
       <div className="kanban">
         <div className="app_nav">
-          <h1>Kanban Board</h1>
+          <h1>Board</h1>
+          <button>
+            join
+          </button>
+          <div>
+            
+          </div>
         </div>
         <div className="kanban_boards_container">
           <div className="kanban_boards">

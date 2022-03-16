@@ -50,16 +50,10 @@
 }
   
 .kanban_boards_add-board {
-  background-color: #fff;
-  color: #000;
-  border-radius: 10px;
-  box-shadow: 1px 1px 0 1px rgba(0, 0, 0, 0.12);
   width: 100%;
-  text-align: center;
 }
 
 .kanban_boards_add-board_edit {
-  background-color: #fff;
   border-radius: 10px;
   padding: 10px;
 }
