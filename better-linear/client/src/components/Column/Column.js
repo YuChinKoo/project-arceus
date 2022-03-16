@@ -51,7 +51,7 @@ function Column(props) {
           </div>
         ):(
           <div className="board_cards custom-scroll">
-              <div 
+              <div className='board_cards_empty'
                 onDragEnd={() => props.dragEnded(props.board.id, "")}
                 onDragEnter={() => props.dragEntered(props.board.id, "")}
               >

@@ -26,6 +26,15 @@
   position: sticky;
   top: 0;
   background-color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.board_voice_call {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
   
 .kanban_boards_container {

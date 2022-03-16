@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { useEffect, useState } from "react";
 
+import Avatar from '@mui/material/Avatar';
+import AvatarGroup from '@mui/material/AvatarGroup';
+import Fab from '@mui/material/Fab';
+import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
+
 import "./Board.css";
 import Column from "../Column/Column";
 import Editable from '../Editabled/Editable';
@@ -131,12 +136,17 @@ function Board(){
     return (
       <div className="kanban">
         <div className="app_nav">
-          <h1>Board</h1>
-          <button>
-            join
-          </button>
-          <div>
-            
+          <h1>Better Linear</h1>
+          <div className="board_voice_call">
+          <Fab color="primary" size="small" aria-label="add">
+            <PhoneInTalkIcon />
+          </Fab>
+            <AvatarGroup total={24}>
+              <Avatar alt="Remy Sharp" />
+              <Avatar alt="Travis Howard" />
+              <Avatar alt="Agnes Walker" />
+              <Avatar alt="Trevor Henderson" />
+            </AvatarGroup>
           </div>
         </div>
         <div className="kanban_boards_container">

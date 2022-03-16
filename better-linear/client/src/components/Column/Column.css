@@ -13,8 +13,8 @@
 }
   
 .board_header_title {
-  font-weight: bold;
   font-size: 28px;
+  font-weight: bold;
   display: flex;
   gap: 5px;
   align-items: center;
@@ -30,13 +30,25 @@
 }
   
 .board_cards {
-  background-color: #f8f8f8;
-  padding: 10px;
-  border-radius: 5px;
+  overflow-y: auto;
+  border-radius: 9px;
   display: flex;
   flex-direction: column;
+  background-color: rgb(233, 233, 233);
+  padding: 10px;
   gap: 10px;
-  overflow-y: auto;
+}
+
+.board_cards_empty {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.board_cards_empty p {
+  font-size: large;
+  color: rgb(145, 145, 145);
+  font-weight: bold;
 }
 
 .board_add-card {
