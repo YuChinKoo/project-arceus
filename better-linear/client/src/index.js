@@ -5,10 +5,8 @@ import { ApolloClient, InMemoryCache  } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
 import GettingGraphQLDataExample from "./components/GettingGraphQLDataExample";
-import SignInSide from './components/SignInSide';
-import SignUpSide from './components/SignUpSide';
-import Homepage from './components/Homepage';
-import Taskmainpage from './components/Taskmainpage';
+import Board from "./components/Board/Board";
+import './index.css';
 
 const client = new ApolloClient({
 	uri: "http://localhost:4000/graphql",
@@ -27,7 +25,7 @@ const client = new ApolloClient({
 ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <Taskmainpage/>
+      <Board/>
     </ApolloProvider>
   </BrowserRouter>,
   document.getElementById('root')
