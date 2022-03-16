@@ -5,6 +5,7 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
+import HomeIcon from '@mui/icons-material/Home';
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 
@@ -36,8 +37,15 @@ export default function Header(props) {
         }
         return (
             <Paper>
-                <BottomNavigation showLabels style={{"justify-content": "right"}}>
+                <BottomNavigation showLabels style={{justifyContent: "right"}}>
                     <BottomNavigationAction 
+                        style={{marginRight: "auto"}}
+                        label="Home" 
+                        icon={<HomeIcon />}
+                        component={Link}
+                        to={'/homepage/my-task-boards'} />
+                    <BottomNavigationAction 
+                        style={{marginLeft: "auto"}}
                         label="Sign-out" 
                         icon={<LogoutIcon />}
                         onClick={signOut}/>
@@ -54,7 +62,7 @@ export default function Header(props) {
           };
         return (
             <Paper>
-                <BottomNavigation showLabels style={{"justify-content": "right"}}>
+                <BottomNavigation showLabels style={{justifyContent: "right"}}>
                     <BottomNavigationAction 
                         label="Sign-in" 
                         icon={<LoginIcon />}

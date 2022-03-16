@@ -35,6 +35,8 @@ export default function SignInSide(props) {
 
   const [ errorMessage, setErrorMessage ] = React.useState('');
 
+  let navigate = useNavigate();
+
   const [loginUser, {loading, error}] = useMutation(SIGN_IN_USER, {
     onError: (err) => {
       setErrorMessage(`${err}`);
@@ -47,16 +49,12 @@ export default function SignInSide(props) {
     const data = new FormData(event.currentTarget);
     let email = data.get('email');
     let password = data.get('password');
-    // eslint-disable-next-line no-console
-    console.log({
-      email,
-      password
-    });
     await loginUser({
       variables: {
         user: { email, password }
       },
       onCompleted: (data) => {
+        navigate("/homepage/my-task-boards", { replace: true });
         window.location.reload();
         console.log(data);
       }

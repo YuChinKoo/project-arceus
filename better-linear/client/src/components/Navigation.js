@@ -14,7 +14,7 @@ export default function Navigation() {
     value: 0,
     pathMap:[
       '/homepage/recents',
-      '/homepage/personal-task-board',
+      '/homepage/my-task-boards',
       '/homepage/shared-task-board',
       '/homepage/requests',
       '/homepage/profile'
