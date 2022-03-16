@@ -4,13 +4,10 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
-import { Link as RouterLink } from 'react-router-dom';
-
-
 
 export default function Profile(props) {
 
-  const { _id, firstname, lastname, email } = props.userData;
+  const { firstname, lastname, email } = props.userData;
 
   return(
     <Paper>

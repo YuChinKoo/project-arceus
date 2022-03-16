@@ -1,18 +1,20 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Profile from './Profile';
 import MyTaskBoards from './MyTaskBoards'
 import Profilecard from './Profilecard'
 import Navigation from './Navigation';
-import TaskboardCard from './Taskboardcard';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 
 export default function Homepage(props) {
+
+  let navigate = useNavigate();
+
   const CREATE_TASKBOARD = gql`
     mutation CreateTaskBoard($taskBoardName: String) {
       createTaskBoard(taskBoardName: $taskBoardName) {
@@ -41,6 +43,7 @@ export default function Homepage(props) {
       },
       onCompleted: (data) => {
           setErrorMessage('');
+          navigate("/homepage/my-task-boards", { replace: true });
           console.log(data);
       }
     });
@@ -60,7 +63,7 @@ export default function Homepage(props) {
                 label="Taskboard Name"
                 name="TaskboardName"
               />
-              <Button type="submit" style={{marginTop: "4px", width: "100%"}} variant="contained" disableElevation>Create new Taskboard</Button>
+              <Button type="submit" style={{marginTop: "8px", width: "100%"}} variant="contained" disableElevation>Create new Taskboard</Button>
             </form>
             {errorMessage && (
               <p className="error">
@@ -72,10 +75,6 @@ export default function Homepage(props) {
         <Grid item xs={9}>
           <Navigation/>
           <Routes>
-            <Route 
-              path="/homepage/recents" 
-              element={<TaskboardCard/>} 
-            />
             <Route 
               path="/homepage/my-task-boards" 
               element={<MyTaskBoards userData={props.userData}/>} 

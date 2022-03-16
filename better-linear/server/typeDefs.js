@@ -28,13 +28,6 @@ const typeDefs = gql`
         columns: [Column]
     }
 
-    type Query {
-        me: User
-        getUser(id: ID): User
-        getMyTaskBoards: [Taskboard]
-        getAllUsers: [User]
-    }
-
     input UserSignupInput {
         firstname: String!
         lastname: String!
@@ -45,6 +38,13 @@ const typeDefs = gql`
     input UserLoginInput {
         email: String!
         password: String!
+    }
+
+    type Query {
+        me: User
+        getUser(id: ID): User
+        getMyTaskBoards: [Taskboard]
+        getAllUsers: [User]
     }
 
     type Mutation {
@@ -58,6 +58,10 @@ const typeDefs = gql`
         deleteTaskBoard(taskBoardId: ID): String
         deleteTaskBoardColumn(taskBoardId: ID, columnId: ID): Taskboard
         deleteTaskBoardTask(taskBoardId: ID, columnId: ID, taskId: ID): Taskboard
+    }
+
+    type Subscription {
+        boardRequestAdded(taskBoardId: ID!, email: String): Taskboard
     }
 `
 module.exports = typeDefs;
