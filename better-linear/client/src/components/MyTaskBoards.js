@@ -11,12 +11,23 @@ import IconButton from '@mui/material/IconButton';
 import DeleteButton from '@mui/icons-material/DeleteOutline';
 import { useQuery } from "@apollo/client";
 import LoadingIcon from './LoadingIcon';
+
 const GET_MY_TASKBOARDS = gql`
   query {
       getMyTaskBoards {
         _id
         name
         owner
+    }
+  }
+`
+
+const GET_MY_TASKBOARD_UPDATES = gql`
+  subscription TaskBoardCreated($taskBoardOwnerEmail: String!) {
+    taskBoardCreated(taskBoardOwnerEmail: $taskBoardOwnerEmail) {
+      _id
+      name
+      owner
     }
   }
 `
@@ -47,9 +58,6 @@ export default function MyTaskBoards(props) {
                                 </Box>
                             </Typography>
                             <Typography component='div'>
-                            <Box sx={{ fontSize: 13, mt: 1, mb: 1 }}>
-                                Created on DATE_HERE
-                            </Box>
                         </Typography>
                         </Grid> 
                         <Grid item xs={2}>

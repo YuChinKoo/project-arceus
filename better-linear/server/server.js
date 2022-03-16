@@ -6,6 +6,13 @@ const resolvers = require('./resolvers');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { verify } = require('jsonwebtoken');
+// Subscription functionality imports
+const { createServer } = require('http');
+const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
+const { makeExecutableSchema } = require('@graphql-tools/schema');
+const { WebSocketServer } = require('ws');
+const { useServer } = require('graphql-ws/lib/use/ws');
+
 
 require('dotenv').config();
 
@@ -23,9 +30,55 @@ const getTokenData = accessToken => {
 
 async function startServer() {
     
+    const schema = makeExecutableSchema({ typeDefs, resolvers })
+    
+    const app = express();
+    app.use(cors({ origin: true, credentials: true }));
+    app.use(cookieParser());
+    
+    const httpServer = createServer(app);
+
+    // Creating the WebSocket server
+    const wsServer = new WebSocketServer({
+        // This is the `httpServer` we created in a previous step.
+        server: httpServer,
+        // Pass a different path here if your ApolloServer serves at a different path.
+        path: '/graphql',
+    });
+
+    // Hand in the schema we just created and have the WebSocketServer start listening.
+    const serverCleanup = useServer(
+        { 
+            schema,
+            context: (ctx, msg, args) => {
+                return { params: ctx };
+            },
+            onConnect: async (ctx) => {
+            },
+            onDisconnect(ctx, code, reason) {
+                console.log('Disconnected!');
+            },
+        }, 
+        wsServer
+    );
+
+    // Setting up the Apollo Server
     const apolloServer = new ApolloServer({
-        typeDefs,
-        resolvers,
+        schema,
+        plugins: [
+            // Proper shutdown for the HTTP server.
+            ApolloServerPluginDrainHttpServer({ httpServer }),
+            // Proper shutdown for the WebSocket server.
+            {
+                async serverWillStart() {
+                    return {
+                        async drainServer() {
+                            await serverCleanup.dispose();
+                        },
+                    };
+                },
+            },
+        ],
         context: ({ req, res }) => { 
             const accessToken = req.cookies['access-token'];
             const data = getTokenData(accessToken);
@@ -38,13 +91,8 @@ async function startServer() {
             } 
         }
     });
-    
     await apolloServer.start();
-    
-    const app = express();
-    app.use(cors({ origin: true, credentials: true }));
-    app.use(cookieParser());
-    
+
     apolloServer.applyMiddleware({ 
         app: app,
         cors: {
@@ -52,14 +100,13 @@ async function startServer() {
             credentials: true,
         }, 
     });
-    
-    app.use((req, res) => {
-        res.send("Hello from express apollo server");
-    });
 
     await mongoose.connect(process.env.URI);
     console.log('Mongoose connected...');
 
-    app.listen(4000, () => console.log("Server is running on port 4000"));
+    httpServer.listen(4000, () => {
+        console.log("Server is running on port 4000");
+    });
 }
+
 startServer();
