@@ -4,10 +4,7 @@ import App from './App';
 import { ApolloClient, InMemoryCache, split, HttpLink } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
-<<<<<<< Updated upstream
-import Board from "./components/Board/Board";
 import './index.css';
-=======
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
@@ -39,7 +36,6 @@ const link = split(
   wsLink,
   httpLink
 );
->>>>>>> Stashed changes
 
 const client = new ApolloClient({
 	link: link,
@@ -50,7 +46,7 @@ const client = new ApolloClient({
 ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <Board/>
+      <App />
     </ApolloProvider>
   </BrowserRouter>,
   document.getElementById('root')
