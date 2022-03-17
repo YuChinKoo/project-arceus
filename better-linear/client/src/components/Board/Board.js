@@ -128,7 +128,7 @@ function Board(){
 
       setBoards(tempBoards);
     };
-    
+
     useEffect(() => {
       localStorage.setItem("prac-kanban", JSON.stringify(boards));
     }, [boards]);

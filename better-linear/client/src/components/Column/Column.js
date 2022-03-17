@@ -24,7 +24,6 @@ function Column(props) {
           icon={<DeleteIcon />}
         /> 
       </div>
-
       {props.board?.cards?.length > 0 ?
         (
           <div className="board_cards custom-scroll">

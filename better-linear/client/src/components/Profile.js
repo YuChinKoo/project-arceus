@@ -13,7 +13,6 @@ export default function Profile() {
     <Card sx={{mt: 1, mb: 1}}>
       <CardContent>
         <Box display="flex" alignItems="center" justifyContent="center">
-    
           <Grid>
             <Typography component='div'>
               <Box sx={{fontSize: 25, mt: 1, mb: 1}}>

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from "react";
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -23,7 +24,6 @@ function Task(props) {
           updateCard={props.updateCard}
         />
       )}
-      
       <div
         className="task"
         draggable

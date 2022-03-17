@@ -41,16 +41,16 @@ export default function MyTaskBoards(props) {
                             <Link href="#" variant='h6'>
                                 {board.name}
                             </Link>
-                            <Typography component='div'>
+                            <Typography>
                                 <Box sx={{ fontSize: 13, mt: 1, mb: 1 }}>
                                     {board.owner}
                                 </Box>
                             </Typography>
-                            <Typography component='div'>
+                            <Typography>
                             <Box sx={{ fontSize: 13, mt: 1, mb: 1 }}>
                                 Created on DATE_HERE
                             </Box>
-                        </Typography>
+                            </Typography>
                         </Grid> 
                         <Grid item xs={2}>
                             <IconButton aria-label="share">
