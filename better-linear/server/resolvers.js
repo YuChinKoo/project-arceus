@@ -153,7 +153,11 @@ const resolvers = {
             });
             let taskboard = new TaskBoard({ owner: user.email, name: taskBoardName });
             await taskboard.save();
-            pubsub.publish('TASKBOARD_CREATED', { taskBoardCreated: taskboard }); 
+            const myTaskBoards = await TaskBoard.find({ owner: user.email })
+            .catch(function(err) {
+                throw new Error(err)
+            }); 
+            pubsub.publish('TASKBOARD_CREATED', { newestBoard: taskboard, myTaskBoards: myTaskBoards }); 
             return taskboard;
         },
         createTaskBoardColumn: async (parent, args, context, info) => {
@@ -323,10 +327,13 @@ const resolvers = {
                 (payload, variables) => {
                     // only push an update if the created taskboard belongs to the subscriber
                     let givenBoardOwnerEmail = variables.taskBoardOwnerEmail;
-                    let createdBoardOwnerEmail = payload.taskBoardCreated.owner;
+                    let createdBoardOwnerEmail = payload.newestBoard.owner;
                     return (givenBoardOwnerEmail == createdBoardOwnerEmail);
                 },
             ),
+            resolve: (payload) => {
+                return payload.myTaskBoards;
+            },
         },
     }
 };

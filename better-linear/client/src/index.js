@@ -6,7 +6,6 @@ import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
 import { createClient } from "graphql-ws";
 import './index.css';
-// import { WebSocketLink } from '@apollo/client/link/ws';
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { getMainDefinition } from '@apollo/client/utilities';
 
@@ -28,9 +27,6 @@ const wsLink = new GraphQLWsLink(
 const link = split(
   ({ query }) => {
     const allInfo = getMainDefinition(query);
-    console.log(allInfo);
-    console.log(allInfo.kind);
-    console.log(allInfo.operation);
     return (
       allInfo.kind === 'OperationDefinition' &&
       allInfo.operation === 'subscription'
@@ -43,6 +39,7 @@ const link = split(
 const client = new ApolloClient({
 	link: link,
   cache: new InMemoryCache(), 
+  credentials: 'include',
 });
 
 ReactDOM.render(
