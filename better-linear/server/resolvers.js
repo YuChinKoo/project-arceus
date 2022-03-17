@@ -4,9 +4,11 @@ const { TaskBoard, Column, Task } = require('./models/Taskboard.model');
 const bcrypt = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 const validator = require('validator');
-
+const { PubSub, withFilter } = require('graphql-subscriptions');
 
 require('dotenv').config();
+
+const pubsub = new PubSub();
 
 // everytime a request is made, outside of creating a user, need 
 // to confirm if the userId that is stored within the req (req.userId)
@@ -151,6 +153,7 @@ const resolvers = {
             });
             let taskboard = new TaskBoard({ owner: user.email, name: taskBoardName });
             await taskboard.save();
+            pubsub.publish('TASKBOARD_CREATED', { taskBoardCreated: taskboard }); 
             return taskboard;
         },
         createTaskBoardColumn: async (parent, args, context, info) => {
@@ -312,6 +315,20 @@ const resolvers = {
             return updatedTaskBoard;
         }
     },
+
+    Subscription: {
+        taskBoardCreated: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator(['TASKBOARD_CREATED']),
+                (payload, variables) => {
+                    // only push an update if the created taskboard belongs to the subscriber
+                    let givenBoardOwnerEmail = variables.taskBoardOwnerEmail;
+                    let createdBoardOwnerEmail = payload.taskBoardCreated.owner;
+                    return (givenBoardOwnerEmail == createdBoardOwnerEmail);
+                },
+            ),
+        },
+    }
 };
 
 module.exports = resolvers;

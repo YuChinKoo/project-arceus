@@ -19,7 +19,7 @@ import { deepOrange } from '@mui/material/colors';
 const theme = createTheme();
 
 const CREATE_USER = gql`
-  mutation($user: UserSignupInput) {
+  mutation($user: UserSignupInput!) {
     createUser(user: $user) {
       _id
       firstname

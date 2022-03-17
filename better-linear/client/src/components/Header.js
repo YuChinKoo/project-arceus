@@ -13,7 +13,7 @@ export default function Header(props) {
     let navigate = useNavigate();
     const authorization = props.authorization;
     const LOGOUT_USER = gql`
-        mutation($logoutUserId: ID) {
+        mutation($logoutUserId: ID!) {
             logoutUser(id: $logoutUserId)
     }`
     const [ logoutUser, { loading, error }] = useMutation(LOGOUT_USER, {

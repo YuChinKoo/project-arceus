@@ -16,7 +16,7 @@ export default function Homepage(props) {
   let navigate = useNavigate();
 
   const CREATE_TASKBOARD = gql`
-    mutation CreateTaskBoard($taskBoardName: String) {
+    mutation CreateTaskBoard($taskBoardName: String!) {
       createTaskBoard(taskBoardName: $taskBoardName) {
         _id
         name

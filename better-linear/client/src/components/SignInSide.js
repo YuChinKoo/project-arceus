@@ -19,7 +19,7 @@ import { useMutation } from "@apollo/client";
 const theme = createTheme();
 
 const SIGN_IN_USER = gql`
-  mutation($user: UserLoginInput) {
+  mutation($user: UserLoginInput!) {
     loginUser(user: $user) {
       _id
       firstname
@@ -54,7 +54,6 @@ export default function SignInSide(props) {
       onCompleted: (data) => {
         navigate("/homepage/my-task-boards", { replace: true });
         window.location.reload();
-        console.log(data);
       }
     });
   };
