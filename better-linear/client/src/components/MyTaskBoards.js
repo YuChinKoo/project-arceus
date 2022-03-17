@@ -22,15 +22,15 @@ const GET_MY_TASKBOARDS = gql`
   }
 `;
 
-const GET_MY_TASKBOARD_UPDATES = gql`
-  subscription TaskBoardCreated($taskBoardOwnerEmail: String!) {
-    taskBoardCreated(taskBoardOwnerEmail: $taskBoardOwnerEmail) {
-      _id
-      name
-      owner
-    }
-  }
-`;
+// const GET_MY_TASKBOARD_UPDATES = gql`
+//   subscription TaskBoardCreated($taskBoardOwnerEmail: String!) {
+//     taskBoardCreated(taskBoardOwnerEmail: $taskBoardOwnerEmail) {
+//       _id
+//       name
+//       owner
+//     }
+//   }
+// `;
 
 export default function MyTaskBoards(props) {
 
