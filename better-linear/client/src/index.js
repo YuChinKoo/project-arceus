@@ -8,37 +8,8 @@ import './index.css';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
-
-const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000/graphql`,
-  options: {
-    reconnect: true,
-    connectionParams: {
-      authToken: "test",
-    }
-  }
-});
-
-const httpLink = new HttpLink({
-  uri: "http://localhost:4000/graphql",
-})
-
-const link = split(
-  ({ query }) => {
-    console.log("test");
-    console.log(query);
-    const { kind, operation } = getMainDefinition(query);
-    return (
-      kind === 'OperationDefinition' &&
-      operation === 'subscription'
-    );
-  },
-  wsLink,
-  httpLink
-);
-
 const client = new ApolloClient({
-	link: link,
+	uri: "http://localhost:4000/graphql",
   cache: new InMemoryCache(), 
   credentials: 'include'
 });

@@ -52,7 +52,7 @@ const typeDefs = gql`
         createUser(user: UserSignupInput!): User!
         updateUser(id: ID!, firstname: String!, lastname: String!): User
         # Authentication
-        loginUser(user: UserLoginInput): User!
+        loginUser(user: UserLoginInput!): User!
         logoutUser(id: ID!): String
         # Basic Taskboard functionality
         createTaskBoard(taskBoardName: String!): Taskboard

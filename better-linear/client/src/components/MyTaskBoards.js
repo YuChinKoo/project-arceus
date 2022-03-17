@@ -20,7 +20,7 @@ const GET_MY_TASKBOARDS = gql`
         owner
     }
   }
-`
+`;
 
 const GET_MY_TASKBOARD_UPDATES = gql`
   subscription TaskBoardCreated($taskBoardOwnerEmail: String!) {
@@ -30,7 +30,7 @@ const GET_MY_TASKBOARD_UPDATES = gql`
       owner
     }
   }
-`
+`;
 
 export default function MyTaskBoards(props) {
 
