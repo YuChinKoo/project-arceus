@@ -38,7 +38,7 @@ function App() {
         <Routes>
               <Route path={"/"} element={<Homepage userData={data.me}/>}/>
               <Route path={"/homepage/*"} element={<Homepage userData={data.me}/>}/>
-              <Route path={"/taskboard/*"} element={<Board/>}/>
+              <Route path={"/taskboard/:id"} element={<Board />}/>
         </Routes>
       </div>
     ); 

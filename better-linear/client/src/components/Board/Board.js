@@ -11,6 +11,8 @@ import Column from "../Column/Column";
 import Editable from '../Editabled/Editable';
 
 function Board(){
+    const boardId = window.location.pathname.split('/').slice(-1)[0];
+
     const [boards, setBoards] = useState(
         JSON.parse(localStorage.getItem("prac-kanban")) || []
     );
@@ -136,7 +138,7 @@ function Board(){
     return (
       <div className="kanban">
         <div className="app_nav">
-          <h1>Better Linear</h1>
+          <h1>{boardId}</h1>
           <div className="board_voice_call">
           <Fab color="primary" size="small" aria-label="add">
             <PhoneInTalkIcon />
