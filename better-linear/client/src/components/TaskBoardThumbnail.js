@@ -89,7 +89,7 @@ export default function TaskBoardThumbnail(props) {
                 <CardContent>
                     <Grid container spacing={2} alignItems="center" justifyContent="center">
                         <Grid item xs={10}>
-                            <Link href="/taskboard" variant='h6'>
+                            <Link href="/taskboard/1" variant='h6'>
                                 {boardName}
                             </Link>
                             <Typography component='div'>

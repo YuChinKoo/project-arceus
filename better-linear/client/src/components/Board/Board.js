@@ -11,6 +11,7 @@ import Column from "../Column/Column";
 import Editable from '../Editabled/Editable';
 
 function Board(){
+    console.log()
     const [boards, setBoards] = useState(
         JSON.parse(localStorage.getItem("prac-kanban")) || []
     );
