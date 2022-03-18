@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
+import Board from './components/Board/Board'
 
 const client = new ApolloClient({
 	uri: "http://localhost:4000/graphql",
@@ -17,7 +18,7 @@ const client = new ApolloClient({
 ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <App />
+      <Board/>
     </ApolloProvider>
   </BrowserRouter>,
   document.getElementById('root')
