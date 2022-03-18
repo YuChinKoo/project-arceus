@@ -6,6 +6,8 @@ const typeDefs = gql`
         firstname: String
         lastname: String
         email: String
+        requestedTaskBoards: [ ID ]
+        sharedTaskBoards: [ ID ]
     }
 
     type Task {
@@ -62,11 +64,11 @@ const typeDefs = gql`
         deleteTaskBoardColumn(taskBoardId: ID!, columnId: ID!): Taskboard
         deleteTaskBoardTask(taskBoardId: ID!, columnId: ID!, taskId: ID!): Taskboard
         # Additional taskboard functionality
-        addTaskBoardHelper(taskBoardId: ID!, helperEmail: String!): String
+        requestTaskBoardHelper(taskBoardId: ID!, helperEmail: String!): String
     }
 
     type Subscription {
-        taskBoardCreated(taskBoardOwnerEmail: String!): [Taskboard]
+        taskBoardModified(taskBoardOwnerEmail: String!): [Taskboard]
         # boardRequestAdded(taskBoardId: ID!, email: String): Taskboard
     }
 `

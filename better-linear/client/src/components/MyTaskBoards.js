@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import LoadingIcon from './LoadingIcon';
@@ -15,8 +16,8 @@ const GET_MY_TASKBOARDS = gql`
 `
 
 const GET_MY_TASKBOARD_UPDATES = gql`
-  subscription TaskBoardCreated($taskBoardOwnerEmail: String!) {
-    taskBoardCreated(taskBoardOwnerEmail: $taskBoardOwnerEmail) {
+  subscription TaskBoardModified($taskBoardOwnerEmail: String!) {
+    taskBoardModified(taskBoardOwnerEmail: $taskBoardOwnerEmail) {
       _id
       name
       owner
@@ -24,28 +25,43 @@ const GET_MY_TASKBOARD_UPDATES = gql`
   }
 `
 
-export default function MyTaskBoards(props) {
+function MyTaskBoards(props) {
 
-    const { loading, error, data } = useQuery(GET_MY_TASKBOARDS, {
-        onError: (err) => {
-            console.log(`${err}`);
-        }
-    });
+  const { loading, error, data, subscribeToMore } = useQuery(GET_MY_TASKBOARDS, {
+      onError: (err) => {
+          console.log(`${err}`);
+      }
+  });
 
-    if (loading) return (<LoadingIcon />)
-    if (error) return `Error! ${error.message}`;
+  useEffect(() => {
+     subscribeToMore({
+       document: GET_MY_TASKBOARD_UPDATES,
+       variables: {taskBoardOwnerEmail: props.userData.email },
+       updateQuery: (prev, { subscriptionData }) => {
+         if (!subscriptionData.data) return prev;
+         const newBoardList = subscriptionData.data;
+         return {
+          getMyTaskBoards: newBoardList.taskBoardModified,
+         };
+       },
+     });
+  });
 
-    const TaskBoardList = data.getMyTaskBoards.map((board) =>
-        <TaskBoardThumbnail 
-            boardId={board._id}
-            boardName={board.name}
-            boardOwner={board.owner}
-        />
-    );
-    console.log(TaskBoardList);
-    return (
-        <div>
-            {TaskBoardList}
-        </div>
-    );
+  if (loading) return (<LoadingIcon />)
+  if (error) return `Error! ${error.message}`;
+
+  return (
+      <div>
+          {data.getMyTaskBoards.map((board) =>
+            <TaskBoardThumbnail 
+                key={board._id}
+                boardId={board._id}
+                boardName={board.name}
+                boardOwner={board.owner}
+            />
+          )}
+      </div>
+  );
 }
+
+export default MyTaskBoards;

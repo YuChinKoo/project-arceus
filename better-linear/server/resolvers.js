@@ -157,7 +157,7 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             }); 
-            pubsub.publish('TASKBOARD_CREATED', { newestBoard: taskboard, myTaskBoards: myTaskBoards }); 
+            pubsub.publish('TASKBOARD_MODIFIED', { modifiedBoard: taskboard, myTaskBoards: myTaskBoards }); 
             return taskboard;
         },
         createTaskBoardColumn: async (parent, args, context, info) => {
@@ -245,6 +245,11 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             });
+            const myTaskBoards = await TaskBoard.find({ owner: user.email })
+            .catch(function(err) {
+                throw new Error(err)
+            }); 
+            pubsub.publish('TASKBOARD_MODIFIED', { modifiedBoard: taskBoard, myTaskBoards: myTaskBoards }); 
             return "Taskboard deleted";
 
         },
@@ -317,18 +322,61 @@ const resolvers = {
                 throw new Error(err)
             });
             return updatedTaskBoard;
+        },
+        requestTaskBoardHelper: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            const { taskBoardId, helperEmail } = args;
+            // check if the taskboard exists
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (!taskBoard) throw new Error("Taskboard does not exist");
+            // check if the requested helper exists
+            let helper = await User.findOne({email: helperEmail})
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (!helper) throw new Error("Helper email does not exist");
+            // check if the logged in user is the owner of the taskboard
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (user.email != taskBoard.owner) throw new Error("Unauthorized to add helpers this taskboard");
+
+            if (helperEmail == user.email) throw new Error("Cannot add yourself as a helper");
+
+            for (id of helper.requestedTaskBoards) {
+                if (taskBoardId == id) throw new Error("Request still pending");
+            }
+            for (id of helper.sharedTaskBoards) {
+                if (taskBoardId == id) throw new Error("Already shared");
+            }
+
+            let updatedHelper = await User.findByIdAndUpdate(
+                { _id: helper._id },
+                { $push: {requestedTaskBoards: taskBoardId} },
+                { new: true })
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            return "Request sent";
         }
     },
 
     Subscription: {
-        taskBoardCreated: {
+        taskBoardModified: {
             subscribe: withFilter(
-                () => pubsub.asyncIterator(['TASKBOARD_CREATED']),
+                () => pubsub.asyncIterator(['TASKBOARD_MODIFIED']),
                 (payload, variables) => {
                     // only push an update if the created taskboard belongs to the subscriber
                     let givenBoardOwnerEmail = variables.taskBoardOwnerEmail;
-                    let createdBoardOwnerEmail = payload.newestBoard.owner;
-                    return (givenBoardOwnerEmail == createdBoardOwnerEmail);
+                    // Change this to also notify helpers when helpers are implemented 
+                    // as they should be notified when 
+                    // a task board they are a helper for is deleted
+                    let modifiedBoardOwnerEmail = payload.modifiedBoard.owner;
+                    return (givenBoardOwnerEmail == modifiedBoardOwnerEmail);
                 },
             ),
             resolve: (payload) => {

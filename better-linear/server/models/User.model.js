@@ -13,6 +13,14 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    requestedTaskBoards: {
+        type: [ mongoose.Types.ObjectId ],
+        default: []
+    },
+    sharedTaskBoards: {
+        type: [ mongoose.Types.ObjectId ],
+        default: []
+    },
     hashedPassword: {
         type: String, 
         required: true
