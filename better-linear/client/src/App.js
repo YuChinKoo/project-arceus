@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './components/Header';
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SignInSide from './components/SignInSide';
 import SignUpSide from './components/SignUpSide';
 import Homepage from './components/Homepage';
@@ -29,18 +29,17 @@ function App() {
   if (data.me) {
     // Client with valid auth token  
     return (
-      <div className="app center w85">
-        <div style={{marginBottom: "5px"}}>
-          <Header style={{marginBottom: "5px"}} authorization={true} userData={data.me}/>
+      <div>
+        <div className="app center w85">
+          <div style={{marginBottom: "5px"}}>
+            <Header style={{marginBottom: "5px"}} authorization={true} userData={data.me}/>
+          </div>
         </div>
         <Routes>
-          
-          <Route
-            path="/homepage"
-            element={<Homepage userData={data.me}/>}
-          />            
+              <Route path={"/"} element={<Homepage userData={data.me}/>}/>
+              <Route path={"/homepage/*"} element={<Homepage userData={data.me}/>}/>
+              <Route path={"/taskboard/*"} element={<div> taskboards </div>}/>
         </Routes>
-        {/* <Homepage userData={data.me}/> */}
       </div>
     ); 
     

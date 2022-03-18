@@ -95,24 +95,24 @@ export default function Homepage(props) {
         </Grid>
         <Grid item xs={9}>
           <Navigation/>
-            <Routes>
-              <Route 
-                path={my-task-boards}
-                element={<MyTaskBoards userData={props.userData}/>} 
-              />
-              <Route 
-                path={`${path}/shared-task-board`} 
-                element={<div>Temp</div>} 
-              />
-              <Route 
-                path={`${path}/requests`} 
-                element={<div>Temp</div>} 
-              />
-              <Route 
-                path={`${path}/profile `}
-                element={<Profile/>} 
-              />
-            </Routes>
+          <Routes>
+            <Route 
+              path="my-task-boards" 
+              element={<MyTaskBoards userData={props.userData}/>} 
+            />
+            <Route 
+              path="'shared-task-board" 
+              element={<div>Temp</div>} 
+            />
+            <Route 
+              path="requests" 
+              element={<div>Temp</div>} 
+            />
+            <Route 
+              path="profile" 
+              element={<Profile/>} 
+            />
+          </Routes>
         </Grid>
       </Grid>
     </Box>
