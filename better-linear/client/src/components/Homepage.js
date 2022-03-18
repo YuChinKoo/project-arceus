@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
-
+import LoadingIcon from './LoadingIcon';
 export default function Homepage(props) {
 
   let navigate = useNavigate();
@@ -26,25 +26,37 @@ export default function Homepage(props) {
 
   const [ errorMessage, setErrorMessage ] = React.useState('');
 
-  const [ createTaskBoard, { loading, error }] = useMutation(CREATE_TASKBOARD, {
+  const [ addLoad, setLoading ] = React.useState(false);
+
+  const [ formContent, setFormContent ] = React.useState('');
+
+  let [ createTaskBoard, { loading, error }] = useMutation(CREATE_TASKBOARD, {
     onError: (err) => {
+        setFormContent('');
+        setLoading(false);
         setErrorMessage(`${err}`);
         console.log(`${err}`);
     }
   });
 
+  function handleInputChange(event) {
+    setFormContent( event.target.value )
+  };
+
   async function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     let name = data.get('TaskboardName');
+    setLoading(true);
     await createTaskBoard({
       variables: { 
         taskBoardName: name
       },
       onCompleted: (data) => {
+          setFormContent('');
+          setLoading(false);
           setErrorMessage('');
           navigate("/homepage/my-task-boards", { replace: true });
-          console.log(data);
       }
     });
   }
@@ -62,6 +74,8 @@ export default function Homepage(props) {
                 id="outlined-required"
                 label="Taskboard Name"
                 name="TaskboardName"
+                value={formContent}
+                onChange={handleInputChange.bind(this)}
               />
               <Button type="submit" style={{marginTop: "8px", width: "100%"}} variant="contained" disableElevation>Create new Taskboard</Button>
             </form>
@@ -69,6 +83,11 @@ export default function Homepage(props) {
               <p className="error">
                 {errorMessage}
               </p>
+            )}
+            {addLoad && ( 
+              <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
+                <LoadingIcon /> 
+              </div>
             )}
           </Box>
         </Grid>

@@ -11,7 +11,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-
+import LoadingIcon from './LoadingIcon';
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 import { deepOrange } from '@mui/material/colors';
@@ -33,17 +33,21 @@ export default function SignUpSide() {
 
   const [ errorMessage, setErrorMessage ] = React.useState('');
 
+  const [ signUpLoad, setSignUpLoad ] = React.useState(false);
+
   let navigate = useNavigate();
 
   // Creating mutation hook called createUser
   const [ createUser, { loading, error }] = useMutation(CREATE_USER, {
     onError: (err) => {
+      setSignUpLoad(false);
       setErrorMessage(`${err}`);
       console.log(`${err}`);
     }
   });
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setSignUpLoad(true);
     const formData = new FormData(event.currentTarget);
     let firstname = formData.get('firstname');
     let lastname = formData.get('lastname');
@@ -160,6 +164,11 @@ export default function SignUpSide() {
                   </Link>
                 </Grid>
                 <Grid>
+                  {signUpLoad && ( 
+                    <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
+                      <LoadingIcon /> 
+                    </div>
+                  )}
                   {errorMessage && (
                     <p className="error">
                       {errorMessage}

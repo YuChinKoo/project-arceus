@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { deepOrange } from '@mui/material/colors';
-
+import LoadingIcon from './LoadingIcon';
 import gql from 'graphql-tag';
 import { useMutation } from "@apollo/client";
 
@@ -35,8 +35,11 @@ export default function SignInSide(props) {
 
   let navigate = useNavigate();
 
+  const [ signInLoad, setSignInLoad ] = React.useState(false);
+
   const [loginUser, {loading, error}] = useMutation(SIGN_IN_USER, {
     onError: (err) => {
+      setSignInLoad(false);
       setErrorMessage(`${err}`);
       console.log(`Error! ${err}`);
     }
@@ -44,6 +47,7 @@ export default function SignInSide(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setSignInLoad(true);
     const data = new FormData(event.currentTarget);
     let email = data.get('email');
     let password = data.get('password');
@@ -128,6 +132,11 @@ export default function SignInSide(props) {
                   </Link>
                 </Grid>
                 <Grid>
+                {signInLoad && ( 
+                  <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
+                    <LoadingIcon /> 
+                  </div>
+                )}
                 {errorMessage && (
                   <p className="error">
                     {errorMessage}

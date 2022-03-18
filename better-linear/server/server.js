@@ -54,6 +54,7 @@ async function startServer() {
                 return { params: ctx };
             },
             onConnect: async (ctx) => {
+                console.log("Connected!");
             },
             onDisconnect(ctx, code, reason) {
                 console.log('Disconnected!');
