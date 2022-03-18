@@ -95,19 +95,19 @@ export default function Homepage(props) {
           <Navigation/>
           <Routes>
             <Route 
-              path="/homepage/my-task-boards" 
+              path="my-task-boards" 
               element={<MyTaskBoards userData={props.userData}/>} 
             />
             <Route 
-              path="/homepage/shared-task-board" 
+              path="'shared-task-board" 
               element={<div>Temp</div>} 
             />
             <Route 
-              path="/homepage/requests" 
+              path="requests" 
               element={<div>Temp</div>} 
             />
             <Route 
-              path="/homepage/profile" 
+              path="profile" 
               element={<Profile/>} 
             />
           </Routes>
