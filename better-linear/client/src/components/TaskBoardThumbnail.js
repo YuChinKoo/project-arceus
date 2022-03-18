@@ -6,7 +6,6 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import ShareIcon from '@mui/icons-material/Share';
 import DeleteButton from '@mui/icons-material/DeleteOutline';
 import gql from 'graphql-tag';
 import { useMutation } from "@apollo/client";
@@ -90,7 +89,7 @@ export default function TaskBoardThumbnail(props) {
                 <CardContent>
                     <Grid container spacing={2} alignItems="center" justifyContent="center">
                         <Grid item xs={10}>
-                            <Link href="#" variant='h6'>
+                            <Link href="\board" variant='h6'>
                                 {boardName}
                             </Link>
                             <Typography component='div'>
@@ -109,7 +108,7 @@ export default function TaskBoardThumbnail(props) {
                                 </p>
                             )}
                         </div>    
-                        <Box display="flex" justifyContent="flex-end" alignItems="center">
+                        <Box display="flex" justifyContent="flex-end" alignItems="center" gap="10px">
                                 {QLoading && ( 
                                     <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
                                         <LoadingIcon /> 

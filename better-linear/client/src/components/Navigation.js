@@ -20,6 +20,7 @@ export default function Navigation() {
   };
 
   let current_value = state.pathMap.indexOf(window.location.pathname);
+  console.log(current_value);
   if(current_value < 0) current_value = 0;
 
   const [value, setValue] = React.useState(current_value);

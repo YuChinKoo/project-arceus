@@ -8,7 +8,7 @@ import { createClient } from "graphql-ws";
 import './index.css';
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { getMainDefinition } from '@apollo/client/utilities';
-import Board from './components/Board/Board'
+
 
 const httpLink = new HttpLink({
   uri: 'http://localhost:4000/graphql',
@@ -46,7 +46,7 @@ const client = new ApolloClient({
 ReactDOM.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <Board/>
+      <App/>
     </ApolloProvider>
   </BrowserRouter>,
   document.getElementById('root')

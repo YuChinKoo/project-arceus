@@ -27,6 +27,11 @@ export default function Header(props) {
         }
     });
     if (authorization) {
+
+        const backHome = async () => {
+            navigate("../homepage/my-task-boards");
+            window.location.reload();
+        }
         const signOut = async () => {
             setSignOutLoad(true);
             await logoutUser({
@@ -49,7 +54,8 @@ export default function Header(props) {
                         label="Home" 
                         icon={<HomeIcon />}
                         component={Link}
-                        to={'/homepage/my-task-boards'} />
+                        to="/homepage/my-task-boards"
+                     />
                     {signOutLoad && ( 
                         <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
                             <LoadingIcon /> 
@@ -65,7 +71,6 @@ export default function Header(props) {
         )
     } else {
         const state = {
-            value: 0,
             pathMap:[
               '/signin',
               '/signup'

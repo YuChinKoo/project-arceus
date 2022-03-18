@@ -13,6 +13,8 @@ import { useMutation } from "@apollo/client";
 import LoadingIcon from './LoadingIcon';
 export default function Homepage(props) {
 
+  let path = "/homepage";
+
   let navigate = useNavigate();
 
   const CREATE_TASKBOARD = gql`
@@ -93,24 +95,24 @@ export default function Homepage(props) {
         </Grid>
         <Grid item xs={9}>
           <Navigation/>
-          <Routes>
-            <Route 
-              path="/homepage/my-task-boards" 
-              element={<MyTaskBoards userData={props.userData}/>} 
-            />
-            <Route 
-              path="/homepage/shared-task-board" 
-              element={<div>Temp</div>} 
-            />
-            <Route 
-              path="/homepage/requests" 
-              element={<div>Temp</div>} 
-            />
-            <Route 
-              path="/homepage/profile" 
-              element={<Profile/>} 
-            />
-          </Routes>
+            <Routes>
+              <Route 
+                path={my-task-boards}
+                element={<MyTaskBoards userData={props.userData}/>} 
+              />
+              <Route 
+                path={`${path}/shared-task-board`} 
+                element={<div>Temp</div>} 
+              />
+              <Route 
+                path={`${path}/requests`} 
+                element={<div>Temp</div>} 
+              />
+              <Route 
+                path={`${path}/profile `}
+                element={<Profile/>} 
+              />
+            </Routes>
         </Grid>
       </Grid>
     </Box>
