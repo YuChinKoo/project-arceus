@@ -1,6 +1,6 @@
 const User = require('./models/User.model');
 const { AuthenticationError, UserInputError } = require('apollo-server-express');
-const { TaskBoard, Column, Task } = require('./models/Taskboard.model');
+const { TaskBoard, Column, Task} = require('./models/Taskboard.model');
 const bcrypt = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 const validator = require('validator');
@@ -58,6 +58,20 @@ const resolvers = {
                 throw new Error(err)
             });
             return users;
+        },
+        getTaskBoardById: async(parent, args, context, info) => {
+            const user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            }); 
+            let taskBoardId = args;
+            console.log(taskBoardId);
+            const taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err){
+                throw new Error(err)
+            });
+            console.log(taskBoard);
+            return taskBoard;
         },
     },
 

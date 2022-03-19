@@ -13,8 +13,6 @@ import { useMutation } from "@apollo/client";
 import LoadingIcon from './LoadingIcon';
 export default function Homepage(props) {
 
-  let path = "/homepage";
-
   let navigate = useNavigate();
 
   const CREATE_TASKBOARD = gql`
@@ -25,6 +23,7 @@ export default function Homepage(props) {
         owner
       }
   }`
+
 
   const [ errorMessage, setErrorMessage ] = React.useState('');
 

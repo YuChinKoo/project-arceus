@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from "react";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/client";
 
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
@@ -10,8 +12,27 @@ import "./Board.css";
 import Column from "../Column/Column";
 import Editable from '../Editabled/Editable';
 
-function Board(){
-    const boardId = window.location.pathname.split('/').slice(-1)[0];
+const GET_TASKBOARD = gql`
+  query {
+      getTaskBoardById(taskBoardId: ID) {
+        _id
+        name
+        columns
+    }
+  }
+`
+
+function Board(){ 
+  const boardId = window.location.pathname.split('/').slice(-1)[0];
+
+  const { loading, error, data } = useQuery(GET_TASKBOARD, {
+    onError: (err) => {
+        console.log(`${err}`);
+    },
+    variables: { taskBoardId: boardId }
+  });
+
+  console.log(data);
 
     const [boards, setBoards] = useState(
         JSON.parse(localStorage.getItem("prac-kanban")) || []
@@ -107,8 +128,6 @@ function Board(){
     };
     
     const dragEntered = (bid, cid) => {
-      console.log(bid);
-      console.log(cid);
       if (targetCard.cid === cid && bid === "") return;
       setTargetCard({
         bid,

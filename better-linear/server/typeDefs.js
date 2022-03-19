@@ -47,6 +47,7 @@ const typeDefs = gql`
         getUser(id: ID): User
         getMyTaskBoards: [Taskboard]
         getAllUsers: [User]
+        getTaskBoardById(taskBoardId: ID!): Taskboard
     }
 
     type Mutation {
