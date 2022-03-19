@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from "react";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
@@ -32,8 +32,45 @@ const GET_TASKBOARD = gql`
   }
 `
 
+// const ADD_COLUMN = gql`
+//   mutation CreateTaskBoardColumn($taskBoardId: ID!, $columnName: String!) {
+//   createTaskBoardColumn(taskBoardId: $taskBoardId, columnName: $columnName) {
+//     _id
+//     name
+//     owner
+//     helpers
+//     columns {
+//       _id
+//       columnTitle
+//       tasks {
+//         _id
+//         taskTitle
+//         content
+//       }
+//     }
+//   }
+// }
+// `
+
+// const GET_MY_TASKBOARD_UPDATES = gql`
+//   subscription TaskBoardModified($taskBoardOwnerEmail: String!) {
+//     taskBoardModified(taskBoardOwnerEmail: $taskBoardOwnerEmail) {
+//       _id
+//       name
+//       owner
+//     }
+//   }
+//  ` 
+
 function Board(){ 
   const boardId = window.location.pathname.split('/').slice(-1)[0];
+  
+  const { loading, error, data } = useQuery(GET_TASKBOARD, {
+    onError: (err) => {
+        console.log(`${err}`);
+    },
+    variables: { taskBoardId: boardId }
+  });
 
   const [boards, setBoards] = useState(
       JSON.parse(localStorage.getItem("prac-kanban")) || []
@@ -43,8 +80,13 @@ function Board(){
     bid: "",
     cid: "",
   });
+  // const [ add_column, { addColumnLoading, addColumnError, addColumnData, subscribeToMore } ] = useMutation(ADD_COLUMN, {
+  //   onError: (err) => {
+  //       console.log(`${err}`);
+  //   }
+  // });
   
-  const addboard = (name) => {
+  const addboard = async (name) => {
     const tempBoards = [...boards];
     tempBoards.push({
       id: Date.now() + Math.random() * 2,
@@ -52,6 +94,10 @@ function Board(){
       cards: [],
     });
     setBoards(tempBoards);
+
+    // await add_column({
+    //   variables: { taskBoardId: boardId, columnName: name }
+    // });
   };
 
   const removeBoard = (id) => {
@@ -155,17 +201,25 @@ function Board(){
     localStorage.setItem("prac-kanban", JSON.stringify(boards));
   }, [boards]);
   
-  const { loading, error, data } = useQuery(GET_TASKBOARD, {
-    onError: (err) => {
-        console.log(`${err}`);
-    },
-    variables: { taskBoardId: boardId }
-  });
+  
+  // useEffect(() => {
+  //    subscribeToMore({
+  //      document: GET_MY_TASKBOARD_UPDATES,
+  //      variables: {taskBoardOwnerEmail: data.GetTaskBoardById.owner },
+  //      updateQuery: (prev, { subscriptionData }) => {
+  //        if (!subscriptionData.data) return prev;
+  //        const newBoardList = subscriptionData.data;
+  //        return {
+  //         getMyTaskBoard: newBoardList.taskBoardModified,
+  //        };
+  //      },
+  //    });
+  // });
 
   if (loading) return (<div>loading</div>);
   if (error) return (<div>error</div>);
 
-  console.log(data);
+  console.log(data.getTaskBoardById);
 
   return (
     <div className="kanban">
@@ -185,12 +239,12 @@ function Board(){
       </div>
       <div className="kanban_boards_container">
         <div className="kanban_boards">
-          {boards.map((item) => (
+          {data.getTaskBoardById.columns.map((item) => (
             <Column
-              key={item.id}
+              key={item._id}
               board={item}
               addCard={addCard}
-              removeBoard={() => removeBoard(item.id)}
+              removeBoard={() => removeBoard(item._id)}
               removeCard={removeCard}
               dragEnded={dragEnded}
               dragEntered={dragEntered}

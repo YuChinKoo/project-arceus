@@ -14,7 +14,7 @@ function Column(props) {
       <div className="board_header">
         <p className="board_header_title">
           {props.board?.title}
-          <span>{props.board?.cards?.length || 0}</span>
+          <span>{props.board?.tasks?.length || 0}</span>
         </p>
         <Chip
           color="primary"
@@ -24,15 +24,15 @@ function Column(props) {
           icon={<DeleteIcon />}
         /> 
       </div>
-      {props.board?.cards?.length > 0 ?
+      {props.board?.tasks?.length > 0 ?
         (
           <div className="board_cards custom-scroll">
             {
-              props.board?.cards?.map((item) => (
+              props.board?.tasks?.map((item) => (
                 <Task
-                  key={item.id}
+                  key={item._id}
                   card={item}
-                  boardId={props.board.id}
+                  boardId={props.board._id}
                   removeCard={props.removeCard}
                   dragEntered={props.dragEntered}
                   dragEnded={props.dragEnded}
@@ -45,14 +45,14 @@ function Column(props) {
               placeholder="Enter Task Title"
               displayClass="board_add-card"
               editClass="board_add-card_edit"
-              onSubmit={(value) => props.addCard(props.board?.id, value)}
+              onSubmit={(value) => props.addCard(props.board?._id, value)}
             />
           </div>
         ):(
           <div className="board_cards custom-scroll">
               <div className='board_cards_empty'
-                onDragEnd={() => props.dragEnded(props.board.id, "")}
-                onDragEnter={() => props.dragEntered(props.board.id, "")}
+                onDragEnd={() => props.dragEnded(props.board._id, "")}
+                onDragEnter={() => props.dragEntered(props.board._id, "")}
               >
                 <p>Empty Column</p>
               </div>
@@ -62,7 +62,7 @@ function Column(props) {
               placeholder="Enter Task Title"
               displayClass="board_add-card"
               editClass="board_add-card_edit"
-              onSubmit={(value) => props.addCard(props.board?.id, value)}
+              onSubmit={(value) => props.addCard(props.board?._id, value)}
             />
           </div>
         )

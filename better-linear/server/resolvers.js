@@ -198,6 +198,7 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             });
+            pubsub.publish('TASKBOARD_COLUMN_CREATED', { modifiedBoard: updatedTaskBoard }); 
             return updatedTaskBoard;
         }, 
         createTaskBoardTask: async (parent, args, context, info) => {
@@ -397,6 +398,19 @@ const resolvers = {
                 return payload.myTaskBoards;
             },
         },
+        taskBoardColumnAdded: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator(['TASKBOARD_COLUMN_CREATED']),
+                (payload, variables) => {
+                    let givenBoardId = variables.taskBoardId;
+                    let modifiedBoardId = payload.modifiedBoard._id;
+                    return (givenBoardId == modifiedBoardId);
+                }
+            )
+        },
+        resolve: (payload) => {
+            return payload.modifiedBoard;
+        }
     }
 };
 

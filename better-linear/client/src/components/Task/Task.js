@@ -12,7 +12,7 @@ import CardInfo from "./TaskInfo/TaskInfo";
 function Task(props) {
   const [showModal, setShowModal] = useState(false);
 
-  const { id, title, comment } = props.card;
+  const { _id, taskTitle, content } = props.card;
 
   return (
     <>
@@ -27,17 +27,17 @@ function Task(props) {
       <div
         className="task"
         draggable
-        onDragEnd={() => props.dragEnded(props.boardId, id)}
-        onDragEnter={() => props.dragEntered(props.boardId, id)}
+        onDragEnd={() => props.dragEnded(props.boardId, _id)}
+        onDragEnter={() => props.dragEntered(props.boardId, _id)}
         onClick={() => setShowModal(true)}
       > 
         <CardActionArea>
           <Card>
             <CardContent>
-              <div className="task_title">{title}</div>
-              <div className='task_comment'>{comment}</div> 
+              <div className="task_title">{taskTitle}</div>
+              <div className='task_comment'>{content}</div> 
               <div className="task_footer">
-                <DeleteIcon onClick={() => props.removeCard(props.boardId, id)}></DeleteIcon>
+                <DeleteIcon onClick={() => props.removeCard(props.boardId, _id)}></DeleteIcon>
               </div> 
             </CardContent>       
           </Card>
