@@ -30,7 +30,7 @@ function TaskInfo(props) {
     <Modal onClose={props.onClose}>
       <div className="taskinfo">
         <div className="taskinfo_box">
-          <div className="taskinfor_box_header">
+          <div className="taskinfo_box_header">
             <p>Task Information Detail</p>
           </div>
           <div className="taskinfo_box_title">

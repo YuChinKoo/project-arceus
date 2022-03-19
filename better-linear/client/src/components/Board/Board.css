@@ -12,14 +12,14 @@
   border: 1px solid gray;
 }
 
-.kanban {
+.board_main {
   width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
 }
   
-.app_nav {
+.board_nav {
   padding: 30px;
   box-shadow: 0 1px 20px rgba(56, 40, 40, 0.05);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -37,7 +37,7 @@
   gap: 20px;
 }
   
-.kanban_boards_container {
+.board_columns_container {
   flex: 1;
   width: 100%;
   height: 100%;
@@ -45,7 +45,7 @@
   padding-top: 20px;
 }
   
-.kanban_boards {
+.board_columns {
   height: 100%;
   width: fit-content;
   padding: 10px 30px;
@@ -53,16 +53,16 @@
   gap: 30px;
 }
 
-.kanban_boards_last {
+.board_columns_footer {
   flex-basis: 290px;
   min-width: 290px;
 }
   
-.kanban_boards_add-board {
+.board_columns_add-columns {
   width: 100%;
 }
 
-.kanban_boards_add-board_edit {
+.board_columns_add-columns_edit {
   border-radius: 10px;
   padding: 10px;
 }

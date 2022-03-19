@@ -222,8 +222,8 @@ function Board(){
   console.log(data.getTaskBoardById);
 
   return (
-    <div className="kanban">
-      <div className="app_nav">
+    <div className="board_main">
+      <div className="board_nav">
         <h1>{boardId}</h1>
         <div className="board_voice_call">
         <Fab color="primary" size="small" aria-label="add">
@@ -237,8 +237,8 @@ function Board(){
           </AvatarGroup>
         </div>
       </div>
-      <div className="kanban_boards_container">
-        <div className="kanban_boards">
+      <div className="board_columns_container">
+        <div className="board_columns">
           {data.getTaskBoardById.columns.map((item) => (
             <Column
               key={item._id}
@@ -251,13 +251,13 @@ function Board(){
               updateCard={updateCard}
             />
           ))}
-          <div className="app_boards_last">
+          <div className="board_columns_footer">
             <Editable
-              displayClass="app_boards_add-board"
-              editClass="app_boards_add-board_edit"
-              placeholder="Enter Board Name"
-              text="Add Board"
-              buttonText="Add Board"
+              displayClass="board_columns_add-columns"
+              editClass="board_columns_add-columns_edit"
+              placeholder="Enter Column Name"
+              text="Add Column"
+              buttonText="Add Column"
               onSubmit={addboard}
             />
           </div> 

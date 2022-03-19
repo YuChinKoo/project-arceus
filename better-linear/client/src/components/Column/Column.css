@@ -1,4 +1,4 @@
-.board {
+.column {
     min-width: 290px;
     flex-basis: 290px;
     display: flex;
@@ -6,13 +6,13 @@
     gap: 20px;
   }
   
-.board_header {
+.column_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
   
-.board_header_title {
+.column_header_title {
   font-size: 28px;
   font-weight: bold;
   display: flex;
@@ -20,16 +20,11 @@
   align-items: center;
 }
   
-.board_header_title span {
+.column_header_title span {
   color: rgb(145, 145, 145);
 }
   
-.board_header_title_more {
-  cursor: pointer;
-  position: relative;
-}
-  
-.board_cards {
+.column_tasks {
   overflow-y: auto;
   border-radius: 9px;
   display: flex;
@@ -39,23 +34,23 @@
   gap: 10px;
 }
 
-.board_cards_empty {
+.column_tasks_empty {
   display: flex;
   justify-content: center;
   padding: 10px;
 }
 
-.board_cards_empty p {
+.column_tasks_empty p {
   font-size: large;
   color: rgb(145, 145, 145);
   font-weight: bold;
 }
 
-.board_add-card {
+.column_add-task {
   width: 100%;
 }
 
-.board_add-card_edit {
+.column_add-task_edit {
   background-color: #fff;
   border-radius: 10px;
   padding: 10px;

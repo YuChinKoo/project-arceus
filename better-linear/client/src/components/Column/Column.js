@@ -10,9 +10,9 @@ import "./Column.css";
 function Column(props) {
 
   return (
-    <div className="board">
-      <div className="board_header">
-        <p className="board_header_title">
+    <div className="column">
+      <div className="column_header">
+        <p className="column_header_title">
           {props.board?.title}
           <span>{props.board?.tasks?.length || 0}</span>
         </p>
@@ -26,7 +26,7 @@ function Column(props) {
       </div>
       {props.board?.tasks?.length > 0 ?
         (
-          <div className="board_cards custom-scroll">
+          <div className="column_tasks custom-scroll">
             {
               props.board?.tasks?.map((item) => (
                 <Task
@@ -43,14 +43,14 @@ function Column(props) {
             <Editable
               text="Add Task"
               placeholder="Enter Task Title"
-              displayClass="board_add-card"
-              editClass="board_add-card_edit"
+              displayClass="column_add-task"
+              editClass="column_add-task_edit"
               onSubmit={(value) => props.addCard(props.board?._id, value)}
             />
           </div>
         ):(
-          <div className="board_cards custom-scroll">
-              <div className='board_cards_empty'
+          <div className="column-tasks custom-scroll">
+              <div className='column_tasks_empty'
                 onDragEnd={() => props.dragEnded(props.board._id, "")}
                 onDragEnter={() => props.dragEntered(props.board._id, "")}
               >
@@ -60,8 +60,8 @@ function Column(props) {
             <Editable
               text="Add Task"
               placeholder="Enter Task Title"
-              displayClass="board_add-card"
-              editClass="board_add-card_edit"
+              displayClass="column_add-task"
+              editClass="column_add-task_edit"
               onSubmit={(value) => props.addCard(props.board?._id, value)}
             />
           </div>
