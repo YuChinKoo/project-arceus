@@ -64,7 +64,7 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             }); 
-            let taskBoardId = args;
+            let { taskBoardId } = args;
             console.log(taskBoardId);
             const taskBoard = await TaskBoard.findById(taskBoardId)
             .catch(function(err){
