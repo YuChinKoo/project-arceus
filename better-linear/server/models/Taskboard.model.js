@@ -36,6 +36,10 @@ const TaskboardSchema = new mongoose.Schema({
         type: [ String ], 
         default: []
     },
+    requestedHelpers: {
+        type: [ String ], 
+        default: []
+    },
     columns: {
         type: [ ColumnSchema ],
         default: []

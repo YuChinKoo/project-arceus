@@ -14,7 +14,7 @@ import LoadingIcon from './LoadingIcon';
 
 const DELETE_TASKBOARD = gql`
     mutation DeleteTaskBoard($taskBoardId: ID!) {
-    deleteTaskBoard(taskBoardId: $taskBoardId)
+        deleteTaskBoard(taskBoardId: $taskBoardId)
     }
 `
 

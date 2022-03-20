@@ -22,11 +22,18 @@ const typeDefs = gql`
         tasks: [Task]
     }
 
+    type RequestedTaskBoard {
+        _id: ID
+        name: String
+        owner: String
+    }
+
     type Taskboard {
         _id: ID
         name: String
         owner: String
         helpers: [String]
+        requestedHelpers: [String]
         columns: [Column]
     }
 
@@ -48,6 +55,8 @@ const typeDefs = gql`
         getMyTaskBoards: [Taskboard]
         getAllUsers: [User]
         getTaskBoardById(taskBoardId: ID!): Taskboard
+        getRequestedTaskBoards: [RequestedTaskBoard]
+        getSharedTaskBoards: [Taskboard]
     }
 
     type Mutation {
@@ -66,12 +75,15 @@ const typeDefs = gql`
         deleteTaskBoardTask(taskBoardId: ID!, columnId: ID!, taskId: ID!): Taskboard
         # Additional taskboard functionality
         requestTaskBoardHelper(taskBoardId: ID!, helperEmail: String!): String
+        # "accept" to accept, "deny" to deny
+        respondTaskBoardHelperRequest(taskBoardId: ID!, response: String!): String
+        removeSharedTaskBoard(taskBoardId: ID!): String
     }
 
     type Subscription {
         taskBoardModified(taskBoardOwnerEmail: String!): [Taskboard]
         taskBoardColumnAdded(taskBoardId: ID!): Taskboard
-        # boardRequestAdded(taskBoardId: ID!, email: String): Taskboard
+        taskBoardRequestModified(taskBoardId: ID!, email: String): Taskboard
     }
 `
 module.exports = typeDefs;

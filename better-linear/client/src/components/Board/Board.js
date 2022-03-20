@@ -217,14 +217,14 @@ function Board(){
   // });
 
   if (loading) return (<div>loading</div>);
-  if (error) return (<div>error</div>);
+  if (error) return (<div>{error}</div>);
 
   console.log(data.getTaskBoardById);
 
   return (
     <div className="board_main">
       <div className="board_nav">
-        <h1>{boardId}</h1>
+        <h1>{data.getTaskBoardById.name}</h1>
         <div className="board_voice_call">
         <Fab color="primary" size="small" aria-label="add">
           <PhoneInTalkIcon />
