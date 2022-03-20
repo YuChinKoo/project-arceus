@@ -31,14 +31,6 @@ const resolvers = {
             }); 
             return foundUser;
         },
-        getUser: async (parent, {id}, context, info) => {
-            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
-            const foundUser = await User.findById(id)
-            .catch(function(err) {
-                throw new Error(err)
-            }); 
-            return foundUser;
-        },
         getMyTaskBoards: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
             const user = await User.findById(context.req.userId)
@@ -50,14 +42,6 @@ const resolvers = {
                 throw new Error(err)
             }); 
             return myTaskBoards;
-        },
-        getAllUsers: async (parent, args, context, info) => {
-            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
-            const users = await User.find()
-            .catch(function(err) {
-                throw new Error(err)
-            });
-            return users;
         },
         getTaskBoardById: async(parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
@@ -90,7 +74,21 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             }); 
-            return null;
+
+            let queryArray = [];
+            for(let requestedBoardId of user.requestedTaskBoards){
+                queryArray.push({ '_id': requestedBoardId })
+            };
+            let allRequestedBoards = null;
+            if(queryArray.length) {
+                allRequestedBoards = TaskBoard.find({
+                    $or: queryArray
+                })
+                .catch(function(err) {
+                    throw new Error(err)
+                }); 
+            }
+            return allRequestedBoards;
         },
         getSharedTaskBoards: async(parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
@@ -98,7 +96,21 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             }); 
-            return null;
+
+            let queryArray = [];
+            for(let sharedBoardId of user.sharedTaskBoards){
+                queryArray.push({ '_id': sharedBoardId })
+            };
+            let allSharedBoards = null;
+            if(queryArray.length) {
+                allSharedBoards = TaskBoard.find({
+                    $or: queryArray
+                })
+                .catch(function(err) {
+                    throw new Error(err)
+                }); 
+            }
+            return allSharedBoards;
         },
     },
 

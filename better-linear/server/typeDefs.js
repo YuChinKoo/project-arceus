@@ -51,9 +51,7 @@ const typeDefs = gql`
 
     type Query {
         me: User
-        getUser(id: ID): User
         getMyTaskBoards: [Taskboard]
-        getAllUsers: [User]
         getTaskBoardById(taskBoardId: ID!): Taskboard
         getRequestedTaskBoards: [RequestedTaskBoard]
         getSharedTaskBoards: [Taskboard]
