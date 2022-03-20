@@ -9,6 +9,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 import LoadingIcon from './LoadingIcon';
+import AbcIcon from '@mui/icons-material/Abc';
 
 export default function Header(props) {
     let navigate = useNavigate();
@@ -60,6 +61,11 @@ export default function Header(props) {
                         <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
                             <LoadingIcon /> 
                         </div>
+                    )} 
+                    {!signOutLoad && ( 
+                            <div style={{width: "100%", display: "flex", justifyContent: "center", visibility: 'hidden'}}>
+                                <AbcIcon /> 
+                            </div>
                     )}
                     <BottomNavigationAction 
                         style={{marginLeft: "auto"}}

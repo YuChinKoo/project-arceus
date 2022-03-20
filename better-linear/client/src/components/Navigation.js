@@ -14,13 +14,12 @@ export default function Navigation() {
     pathMap:[
       '/homepage/my-task-boards',
       '/homepage/shared-task-board',
-      '/homepage/requests',
+      '/homepage/incoming-requests',
       '/homepage/profile'
     ]
   };
 
   let current_value = state.pathMap.indexOf(window.location.pathname);
-  console.log(current_value);
   if(current_value < 0) current_value = 0;
 
   const [value, setValue] = React.useState(current_value);
@@ -44,7 +43,7 @@ export default function Navigation() {
             component={Link}
             to={state.pathMap[1]}/>
           <BottomNavigationAction 
-            label="Requested Boards" 
+            label="Incoming Requests" 
             icon={<PersonIcon />} 
             component={Link}
             to={state.pathMap[2]}/>

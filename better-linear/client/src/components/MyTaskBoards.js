@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import LoadingIcon from './LoadingIcon';
-import TaskBoardThumbnail from './TaskBoardThumbnail';
+import MyTaskBoardThumbnail from './MyTaskBoardThumbnail';
 
 const GET_MY_TASKBOARDS = gql`
   query {
@@ -26,8 +26,9 @@ const GET_MY_TASKBOARD_UPDATES = gql`
 `
 
 function MyTaskBoards(props) {
+  const [ time, setTime ] = useState(null); 
 
-  const { loading, error, data, subscribeToMore } = useQuery(GET_MY_TASKBOARDS, {
+  let { loading, error, data, subscribeToMore } = useQuery(GET_MY_TASKBOARDS, {
       onError: (err) => {
           console.log(`${err}`);
       }
@@ -47,13 +48,18 @@ function MyTaskBoards(props) {
      });
   });
 
+  useEffect(() => {
+    setTime(props.timeStamp);
+
+  }, [props.timeStamp]);
+
   if (loading) return (<LoadingIcon />)
   if (error) return `Error! ${error.message}`;
 
-  return (
-      <div>
+  return ( 
+      <div> {time}
           {data.getMyTaskBoards.map((board) =>
-            <TaskBoardThumbnail 
+            <MyTaskBoardThumbnail 
                 key={board._id}
                 boardId={board._id}
                 boardName={board.name}

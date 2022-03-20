@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Profile from './Profile';
 import MyTaskBoards from './MyTaskBoards'
+import RequestedTaskBoards from './RequestedTaskBoards';
 import Profilecard from './Profilecard'
 import Navigation from './Navigation';
 import Button from '@mui/material/Button';
@@ -97,15 +98,15 @@ export default function Homepage(props) {
           <Routes>
             <Route 
               path="my-task-boards" 
-              element={<MyTaskBoards userData={props.userData}/>} 
+              element={<MyTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
             />
             <Route 
-              path="'shared-task-board" 
-              element={<div>Temp</div>} 
+              path="shared-task-board" 
+              element={<div >Temp</div>} 
             />
             <Route 
               path="requests" 
-              element={<div>Temp</div>} 
+              element={<RequestedTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
             />
             <Route 
               path="profile" 

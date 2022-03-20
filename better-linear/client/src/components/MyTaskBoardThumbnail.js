@@ -24,7 +24,7 @@ const REQUEST_HELPER = gql`
     }
 `
 
-export default function TaskBoardThumbnail(props) {
+export default function MyTaskBoardThumbnail(props) {
 
     const {
         boardId,
