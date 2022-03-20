@@ -32,44 +32,156 @@ const GET_TASKBOARD = gql`
   }
 `
 
-// const ADD_COLUMN = gql`
-//   mutation CreateTaskBoardColumn($taskBoardId: ID!, $columnName: String!) {
-//   createTaskBoardColumn(taskBoardId: $taskBoardId, columnName: $columnName) {
-//     _id
-//     name
-//     owner
-//     helpers
-//     columns {
-//       _id
-//       columnTitle
-//       tasks {
-//         _id
-//         taskTitle
-//         content
-//       }
-//     }
-//   }
-// }
-// `
+const ADD_COLUMN = gql`
+  mutation CreateTaskBoardColumn($taskBoardId: ID!, $columnName: String!) {
+  createTaskBoardColumn(taskBoardId: $taskBoardId, columnName: $columnName) {
+    _id
+    name
+    owner
+    helpers
+    columns {
+      _id
+      columnTitle
+      tasks {
+        _id
+        taskTitle
+        content
+      }
+    }
+  }
+}
+`
 
-// const GET_MY_TASKBOARD_UPDATES = gql`
-//   subscription TaskBoardModified($taskBoardOwnerEmail: String!) {
-//     taskBoardModified(taskBoardOwnerEmail: $taskBoardOwnerEmail) {
-//       _id
-//       name
-//       owner
-//     }
-//   }
-//  ` 
+const DELETE_COLUMN = gql`
+  mutation DeleteTaskBoardColumn($taskBoardId: ID!, $columnId: ID!) {
+  deleteTaskBoardColumn(taskBoardId: $taskBoardId, columnId: $columnId) {
+    _id
+    name
+    owner
+    helpers
+    requestedHelpers
+    columns {
+      _id
+      columnTitle
+      tasks {
+        _id
+        taskTitle
+        content
+      }
+    }
+  }
+}
+`
+
+const ADD_TASK = gql`
+mutation CreateTaskBoardTask($taskBoardId: ID!, $columnId: ID!, $taskName: String!, $taskContent: String!) {
+  createTaskBoardTask(taskBoardId: $taskBoardId, columnId: $columnId, taskName: $taskName, taskContent: $taskContent) {
+    _id
+    name
+    owner
+    helpers
+    requestedHelpers
+    columns {
+      _id
+      columnTitle
+      tasks {
+        _id
+        taskTitle
+        content
+      }
+    }
+  }
+}
+`
+
+const DELETE_TASK = gql`
+mutation DeleteTaskBoardTask($taskBoardId: ID!, $columnId: ID!, $taskId: ID!) {
+  deleteTaskBoardTask(taskBoardId: $taskBoardId, columnId: $columnId, taskId: $taskId) {
+    _id
+    name
+    owner
+    helpers
+    requestedHelpers
+    columns {
+      _id
+      columnTitle
+      tasks {
+        _id
+        taskTitle
+        content
+      }
+    }
+  }
+}
+`
+
+const GET_MY_TASKBOARD_CONTENT_UPDATES = gql`
+subscription TaskBoardContentModified($taskBoardId: ID!) {
+  taskBoardContentModified(taskBoardId: $taskBoardId) {
+    _id
+    name
+    owner
+    helpers
+    requestedHelpers
+    columns {
+      _id
+      columnTitle
+      tasks {
+        _id
+        taskTitle
+        content
+      }
+    }
+  }
+}
+` 
 
 function Board(){ 
   const boardId = window.location.pathname.split('/').slice(-1)[0];
-  
-  const { loading, error, data } = useQuery(GET_TASKBOARD, {
+
+  const { loading, error, data, subscribeToMore } = useQuery(GET_TASKBOARD, {
     onError: (err) => {
         console.log(`${err}`);
     },
     variables: { taskBoardId: boardId }
+  });
+
+  useEffect(() => {
+    subscribeToMore({
+      document: GET_MY_TASKBOARD_CONTENT_UPDATES,
+      variables: {taskBoardId: boardId},
+      updateQuery: (prev, {subscriptionData}) => {
+        if (!subscriptionData) return prev;
+        const newBoard = subscriptionData.data;
+        return {
+          getTaskBoardById: newBoard.taskBoardContentModified,
+        };
+      },
+    });
+  });
+  
+  const [ add_column, { addColumnLoading, addColumnError, addColumnData } ] = useMutation(ADD_COLUMN, {
+    onError: (err) => {
+        console.log(`${err}`);
+    }
+  });
+  
+  const [ delete_column, { deleteColumnLoading, deleteColumnError, deleteColumnData } ] = useMutation(DELETE_COLUMN, {
+    onError: (err) => {
+        console.log(`${err}`);
+    }
+  });
+
+  const [ add_task, { addTaskLoading, addTaskError, addTaskData } ] = useMutation(ADD_TASK, {
+    onError: (err) => {
+        console.log(`${err}`);
+    }
+  });
+
+  const [ delete_task, { deleteTaskLoading, deleteTaskError, deleteTaskData } ] = useMutation(DELETE_TASK, {
+    onError: (err) => {
+        console.log(`${err}`);
+    }
   });
 
   const [boards, setBoards] = useState(
@@ -80,62 +192,41 @@ function Board(){
     bid: "",
     cid: "",
   });
-  // const [ add_column, { addColumnLoading, addColumnError, addColumnData, subscribeToMore } ] = useMutation(ADD_COLUMN, {
-  //   onError: (err) => {
-  //       console.log(`${err}`);
-  //   }
-  // });
   
   const addboard = async (name) => {
-    const tempBoards = [...boards];
-    tempBoards.push({
-      id: Date.now() + Math.random() * 2,
-      title: name,
-      cards: [],
+    await add_column({
+      variables: { taskBoardId: boardId, columnName: name },
+      onCompleted: (data) => {
+        console.log('added column!');
+      }
     });
-    setBoards(tempBoards);
-
-    // await add_column({
-    //   variables: { taskBoardId: boardId, columnName: name }
-    // });
   };
 
-  const removeBoard = (id) => {
-    const index = boards.findIndex((item) => item.id === id);
-    if (index < 0) return;
-
-    const tempBoards = [...boards];
-    tempBoards.splice(index, 1);
-    setBoards(tempBoards);
+  const removeBoard = async (id) => {
+    await delete_column({
+      variables: { taskBoardId: boardId, columnId: id },
+      onCompleted: (data) => {
+        console.log('delete column!');
+      }
+    });
   };
   
-  const addCard= (id, title) => {
-    const index = boards.findIndex((item) => item.id === id);
-    if (index < 0) return;
-
-    const tempBoards = [...boards];
-    tempBoards[index].cards.push({
-      id: Date.now() + Math.random() * 2,
-      title,
-      labels: [],
-      date: "",
-      tasks: [],
+  const addCard = async (id, title, content) => {
+    await add_task({
+      variables: { taskBoardId: boardId, columnId: id, taskName: title, taskContent: content},
+      onCompleted: (data) => {
+        console.log('added task!');
+      }
     });
-    setBoards(tempBoards);
   };
   
-  const removeCard = (bid, cid) => {
-    const index = boards.findIndex((item) => item.id === bid);
-    if (index < 0) return;
-
-    const tempBoards = [...boards];
-    const cards = tempBoards[index].cards;
-
-    const cardIndex = cards.findIndex((item) => item.id === cid);
-    if (cardIndex < 0) return;
-
-    cards.splice(cardIndex, 1);
-    setBoards(tempBoards);
+  const removeCard = async (bid, cid) => {
+    await delete_task({
+      variables: { taskBoardId: boardId, columnId: bid, taskId: cid},
+      onCompleted: (data) => {
+        console.log('deleted task!');
+      }
+    });
   };
 
   const dragEnded = (bid, cid) => {
@@ -200,26 +291,12 @@ function Board(){
   useEffect(() => {
     localStorage.setItem("prac-kanban", JSON.stringify(boards));
   }, [boards]);
-  
-  
-  // useEffect(() => {
-  //    subscribeToMore({
-  //      document: GET_MY_TASKBOARD_UPDATES,
-  //      variables: {taskBoardOwnerEmail: data.GetTaskBoardById.owner },
-  //      updateQuery: (prev, { subscriptionData }) => {
-  //        if (!subscriptionData.data) return prev;
-  //        const newBoardList = subscriptionData.data;
-  //        return {
-  //         getMyTaskBoard: newBoardList.taskBoardModified,
-  //        };
-  //      },
-  //    });
-  // });
 
   if (loading) return (<div>loading</div>);
   if (error) return (<div>{error}</div>);
 
-  console.log(data.getTaskBoardById);
+  // console.log(data.getTaskBoardById);
+  // console.log(data.getTaskBoard);
 
   return (
     <div className="board_main">

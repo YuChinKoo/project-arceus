@@ -13,8 +13,8 @@ function Column(props) {
     <div className="column">
       <div className="column_header">
         <p className="column_header_title">
-          {props.board?.title}
-          <span>{props.board?.tasks?.length || 0}</span>
+          {props.board?.columnTitle + " : "}
+          <span>{props.board?.tasks?.length || 0 }</span>
         </p>
         <Chip
           color="primary"
@@ -45,7 +45,7 @@ function Column(props) {
               placeholder="Enter Task Title"
               displayClass="column_add-task"
               editClass="column_add-task_edit"
-              onSubmit={(value) => props.addCard(props.board?._id, value)}
+              onSubmit={(value) => props.addCard(props.board?._id, value, "")}
             />
           </div>
         ):(
@@ -62,7 +62,7 @@ function Column(props) {
               placeholder="Enter Task Title"
               displayClass="column_add-task"
               editClass="column_add-task_edit"
-              onSubmit={(value) => props.addCard(props.board?._id, value)}
+              onSubmit={(value) => props.addCard(props.board?._id, value, "")}
             />
           </div>
         )

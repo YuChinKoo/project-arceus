@@ -234,7 +234,7 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             });
-            pubsub.publish('TASKBOARD_COLUMN_CREATED', { modifiedBoard: updatedTaskBoard }); 
+            pubsub.publish('TASKBOARD_CONTENT_MODIFIED', { modifiedBoard: updatedTaskBoard }); 
             return updatedTaskBoard;
         }, 
         createTaskBoardTask: async (parent, args, context, info) => {
@@ -275,6 +275,7 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             })
+            pubsub.publish('TASKBOARD_CONTENT_MODIFIED', { modifiedBoard: updatedTaskBoard }); 
             return updatedTaskBoard;
         },
         deleteTaskBoard: async (parent, args, context, info) => {
@@ -352,7 +353,6 @@ const resolvers = {
                 throw new Error(err)
             });
             if (user.email != taskBoard.owner) throw new Error("Unauthorized to modify this taskboard");
-            
             // check if column exists
             let flag = false;
             for (const column of taskBoard.columns) {
@@ -369,6 +369,7 @@ const resolvers = {
             ).catch(function(err) {
                 throw new Error(err)
             });
+            pubsub.publish('TASKBOARD_CONTENT_MODIFIED', { modifiedBoard: updatedTaskBoard }); 
             return updatedTaskBoard;
         },
         deleteTaskBoardTask: async (parent, args, context, info) => {
@@ -591,10 +592,11 @@ const resolvers = {
                 return payload.myTaskBoards;
             },
         },
-        taskBoardColumnAdded: {
+        taskBoardContentModified: {
             subscribe: withFilter(
-                () => pubsub.asyncIterator(['TASKBOARD_COLUMN_CREATED']),
+                () => pubsub.asyncIterator(['TASKBOARD_CONTENT_MODIFIED']),
                 (payload, variables) => {
+                    // check user and boardId
                     let givenBoardId = variables.taskBoardId;
                     let modifiedBoardId = payload.modifiedBoard._id;
                     return (givenBoardId == modifiedBoardId);

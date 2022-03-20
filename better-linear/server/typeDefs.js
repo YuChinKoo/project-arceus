@@ -80,9 +80,9 @@ const typeDefs = gql`
 
     type Subscription {
         taskBoardModified(taskBoardOwnerEmail: String!): [Taskboard]
-        taskBoardColumnAdded(taskBoardId: ID!): Taskboard
         taskBoardRequestModified(requestUserId: ID!): [RequestedTaskBoard]
         sharedTaskBoardModified(sharedHelperEmail: String!): [Taskboard]
+        taskBoardContentModified(taskBoardId: ID!): Taskboard
     }
 `
 module.exports = typeDefs;
