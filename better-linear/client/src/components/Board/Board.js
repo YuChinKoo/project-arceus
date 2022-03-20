@@ -115,6 +115,27 @@ mutation DeleteTaskBoardTask($taskBoardId: ID!, $columnId: ID!, $taskId: ID!) {
 }
 `
 
+const MOVE_TASK = gql`
+mutation UpdateTaskBoardTaskLocation($taskBoardId: ID!, $sColumnId: ID!, $sTaskId: ID!, $tColumnId: ID!, $tTaskId: ID!) {
+  updateTaskBoardTaskLocation(taskBoardId: $taskBoardId, s_columnId: $sColumnId, s_taskId: $sTaskId, t_columnId: $tColumnId, t_taskId: $tTaskId) {
+    _id
+    name
+    owner
+    helpers
+    requestedHelpers
+    columns {
+      _id
+      columnTitle
+      tasks {
+        _id
+        taskTitle
+        content
+      }
+    }
+  }
+}
+`
+
 const GET_MY_TASKBOARD_CONTENT_UPDATES = gql`
 subscription TaskBoardContentModified($taskBoardId: ID!) {
   taskBoardContentModified(taskBoardId: $taskBoardId) {
@@ -164,8 +185,8 @@ function Board(){
     onError: (err) => {
         console.log(`${err}`);
     }
-  });
-  
+  }); 
+
   const [ delete_column, { deleteColumnLoading, deleteColumnError, deleteColumnData } ] = useMutation(DELETE_COLUMN, {
     onError: (err) => {
         console.log(`${err}`);
@@ -184,10 +205,12 @@ function Board(){
     }
   });
 
-  const [boards, setBoards] = useState(
-      JSON.parse(localStorage.getItem("prac-kanban")) || []
-  );
-  
+  const [ move_task, { moveTaskLoading, moveTaskError, moveTaskData } ] = useMutation(MOVE_TASK, {
+    onError: (err) => {
+        console.log(`${err}`);
+    }
+  });
+
   const [targetCard, setTargetCard] = useState({
     bid: "",
     cid: "",
@@ -229,36 +252,13 @@ function Board(){
     });
   };
 
-  const dragEnded = (bid, cid) => {
-    console.log(targetCard);
-    let s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex;
-    s_boardIndex = boards.findIndex((item) => item.id === bid);
-    if (s_boardIndex < 0) return;
-
-    s_cardIndex = boards[s_boardIndex]?.cards?.findIndex(
-      (item) => item.id === cid
-    );
-    if (s_cardIndex < 0) return;
-
-    t_boardIndex = boards.findIndex((item) => item.id === targetCard.bid);
-    if (t_boardIndex < 0) return;
-
-    t_cardIndex = boards[t_boardIndex]?.cards?.findIndex(
-      (item) => item.id === targetCard.cid
-    );
-
-    const tempBoards = [...boards];
-    const sourceCard = tempBoards[s_boardIndex].cards[s_cardIndex];
-    tempBoards[s_boardIndex].cards.splice(s_cardIndex, 1);
-
-    if (t_cardIndex < 0) {
-      tempBoards[t_boardIndex].cards = [sourceCard];
-    } 
-    else {
-      tempBoards[t_boardIndex].cards.splice(t_cardIndex, 0, sourceCard);
-    }
-    
-    setBoards(tempBoards);
+  const dragEnded = async (bid, cid) => {
+    await move_task({
+      variables: { taskBoardId: boardId, sColumnId: bid, sTaskId: cid, tColumnId: targetCard.bid, tTaskId: targetCard.cid},
+      onCompleted: (data) => {
+        console.log('moved task!');
+      }
+    });
     setTargetCard({
       bid: "",
       cid: "",
@@ -274,34 +274,29 @@ function Board(){
   };
   
   const updateCard = (bid, cid, card) => {
-    const index = boards.findIndex((item) => item.id === bid);
-    if (index < 0) return;
+    // const index = boards.findIndex((item) => item.id === bid);
+    // if (index < 0) return;
 
-    const tempBoards = [...boards];
-    const cards = tempBoards[index].cards;
+    // const tempBoards = [...boards];
+    // const cards = tempBoards[index].cards;
 
-    const cardIndex = cards.findIndex((item) => item.id === cid);
-    if (cardIndex < 0) return;
+    // const cardIndex = cards.findIndex((item) => item.id === cid);
+    // if (cardIndex < 0) return;
 
-    tempBoards[index].cards[cardIndex] = card;
+    // tempBoards[index].cards[cardIndex] = card;
 
-    setBoards(tempBoards);
+    // setBoards(tempBoards);
   };
-
-  useEffect(() => {
-    localStorage.setItem("prac-kanban", JSON.stringify(boards));
-  }, [boards]);
 
   if (loading) return (<div>loading</div>);
   if (error) return (<div>{error}</div>);
 
-  // console.log(data.getTaskBoardById);
-  // console.log(data.getTaskBoard);
-
   return (
     <div className="board_main">
       <div className="board_nav">
-        <h1>{data.getTaskBoardById.name}</h1>
+        <div className="board_name">
+          <h1>{data.getTaskBoardById.name}</h1>
+        </div>
         <div className="board_voice_call">
         <Fab color="primary" size="small" aria-label="add">
           <PhoneInTalkIcon />

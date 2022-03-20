@@ -71,6 +71,7 @@ const typeDefs = gql`
         deleteTaskBoard(taskBoardId: ID!): String
         deleteTaskBoardColumn(taskBoardId: ID!, columnId: ID!): Taskboard
         deleteTaskBoardTask(taskBoardId: ID!, columnId: ID!, taskId: ID!): Taskboard
+        updateTaskBoardTaskLocation(taskBoardId: ID!, s_columnId: ID!, s_taskId: ID!, t_columnId: ID!, t_taskId: ID!): Taskboard
         # Additional taskboard functionality
         requestTaskBoardHelper(taskBoardId: ID!, helperEmail: String!): String
         # "accept" to accept, "deny" to deny

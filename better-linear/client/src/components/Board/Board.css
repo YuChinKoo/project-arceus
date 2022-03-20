@@ -29,6 +29,11 @@
   display: flex;
   align-items: center;
   gap: 40px;
+  flex-direction: column;
+}
+
+.board_name {
+  margin: auto;
 }
 
 .board_voice_call {
@@ -48,7 +53,7 @@
 .board_columns {
   height: 100%;
   width: fit-content;
-  padding: 10px 30px;
+  margin: auto;
   display: flex;
   gap: 30px;
 }

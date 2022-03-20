@@ -407,6 +407,77 @@ const resolvers = {
             ).catch(function(err) {
                 throw new Error(err)
             });
+            pubsub.publish('TASKBOARD_CONTENT_MODIFIED', { modifiedBoard: updatedTaskBoard }); 
+            return updatedTaskBoard;
+        },
+        updateTaskBoardTaskLocation: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            let { taskBoardId, s_columnId, s_taskId, t_columnId, t_taskId } = args;
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // check if the logged in user is the owner of the taskboard
+            if (!taskBoard) throw new Error("Taskboard does not exist");
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // if (!user) throw new Error("User does not exist");
+            if (user.email != taskBoard.owner) throw new Error("Unauthorized: Not your taskboard");
+            
+            // check if source and target column exists
+            let columns = taskBoard.columns;
+            let s_columnIndex = -1;
+            let t_columnIndex = -1;
+            for (let i = 0; i < columns.length; i++) {
+                if (columns[i]._id == s_columnId) {
+                    s_columnIndex = i;
+                }
+                if (columns[i]._id == t_columnId) {
+                    t_columnIndex = i;
+                }
+            }
+            if (s_columnIndex < 0) throw new Error("Source Column does not exist");
+            if (t_columnIndex < 0) throw new Error("Target Column does not exist");
+
+            // remove s_task from s_column
+            // if t_task is empty, simply add s_task into t_column
+            // otherwise, find t_task index -1, and push s_task into t_column at that index
+            
+            // store task object from source column
+            let task = columns[s_columnIndex].tasks.find((item) => item._id == s_taskId);
+            if (!task) throw new Error("Source task does not exist in source column")
+
+            let t_taskIndex = columns[t_columnIndex].tasks.findIndex((item) => item._id == t_taskId);
+            
+            // remove s_task from s_column
+            await TaskBoard.findByIdAndUpdate(
+                { _id: taskBoardId},
+                { $pull: { "columns.$[column].tasks": {_id: s_taskId}} },
+                {
+                    arrayFilters: [ {"column._id": s_columnId} ],
+                    new: true
+                }
+            ).catch(function(err) {
+                throw new Error(err)
+            });
+
+            if (t_taskIndex < 0) {
+                t_taskIndex = 0;
+            } 
+
+            let updatedTaskBoard = await TaskBoard.findByIdAndUpdate(
+                { _id: taskBoardId },
+                { $push: { "columns.$[column].tasks": { $each: [task] , $position: t_taskIndex+1 } } },
+                {
+                    arrayFilters: [ {"column._id": t_columnId} ],
+                    new: true
+                }
+            ).catch(function(err) {
+                throw new Error(err)
+            });
+            pubsub.publish('TASKBOARD_CONTENT_MODIFIED', { modifiedBoard: updatedTaskBoard }); 
             return updatedTaskBoard;
         },
         requestTaskBoardHelper: async (parent, args, context, info) => {

@@ -23,8 +23,8 @@ function TaskInfo(props) {
   };
 
   useEffect(() => {
-    if (props.updateCard) props.updateCard(props.boardId, values.id, values);
-  }, [values]);
+    if (props.updateCard) props.updateCard(props.boardId, values._id, values);
+  }, [props, values]);
 
   return (
     <Modal onClose={props.onClose}>
@@ -38,8 +38,8 @@ function TaskInfo(props) {
           </div>
           <Editable
             editType="TaskInfo"
-            defaultValue={values.title}
-            text={values.title}
+            defaultValue={values.taskTitle}
+            text={values.taskTitle}
             placeholder="Enter Title"
             buttonText="Save"
             onSubmit={updateTitle}
@@ -47,13 +47,13 @@ function TaskInfo(props) {
         </div>
         <div className="taskinfo_box">
           <div className="taskinfo_box_title">
-            <p>Comment</p>
+            <p>Content</p>
           </div>
           <Editable
             editType="TaskInfo"
-            defaultValue={values.comment}
-            text={values.comment || "Add a Comment"}
-            placeholder="Enter comment"
+            defaultValue={values.content}
+            text={values.content || "Change Content"}
+            placeholder="Enter content"
             buttonText="Save"
             onSubmit={updateComment}
           />
