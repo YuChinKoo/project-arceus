@@ -80,7 +80,7 @@ const typeDefs = gql`
 
     type Subscription {
         taskBoardModified(taskBoardOwnerEmail: String!): [Taskboard]
-        taskBoardColumnAdded(taskBoardId: ID!): Taskboard
+        taskBoardContentModified(taskBoardId: ID!): Taskboard
         taskBoardRequestModified(taskBoardId: ID!, email: String): Taskboard
     }
 `
