@@ -9,14 +9,13 @@ import IconButton from '@mui/material/IconButton';
 import gql from 'graphql-tag';
 import { useMutation } from "@apollo/client";
 
-import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 
 import LoadingIcon from './LoadingIcon';
 
-const RESPONSE_TASKBOARD_HELPER_REQUEST = gql`
-    mutation RespondTaskBoardHelperRequest($taskBoardId: ID!, $response: String!) {
-        respondTaskBoardHelperRequest(taskBoardId: $taskBoardId, response: $response)
+const REMOVE_SHARED_TASKBOARD = gql`
+    mutation RemoveSharedTaskBoard($taskBoardId: ID!) {
+    removeSharedTaskBoard(taskBoardId: $taskBoardId)
     }
 `
 
@@ -33,7 +32,7 @@ export default function RequestedTaskBoardThumbnail(props) {
 
     const [ QLoading, setQLoading] = React.useState(false);
 
-    const [acceptRequest] = useMutation(RESPONSE_TASKBOARD_HELPER_REQUEST, {
+    const [denyRequest] = useMutation(REMOVE_SHARED_TASKBOARD, {
         onError: (err) => {
             setQLoading(false);
             setErrorMessage(`${err}`);
@@ -41,40 +40,16 @@ export default function RequestedTaskBoardThumbnail(props) {
         }
     });
 
-    const [denyRequest] = useMutation(RESPONSE_TASKBOARD_HELPER_REQUEST, {
-        onError: (err) => {
-            setQLoading(false);
-            setErrorMessage(`${err}`);
-            console.log(`Error! ${err}`);
-        }
-    });
-
-    const onAccept = async (event) => {
-        event.preventDefault();
-        setErrorMessage('');
-        setQLoading(true);
-        await acceptRequest({
-            variables: {
-                taskBoardId: boardId,
-                response: "accept",
-            },
-            onCompleted: (data) => {
-                console.log("taskboard added to shared-taskboards");
-            }
-        });
-    };
-
-    const onDeny = async (event) => {
+    const onRemove = async (event) => {
         event.preventDefault();
         setErrorMessage('');
         setQLoading(true);
         await denyRequest({
             variables: {
                 taskBoardId: boardId,
-                response: "deny",
             },
             onCompleted: (data) => {
-                console.log("taskboard request rejected");
+                console.log("taskboard no longer shared with you");
             }
         });
     };
@@ -110,10 +85,7 @@ export default function RequestedTaskBoardThumbnail(props) {
                                         <LoadingIcon /> 
                                     </div>
                                 )}
-                                <IconButton aria-label="accept" onClick={onAccept}>
-                                    <CheckIcon />
-                                </IconButton>
-                                <IconButton aria-label="deny" onClick={onDeny}>
+                                <IconButton aria-label="remove" onClick={onRemove}>
                                     <ClearIcon />
                                 </IconButton>
                             </Box>

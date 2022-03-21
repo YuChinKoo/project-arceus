@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import LoadingIcon from './LoadingIcon';
@@ -25,14 +25,16 @@ const GET_MY_TASKBOARD_UPDATES = gql`
   }
 `
 
-function MyTaskBoards(props) {
-  const [ time, setTime ] = useState(null); 
-
-  let { loading, error, data, subscribeToMore } = useQuery(GET_MY_TASKBOARDS, {
-      onError: (err) => {
-          console.log(`${err}`);
-      }
+function MyTaskBoards(props) {  
+  let { loading, error, data, subscribeToMore, refetch } = useQuery(GET_MY_TASKBOARDS, {
+    onError: (err) => {
+      console.log(`${err}`);
+    }
   });
+
+  useEffect(() => {
+    refetch();
+  }, [props, refetch]); 
 
   useEffect(() => {
      subscribeToMore({
@@ -48,16 +50,12 @@ function MyTaskBoards(props) {
      });
   });
 
-  useEffect(() => {
-    setTime(props.timeStamp);
-
-  }, [props.timeStamp]);
 
   if (loading) return (<LoadingIcon />)
   if (error) return `Error! ${error.message}`;
 
   return ( 
-      <div> {time}
+      <div>
           {data.getMyTaskBoards.map((board) =>
             <MyTaskBoardThumbnail 
                 key={board._id}

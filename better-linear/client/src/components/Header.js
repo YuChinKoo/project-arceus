@@ -21,18 +21,13 @@ export default function Header(props) {
         mutation($logoutUserId: ID!) {
             logoutUser(id: $logoutUserId)
     }`
-    const [ logoutUser, { loading, error }] = useMutation(LOGOUT_USER, {
+    const [ logoutUser ] = useMutation(LOGOUT_USER, {
         onError: (err) => {
             setSignOutLoad(false);
             console.log(`${err}`);
         }
     });
     if (authorization) {
-
-        const backHome = async () => {
-            navigate("../homepage/my-task-boards");
-            window.location.reload();
-        }
         const signOut = async () => {
             setSignOutLoad(true);
             await logoutUser({

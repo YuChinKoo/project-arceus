@@ -36,7 +36,7 @@ export default function MyTaskBoardThumbnail(props) {
 
     const [ QLoading, setQLoading] = React.useState(false);
 
-    const [deleteTaskBoard, {loading, error}] = useMutation(DELETE_TASKBOARD, {
+    const [deleteTaskBoard] = useMutation(DELETE_TASKBOARD, {
         onError: (err) => {
             setQLoading(false);
             setErrorMessage(`${err}`);
@@ -44,7 +44,7 @@ export default function MyTaskBoardThumbnail(props) {
         }
     });
 
-    const [requestHelper, {rhLoading, rhError}] = useMutation(REQUEST_HELPER, {
+    const [requestHelper] = useMutation(REQUEST_HELPER, {
         onError: (err) => {
             setQLoading(false);
             setErrorMessage(`${err}`);

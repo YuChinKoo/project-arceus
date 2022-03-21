@@ -181,31 +181,31 @@ function Board(){
     });
   });
   
-  const [ add_column, { addColumnLoading, addColumnError, addColumnData } ] = useMutation(ADD_COLUMN, {
+  const [ add_column] = useMutation(ADD_COLUMN, {
     onError: (err) => {
         console.log(`${err}`);
     }
   }); 
 
-  const [ delete_column, { deleteColumnLoading, deleteColumnError, deleteColumnData } ] = useMutation(DELETE_COLUMN, {
+  const [ delete_column ] = useMutation(DELETE_COLUMN, {
     onError: (err) => {
         console.log(`${err}`);
     }
   });
 
-  const [ add_task, { addTaskLoading, addTaskError, addTaskData } ] = useMutation(ADD_TASK, {
+  const [ add_task ] = useMutation(ADD_TASK, {
     onError: (err) => {
         console.log(`${err}`);
     }
   });
 
-  const [ delete_task, { deleteTaskLoading, deleteTaskError, deleteTaskData } ] = useMutation(DELETE_TASK, {
+  const [ delete_task ] = useMutation(DELETE_TASK, {
     onError: (err) => {
         console.log(`${err}`);
     }
   });
 
-  const [ move_task, { moveTaskLoading, moveTaskError, moveTaskData } ] = useMutation(MOVE_TASK, {
+  const [ move_task ] = useMutation(MOVE_TASK, {
     onError: (err) => {
         console.log(`${err}`);
     }

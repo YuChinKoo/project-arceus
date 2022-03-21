@@ -82,7 +82,7 @@ const typeDefs = gql`
     type Subscription {
         taskBoardModified(taskBoardOwnerEmail: String!): [Taskboard]
         taskBoardRequestModified(requestUserId: ID!): [RequestedTaskBoard]
-        sharedTaskBoardModified(sharedHelperEmail: String!): [Taskboard]
+        sharedTaskBoardModified(sharedHelperId: ID!): [Taskboard]
         taskBoardContentModified(taskBoardId: ID!): Taskboard
     }
 `

@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './components/Header';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import SignInSide from './components/SignInSide';
 import SignUpSide from './components/SignUpSide';
 import Homepage from './components/Homepage';
@@ -36,7 +36,7 @@ function App() {
           </div>
         </div>
         <Routes>
-              <Route path={"/"} element={<Homepage userData={data.me}/>}/>
+              <Route path={"*"} element={<Homepage userData={data.me}/>}/>
               <Route path={"/homepage/*"} element={<Homepage userData={data.me}/>}/>
               <Route path={"/taskboard/:id"} element={<Board />}/>
         </Routes>

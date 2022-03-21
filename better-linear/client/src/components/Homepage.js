@@ -5,6 +5,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import Profile from './Profile';
 import MyTaskBoards from './MyTaskBoards'
 import RequestedTaskBoards from './RequestedTaskBoards';
+import SharedTaskBoards from './SharedTaskBoards';
 import Profilecard from './Profilecard'
 import Navigation from './Navigation';
 import Button from '@mui/material/Button';
@@ -32,7 +33,7 @@ export default function Homepage(props) {
 
   const [ formContent, setFormContent ] = React.useState('');
 
-  let [ createTaskBoard, { loading, error }] = useMutation(CREATE_TASKBOARD, {
+  let [ createTaskBoard ] = useMutation(CREATE_TASKBOARD, {
     onError: (err) => {
         setFormContent('');
         setLoading(false);
@@ -97,15 +98,15 @@ export default function Homepage(props) {
           <Navigation/>
           <Routes>
             <Route 
-              path="my-task-boards" 
+              path="my-task-boards/*" 
               element={<MyTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
             />
-            <Route 
+            <Route
               path="shared-task-board" 
-              element={<div >Temp</div>} 
+              element={<SharedTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
             />
             <Route 
-              path="requests" 
+              path="incoming-requests" 
               element={<RequestedTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
             />
             <Route 

@@ -37,7 +37,7 @@ export default function SignInSide(props) {
 
   const [ signInLoad, setSignInLoad ] = React.useState(false);
 
-  const [loginUser, {loading, error}] = useMutation(SIGN_IN_USER, {
+  const [loginUser] = useMutation(SIGN_IN_USER, {
     onError: (err) => {
       setSignInLoad(false);
       setErrorMessage(`${err}`);

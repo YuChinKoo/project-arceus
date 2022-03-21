@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
 import LoadingIcon from './LoadingIcon';
@@ -27,11 +27,15 @@ const GET_MY_REQUESTED_TASKBOARDS_UPDATES = gql`
 
 function RequestedTaskBoards(props) {
 
-  const { loading, error, data, subscribeToMore } = useQuery(GET_MY_REQUESTED_TASKBOARDS, {
+  const { loading, error, data, subscribeToMore, refetch } = useQuery(GET_MY_REQUESTED_TASKBOARDS, {
     onError: (err) => {
         console.log(`${err}`);
     }
   });
+
+  useEffect(() => {
+    refetch();
+  }, [props, refetch]); 
 
   useEffect(() => {
     subscribeToMore({

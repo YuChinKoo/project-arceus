@@ -334,8 +334,14 @@ const resolvers = {
                 }); 
                 pubsub.publish('TASKBOARD_HELPER_REQUEST_MODIFIED', { modifiedBoard: taskBoard, requestedHelper: curRequestUser });
             }
-
-            // pubsub.publish('SHARED_TASKBOARD_MODIFIED', { modifiedBoard: taskBoard, helpers: taskBoard.helpers });
+            // publish sub data for all helpers of this taskboard as this taskboard no longer exists
+            for(let curHelperUserId of taskBoard.helpers){
+                let curHelperUser = await User.findById(curHelperUserId)
+                .catch(function(err) {
+                    throw new Error(err)
+                }); 
+                pubsub.publish('TASKBOARD_HELPER_MODIFIED', { modifiedBoard: taskBoard, helper: curHelperUser });
+            }
             return "Taskboard deleted";
 
         },
@@ -595,6 +601,7 @@ const resolvers = {
                 // publish subscription data for removing a requested taskboard
                 pubsub.publish('TASKBOARD_HELPER_REQUEST_MODIFIED', { modifiedBoard: updatedTaskBoard, requestedHelper: updatedHelper }); 
                 // publish subscription data for adding a shared taskboard
+                pubsub.publish('TASKBOARD_HELPER_MODIFIED', { modifiedBoard: updatedTaskBoard, helper: updatedHelper });
                 return "Request accepted";
             } else {
                 // publish subscription data for removing a requested taskboard
@@ -633,8 +640,6 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             });
-            // publish subscription data for removing a shared taskboard 
-
             // remove user from taskboards helper array
             taskBoard = TaskBoard.findByIdAndUpdate(
                 { _id: taskBoardId },
@@ -643,6 +648,10 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             });
+
+            // publish subscription data for removing a shared taskboard 
+            pubsub.publish('TASKBOARD_HELPER_MODIFIED', { modifiedBoard: taskBoard, helper: user });
+
             return "Taskboard no longer shared with you"
 
         },
@@ -701,6 +710,32 @@ const resolvers = {
                     }); 
                 }
                 return allRequestedBoards;
+            },
+        },
+        sharedTaskBoardModified: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator(['TASKBOARD_HELPER_MODIFIED']),
+                (payload, variables) => {
+                    let sharedHelper = payload.helper;
+                    let sharedHelperId = variables.sharedHelperId;
+                    return (sharedHelper.id == sharedHelperId);
+                },
+            ),
+            resolve: (payload) => {
+                let queryArray = [];
+                for(let sharedBoardId of payload.helper.sharedTaskBoards){
+                    queryArray.push({ '_id': sharedBoardId })
+                };
+                let allSharedBoards = [];
+                if(queryArray.length) {
+                    allSharedBoards = TaskBoard.find({
+                        $or: queryArray
+                    })
+                    .catch(function(err) {
+                        throw new Error(err)
+                    }); 
+                }
+                return allSharedBoards;
             },
         },
     }

@@ -38,7 +38,7 @@ export default function SignUpSide() {
   let navigate = useNavigate();
 
   // Creating mutation hook called createUser
-  const [ createUser, { loading, error }] = useMutation(CREATE_USER, {
+  const [ createUser ] = useMutation(CREATE_USER, {
     onError: (err) => {
       setSignUpLoad(false);
       setErrorMessage(`${err}`);
