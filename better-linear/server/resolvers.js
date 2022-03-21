@@ -217,7 +217,16 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             });
-            if (user.email != taskBoard.owner) throw new Error("Unauthorized: Not your taskboard");
+            // check if the logged in user is a helper for the taskboard
+            let helperFlag = false;
+            for(let helper of taskBoard.helpers) {
+                if (helper == context.req.userId) {
+                    helperFlag = true;
+                    break;
+                }
+            }
+            if(!helperFlag && (user.email != taskBoard.owner)) throw new AuthenticationError("Unauthorized");
+
             let column = new Column({ columnTitle: columnName });
             let updatedTaskBoard = await TaskBoard.findByIdAndUpdate(
                 { _id: taskBoardId },
@@ -245,7 +254,16 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             });
-            if (user.email != taskBoard.owner) throw new Error("Unauthorized to modify this taskboard");
+            // check if the logged in user is a helper for the taskboard
+            let helperFlag = false;
+            for(let helper of taskBoard.helpers) {
+                if (helper == context.req.userId) {
+                    helperFlag = true;
+                    break;
+                }
+            }
+            if(!helperFlag && (user.email != taskBoard.owner)) throw new AuthenticationError("Unauthorized");
+
             // check if the id of the column is in the taskboard
             let flag = false;
             for (const column of taskBoard.columns) {
@@ -350,7 +368,16 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             });
-            if (user.email != taskBoard.owner) throw new Error("Unauthorized to modify this taskboard");
+            // check if the logged in user is a helper for the taskboard
+            let helperFlag = false;
+            for(let helper of taskBoard.helpers) {
+                if (helper == context.req.userId) {
+                    helperFlag = true;
+                    break;
+                }
+            }
+            if(!helperFlag && (user.email != taskBoard.owner)) throw new AuthenticationError("Unauthorized");
+            
             // check if column exists
             let flag = false;
             for (const column of taskBoard.columns) {
@@ -384,8 +411,16 @@ const resolvers = {
                 throw new Error(err)
             });
             // if (!user) throw new Error("User does not exist");
-            if (user.email != taskBoard.owner) throw new Error("Unauthorized: Not your taskboard");
-            
+            // check if the logged in user is a helper for the taskboard
+            let helperFlag = false;
+            for(let helper of taskBoard.helpers) {
+                if (helper == context.req.userId) {
+                    helperFlag = true;
+                    break;
+                }
+            }
+            if(!helperFlag && (user.email != taskBoard.owner)) throw new AuthenticationError("Unauthorized");
+
             // check if column exists
             let flag = false;
             for (const column of taskBoard.columns) {
@@ -421,9 +456,16 @@ const resolvers = {
             .catch(function(err) {
                 throw new Error(err)
             });
-            // if (!user) throw new Error("User does not exist");
-            if (user.email != taskBoard.owner) throw new Error("Unauthorized: Not your taskboard");
-            
+            // check if the logged in user is a helper for the taskboard
+            let helperFlag = false;
+            for(let helper of taskBoard.helpers) {
+                if (helper == context.req.userId) {
+                    helperFlag = true;
+                    break;
+                }
+            }
+            if(!helperFlag && (user.email != taskBoard.owner)) throw new AuthenticationError("Unauthorized");
+
             // check if source and target column exists
             let columns = taskBoard.columns;
             let s_columnIndex = -1;
