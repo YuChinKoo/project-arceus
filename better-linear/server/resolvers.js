@@ -10,14 +10,6 @@ require('dotenv').config();
 
 const pubsub = new PubSub();
 
-// everytime a request is made, outside of creating a user, need 
-// to confirm if the userId that is stored within the req (req.userId)
-// which was originally stored in the access token does exist in the db
-// Maybe not required if users cannot be deleted?
-// const userExists = async (userId) => {
-//     return User.findById(userId);
-// };
-
 const resolvers = {
     Query: {
         me: async (parent, args, context, info) => {

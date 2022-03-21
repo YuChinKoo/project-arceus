@@ -158,11 +158,15 @@ subscription TaskBoardContentModified($taskBoardId: ID!) {
 ` 
 
 function Board(){ 
+
+  const [ errorMessage, setErrorMessage ] = React.useState('');
+
   const boardId = window.location.pathname.split('/').slice(-1)[0];
 
   const { loading, error, data, subscribeToMore } = useQuery(GET_TASKBOARD, {
     onError: (err) => {
         console.log(`${err}`);
+        setErrorMessage(`${err}`);
     },
     variables: { taskBoardId: boardId }
   });
@@ -181,33 +185,38 @@ function Board(){
     });
   });
   
-  const [ add_column] = useMutation(ADD_COLUMN, {
+  const [ add_column ] = useMutation(ADD_COLUMN, {
     onError: (err) => {
         console.log(`${err}`);
+        setErrorMessage(`${err}`);
     }
   }); 
 
   const [ delete_column ] = useMutation(DELETE_COLUMN, {
     onError: (err) => {
         console.log(`${err}`);
+        setErrorMessage(`${err}`);
     }
   });
 
   const [ add_task ] = useMutation(ADD_TASK, {
     onError: (err) => {
         console.log(`${err}`);
+        setErrorMessage(`${err}`);
     }
   });
 
   const [ delete_task ] = useMutation(DELETE_TASK, {
     onError: (err) => {
         console.log(`${err}`);
+        setErrorMessage(`${err}`);
     }
   });
 
   const [ move_task ] = useMutation(MOVE_TASK, {
     onError: (err) => {
         console.log(`${err}`);
+        setErrorMessage(`${err}`);
     }
   });
 
@@ -221,6 +230,7 @@ function Board(){
       variables: { taskBoardId: boardId, columnName: name },
       onCompleted: (data) => {
         console.log('added column!');
+        setErrorMessage('');
       }
     });
   };
@@ -230,6 +240,7 @@ function Board(){
       variables: { taskBoardId: boardId, columnId: id },
       onCompleted: (data) => {
         console.log('delete column!');
+        setErrorMessage('');
       }
     });
   };
@@ -239,6 +250,7 @@ function Board(){
       variables: { taskBoardId: boardId, columnId: id, taskName: title, taskContent: content},
       onCompleted: (data) => {
         console.log('added task!');
+        setErrorMessage('');
       }
     });
   };
@@ -248,6 +260,7 @@ function Board(){
       variables: { taskBoardId: boardId, columnId: bid, taskId: cid},
       onCompleted: (data) => {
         console.log('deleted task!');
+        setErrorMessage('');
       }
     });
   };
@@ -257,6 +270,7 @@ function Board(){
       variables: { taskBoardId: boardId, sColumnId: bid, sTaskId: cid, tColumnId: targetCard.bid, tTaskId: targetCard.cid},
       onCompleted: (data) => {
         console.log('moved task!');
+        setErrorMessage('');
       }
     });
     setTargetCard({
@@ -289,10 +303,23 @@ function Board(){
   };
 
   if (loading) return (<div>loading</div>);
-  if (error) return (<div>{error}</div>);
+  if (error) {
+    return (
+      <div>
+        {errorMessage}
+      </div>
+    );
+  }
 
   return (
     <div className="board_main">
+      <div>
+        {errorMessage && (
+          <p className="error">
+            {errorMessage}
+          </p>
+        )}
+      </div>
       <div className="board_nav">
         <div className="board_name">
           <h1>{data.getTaskBoardById.name}</h1>

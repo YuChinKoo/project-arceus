@@ -98,6 +98,10 @@ export default function Homepage(props) {
           <Navigation/>
           <Routes>
             <Route 
+              path="" 
+              element={<MyTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
+            />
+            <Route 
               path="my-task-boards/*" 
               element={<MyTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
             />

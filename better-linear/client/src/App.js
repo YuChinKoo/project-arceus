@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './components/Header';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import SignInSide from './components/SignInSide';
 import SignUpSide from './components/SignUpSide';
 import Homepage from './components/Homepage';
@@ -36,9 +36,13 @@ function App() {
           </div>
         </div>
         <Routes>
-              <Route path={"*"} element={<Homepage userData={data.me}/>}/>
               <Route path={"/homepage/*"} element={<Homepage userData={data.me}/>}/>
               <Route path={"/taskboard/:id"} element={<Board />}/>
+              <Route 
+                path={"*"}
+                element={<Navigate to="/homepage/my-task-boards" replace />}
+              />
+
         </Routes>
       </div>
     ); 

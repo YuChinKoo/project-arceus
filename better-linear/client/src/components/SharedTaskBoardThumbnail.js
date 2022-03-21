@@ -60,7 +60,7 @@ export default function RequestedTaskBoardThumbnail(props) {
                 <CardContent>
                     <Grid container spacing={2} alignItems="center" justifyContent="center">
                         <Grid item xs={10}>
-                            <Link href={'#'} variant='h6'>
+                            <Link href={`/taskboard/${boardId}`} variant='h6'>
                                 {boardName}
                             </Link>
                             <Typography component='div'>
