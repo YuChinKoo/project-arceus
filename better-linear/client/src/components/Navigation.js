@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import {Link} from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
@@ -22,7 +22,7 @@ export default function Navigation() {
   let current_value = state.pathMap.indexOf(window.location.pathname);
   if(current_value < 0) current_value = 0;
 
-  const [value, setValue] = React.useState(current_value);
+  const [value, setValue] = useState(current_value);
   return (
     <Paper>
       <BottomNavigation

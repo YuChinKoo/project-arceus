@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -31,9 +31,9 @@ const CREATE_USER = gql`
 
 export default function SignUpSide() {
 
-  const [ errorMessage, setErrorMessage ] = React.useState('');
+  const [ errorMessage, setErrorMessage ] = useState('');
 
-  const [ signUpLoad, setSignUpLoad ] = React.useState(false);
+  const [ signUpLoad, setSignUpLoad ] = useState(false);
 
   let navigate = useNavigate();
 

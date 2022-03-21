@@ -1,4 +1,3 @@
-import * as React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Chip from '@mui/material/Chip';
 

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from "react";
 
 import DeleteIcon from '@mui/icons-material/Delete';

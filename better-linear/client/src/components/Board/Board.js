@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useEffect, useState } from "react";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
@@ -159,7 +158,7 @@ subscription TaskBoardContentModified($taskBoardId: ID!) {
 
 function Board(){ 
 
-  const [ errorMessage, setErrorMessage ] = React.useState('');
+  const [ errorMessage, setErrorMessage ] = useState('');
 
   const boardId = window.location.pathname.split('/').slice(-1)[0];
 

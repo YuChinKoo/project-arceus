@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -31,11 +31,11 @@ const SIGN_IN_USER = gql`
 
 export default function SignInSide(props) {
 
-  const [ errorMessage, setErrorMessage ] = React.useState('');
+  const [ errorMessage, setErrorMessage ] = useState('');
 
   let navigate = useNavigate();
 
-  const [ signInLoad, setSignInLoad ] = React.useState(false);
+  const [ signInLoad, setSignInLoad ] = useState(false);
 
   const [loginUser] = useMutation(SIGN_IN_USER, {
     onError: (err) => {

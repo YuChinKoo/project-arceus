@@ -1,5 +1,5 @@
 import { Link , useNavigate } from 'react-router-dom';
-import * as React from 'react';
+import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -15,7 +15,7 @@ export default function Header(props) {
     let navigate = useNavigate();
     const authorization = props.authorization;
 
-    const [ signOutLoad, setSignOutLoad ] = React.useState(false);
+    const [ signOutLoad, setSignOutLoad ] = useState(false);
 
     const LOGOUT_USER = gql`
         mutation($logoutUserId: ID!) {

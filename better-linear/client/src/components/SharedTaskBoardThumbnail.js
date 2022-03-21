@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -28,9 +28,9 @@ export default function RequestedTaskBoardThumbnail(props) {
         boardOwner
     } = props;
 
-    const [ errorMessage, setErrorMessage ] = React.useState('');
+    const [ errorMessage, setErrorMessage ] = useState('');
 
-    const [ QLoading, setQLoading] = React.useState(false);
+    const [ QLoading, setQLoading] = useState(false);
 
     const [denyRequest] = useMutation(REMOVE_SHARED_TASKBOARD, {
         onError: (err) => {
