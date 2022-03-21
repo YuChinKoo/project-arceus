@@ -13,20 +13,16 @@ function TaskInfo(props) {
 
   const updateTitle = (value) => {
     console.log(values)
-    setValues({ ...values, title: value });
+    setValues({ ...values, taskTitle: value });
   };
 
-  const updateComment = (value) => {
+  const updateContent = (value) => {
     console.log(value)
-    setValues({ ...values, comment: value });
+    setValues({ ...values, content: value });
   };
-
-  useEffect(() => {
-    if (props.updateCard) props.updateCard(props.boardId, values._id, values);
-  }, [props, values]);
 
   return (
-    <Modal onClose={props.onClose}>
+    <Modal onClose={() => { props.updateCard(props.boardId, values._id, values) }}>
       <div className="taskinfo">
         <div className="taskinfo_box">
           <div className="taskinfo_box_header">
@@ -54,7 +50,7 @@ function TaskInfo(props) {
             text={values.content || "Change Content"}
             placeholder="Enter content"
             buttonText="Save"
-            onSubmit={updateComment}
+            onSubmit={updateContent}
           />
         </div>
       </div>

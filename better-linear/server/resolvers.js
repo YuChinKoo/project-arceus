@@ -520,6 +520,53 @@ const resolvers = {
             pubsub.publish('TASKBOARD_CONTENT_MODIFIED', { modifiedBoard: updatedTaskBoard }); 
             return updatedTaskBoard;
         },
+        updateTaskBoardTaskInfo: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            let { taskBoardId, columnId, taskId, taskName, taskContent } = args;
+            taskName = validator.escape(taskName);
+            taskContent = validator.escape(taskContent);
+            if (taskName.length > 20) throw new UserInputError("Task name must be less than 20 characters");
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (!taskBoard) throw new Error("Taskboard does not exist");
+            // check if the logged in user is the owner of the task board
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // check if the logged in user is a helper for the taskboard
+            let helperFlag = false;
+            for(let helper of taskBoard.helpers) {
+                if (helper == context.req.userId) {
+                    helperFlag = true;
+                    break;
+                }
+            }
+            if(!helperFlag && (user.email != taskBoard.owner)) throw new AuthenticationError("Unauthorized");
+            // check if the id of the column is in the taskboard
+            let flag = false;
+            for (const column of taskBoard.columns) {
+                if (column._id == columnId) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) throw new Error("Column does not exist"); 
+            let updatedTaskBoard = await TaskBoard.findByIdAndUpdate(
+                { _id : taskBoardId }, 
+                { $set: { "columns.$[column].tasks.$[task]": {taskTitle: taskName, content: taskContent} }}, 
+                { 
+                    arrayFilters: [ {"column._id": columnId}, {"task._id": taskId} ],
+                    new: true
+                })
+            .catch(function(err) {
+                throw new Error(err)
+            })
+            pubsub.publish('TASKBOARD_CONTENT_MODIFIED', { modifiedBoard: updatedTaskBoard }); 
+            return updatedTaskBoard;
+        },
         requestTaskBoardHelper: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
             const { taskBoardId, helperEmail } = args;

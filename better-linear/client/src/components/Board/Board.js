@@ -135,6 +135,27 @@ mutation UpdateTaskBoardTaskLocation($taskBoardId: ID!, $sColumnId: ID!, $sTaskI
 }
 `
 
+const UPDATE_TASK = gql`
+mutation UpdateTaskBoardTaskInfo($taskBoardId: ID!, $columnId: ID!, $taskId: ID!, $taskName: String!, $taskContent: String!) {
+  updateTaskBoardTaskInfo(taskBoardId: $taskBoardId, columnId: $columnId, taskId: $taskId, taskName: $taskName, taskContent: $taskContent) {
+    _id
+    name
+    owner
+    helpers
+    requestedHelpers
+    columns {
+      _id
+      columnTitle
+      tasks {
+        _id
+        taskTitle
+        content
+      }
+    }
+  }
+}
+`
+
 const GET_MY_TASKBOARD_CONTENT_UPDATES = gql`
 subscription TaskBoardContentModified($taskBoardId: ID!) {
   taskBoardContentModified(taskBoardId: $taskBoardId) {
@@ -219,6 +240,13 @@ function Board(){
     }
   });
 
+  const [ update_task ] = useMutation(UPDATE_TASK, {
+    onError: (err) => {
+        console.log(`${err}`);
+        setErrorMessage(`${err}`);
+    }
+  });
+
   const [targetCard, setTargetCard] = useState({
     bid: "",
     cid: "",
@@ -286,19 +314,14 @@ function Board(){
     });
   };
   
-  const updateCard = (bid, cid, card) => {
-    // const index = boards.findIndex((item) => item.id === bid);
-    // if (index < 0) return;
-
-    // const tempBoards = [...boards];
-    // const cards = tempBoards[index].cards;
-
-    // const cardIndex = cards.findIndex((item) => item.id === cid);
-    // if (cardIndex < 0) return;
-
-    // tempBoards[index].cards[cardIndex] = card;
-
-    // setBoards(tempBoards);
+  const updateCard = async (bid, cid, card) => {
+    await update_task({
+      variables: { taskBoardId: boardId, columnId: bid, taskId: cid, taskName: card.taskTitle, taskContent: card.content},
+      onCompleted: (data) => {
+        console.log('updated task!');
+        setErrorMessage('');
+      }
+    }); 
   };
 
   if (loading) return (<div>loading</div>);
