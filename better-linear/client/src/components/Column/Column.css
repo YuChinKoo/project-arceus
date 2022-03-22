@@ -1,19 +1,28 @@
 .column {
     min-width: 290px;
     flex-basis: 290px;
+    height: fit-content;
+    max-height: 800px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    border: solid rgb(145, 145, 145) 2px;
+    border-radius: 9px;
+    padding: 5px;
   }
   
 .column_header {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  min-height: 80px;
+  padding: 5px;
+  border-radius: 9px;
 }
   
 .column_header_title {
-  font-size: 28px;
+  font-size: 18px;
   font-weight: bold;
   display: flex;
   gap: 5px;
@@ -36,14 +45,25 @@
 
 .column_tasks_empty {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   padding: 10px;
+  background-color: rgb(233, 233, 233);
+  border-radius: 10px;
 }
 
 .column_tasks_empty p {
+  text-align: center;
   font-size: large;
   color: rgb(145, 145, 145);
   font-weight: bold;
+
+}
+
+.column_tasks_empty .editable p {
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+  font-weight: normal;
 }
 
 .column_add-task {

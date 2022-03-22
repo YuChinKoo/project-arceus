@@ -5,6 +5,10 @@ const bcrypt = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 const validator = require('validator');
 const { PubSub, withFilter } = require('graphql-subscriptions');
+const createDOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
+const window = new JSDOM('').window;
+const DOMPurify = createDOMPurify(window);
 
 require('dotenv').config();
 
@@ -107,14 +111,14 @@ const resolvers = {
         createUser: async (parent, args, context, info) => {
             // check if args exist
             let {firstname, lastname, email, password} = args.user;
-            firstname = validator.escape(firstname);
-            lastname = validator.escape(lastname);
-            email = validator.escape(email);
-            password = validator.escape(password);
+            firstname = DOMPurify.sanitize(firstname);
+            lastname = DOMPurify.sanitize(lastname);
+            email = DOMPurify.sanitize(email);
+            password = DOMPurify.sanitize(password);
             if (!validator.isEmail(email)) throw new UserInputError('Invalid email');
-            if (!validator.isAlpha(firstname) || firstname.length > 12) throw new UserInputError('Invalid firstname');
-            if (!validator.isAlpha(lastname) || lastname.length > 12) throw new UserInputError('Invalid lastname');
-            if (!validator.isAlphanumeric(password)  || password.length > 15) throw new UserInputError('Invalid password');
+            if (!validator.isAlpha(firstname) || firstname.length > 12 || firstname.length < 1) throw new UserInputError('Invalid firstname');
+            if (!validator.isAlpha(lastname) || lastname.length > 12 || lastname.length < 1) throw new UserInputError('Invalid lastname');
+            if (!validator.isAlphanumeric(password)  || password.length > 15 || password.length < 1) throw new UserInputError('Invalid password');
             hashedPassword = await bcrypt.hash(password, 10);
             let findExistingUser = await User.findOne({email})
             .catch(function(err) {
@@ -187,7 +191,7 @@ const resolvers = {
         createTaskBoard: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
             let { taskBoardName } = args;
-            taskBoardName = validator.escape(taskBoardName);
+            taskBoardName = DOMPurify.sanitize(taskBoardName);
             if (taskBoardName.length > 20) throw new UserInputError("Taskboard name must be less than 20 characters");
             let user = await User.findById(context.req.userId)
             .catch(function(err) {
@@ -205,7 +209,7 @@ const resolvers = {
         createTaskBoardColumn: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
             let { taskBoardId, columnName } = args;
-            columnName = validator.escape(columnName);
+            columnName = DOMPurify.sanitize(columnName);
             if (columnName.length > 20) throw new UserInputError("Taskboard column name must be less than 20 characters");
             let taskBoard = await TaskBoard.findById(taskBoardId)
             .catch(function(err) {
@@ -241,8 +245,8 @@ const resolvers = {
         createTaskBoardTask: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
             let { taskBoardId, columnId, taskName, taskContent } = args;
-            taskName = validator.escape(taskName);
-            taskContent = validator.escape(taskContent);
+            taskName = DOMPurify.sanitize(taskName);
+            taskContent = DOMPurify.sanitize(taskContent);
             if (taskName.length > 20) throw new UserInputError("Task name must be less than 20 characters");
             let taskBoard = await TaskBoard.findById(taskBoardId)
             .catch(function(err) {
@@ -523,8 +527,8 @@ const resolvers = {
         updateTaskBoardTaskInfo: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
             let { taskBoardId, columnId, taskId, taskName, taskContent } = args;
-            taskName = validator.escape(taskName);
-            taskContent = validator.escape(taskContent);
+            taskName = DOMPurify.sanitize(taskName);
+            taskContent = DOMPurify.sanitize(taskContent);
             if (taskName.length > 20) throw new UserInputError("Task name must be less than 20 characters");
             let taskBoard = await TaskBoard.findById(taskBoardId)
             .catch(function(err) {

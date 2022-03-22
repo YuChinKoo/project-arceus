@@ -54,15 +54,14 @@ function Column(props) {
                 onDragEnter={() => props.dragEntered(props.board._id, "")}
               >
                 <p>Empty Column</p>
+                <Editable
+                  text="Add Task"
+                  placeholder="Enter Task Title"
+                  displayClass="column_add-task"
+                  editClass="column_add-task_edit"
+                  onSubmit={(value) => props.addCard(props.board?._id, value, "")}
+                  />
               </div>
-            
-            <Editable
-              text="Add Task"
-              placeholder="Enter Task Title"
-              displayClass="column_add-task"
-              editClass="column_add-task_edit"
-              onSubmit={(value) => props.addCard(props.board?._id, value, "")}
-            />
           </div>
         )
       }

@@ -8,6 +8,7 @@
   background-color: #eee;
   color: #000;
   cursor: pointer;
+  word-break: break-all;
   width: fit-content;
   transition: 200ms;
 }

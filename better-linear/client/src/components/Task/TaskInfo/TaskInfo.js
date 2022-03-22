@@ -26,7 +26,7 @@ function TaskInfo(props) {
       <div className="taskinfo">
         <div className="taskinfo_box">
           <div className="taskinfo_box_header">
-            <p>Task Information Detail</p>
+            <p>Task Details</p>
           </div>
           <div className="taskinfo_box_title">
             <p>Title</p>

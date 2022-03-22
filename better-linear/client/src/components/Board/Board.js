@@ -334,54 +334,56 @@ function Board(){
   }
 
   return (
-    <div className="board_main">
-      <div>
-        {errorMessage && (
-          <p className="error">
-            {errorMessage}
-          </p>
-        )}
-      </div>
-      <div className="board_nav">
-        <div className="board_name">
-          <h1>{data.getTaskBoardById.name}</h1>
+    <div className="board_container">
+      <div className="board_main">
+        <div>
+          {errorMessage && (
+            <p className="error">
+              {errorMessage}
+            </p>
+          )}
         </div>
-        <div className="board_voice_call">
-        <Fab color="primary" size="small" aria-label="add">
-          <PhoneInTalkIcon />
-        </Fab>
-          <AvatarGroup total={24}>
-            <Avatar alt="Remy Sharp" />
-            <Avatar alt="Travis Howard" />
-            <Avatar alt="Agnes Walker" />
-            <Avatar alt="Trevor Henderson" />
-          </AvatarGroup>
+        <div className="board_nav">
+          <div className="board_name">
+            <h1>{data.getTaskBoardById.name}</h1>
+          </div>
+          <div className="board_voice_call">
+          <Fab color="primary" size="small" aria-label="add">
+            <PhoneInTalkIcon />
+          </Fab>
+            <AvatarGroup total={24}>
+              <Avatar alt="Remy Sharp" />
+              <Avatar alt="Travis Howard" />
+              <Avatar alt="Agnes Walker" />
+              <Avatar alt="Trevor Henderson" />
+            </AvatarGroup>
+          </div>
         </div>
-      </div>
-      <div className="board_columns_container">
-        <div className="board_columns">
-          {data.getTaskBoardById.columns.map((item) => (
-            <Column
-              key={item._id}
-              board={item}
-              addCard={addCard}
-              removeBoard={() => removeBoard(item._id)}
-              removeCard={removeCard}
-              dragEnded={dragEnded}
-              dragEntered={dragEntered}
-              updateCard={updateCard}
-            />
-          ))}
-          <div className="board_columns_footer">
-            <Editable
-              displayClass="board_columns_add-columns"
-              editClass="board_columns_add-columns_edit"
-              placeholder="Enter Column Name"
-              text="Add Column"
-              buttonText="Add Column"
-              onSubmit={addboard}
-            />
-          </div> 
+        <div className="board_columns_container">
+          <div className="board_columns">
+            {data.getTaskBoardById.columns.map((item) => (
+              <Column
+                key={item._id}
+                board={item}
+                addCard={addCard}
+                removeBoard={() => removeBoard(item._id)}
+                removeCard={removeCard}
+                dragEnded={dragEnded}
+                dragEntered={dragEntered}
+                updateCard={updateCard}
+              />
+            ))}
+            <div className="board_columns_footer">
+              <Editable
+                displayClass="board_columns_add-columns"
+                editClass="board_columns_add-columns_edit"
+                placeholder="Enter Column Name"
+                text="Add Column"
+                buttonText="Add Column"
+                onSubmit={addboard}
+              />
+            </div> 
+          </div>
         </div>
       </div>
     </div>

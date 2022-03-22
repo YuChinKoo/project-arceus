@@ -12,11 +12,24 @@
   border: 1px solid gray;
 }
 
+.board_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 .board_main {
-  width: 100%;
-  height: 100vh;
+  width: 90%;
+  height: 92vh;
+  margin-top: 2px;
   display: flex;
   flex-direction: column;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: auto;
 }
   
 .board_nav {
@@ -44,18 +57,22 @@
   
 .board_columns_container {
   flex: 1;
-  width: 100%;
+  width: auto;
   height: 100%;
   overflow-x: auto;
   padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
   
 .board_columns {
   height: 100%;
   width: fit-content;
-  margin: auto;
   display: flex;
+  justify-content: center;
   gap: 30px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .board_columns_footer {
