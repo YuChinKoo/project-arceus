@@ -11,10 +11,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { deepOrange } from '@mui/material/colors';
+import { blue } from '@mui/material/colors';
 import LoadingIcon from '../Utilities/LoadingIcon';
 import gql from 'graphql-tag';
 import { useMutation } from "@apollo/client";
+import Image from './blueBackground.jpg';
 
 const theme = createTheme();
 
@@ -64,7 +65,7 @@ export default function SignInSide(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container component="main" sx={{ height: '94vh',  marginTop: '2px'}}>
         <CssBaseline />
         <Grid
           item
@@ -72,7 +73,7 @@ export default function SignInSide(props) {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Black_flag.svg/1024px-Black_flag.svg.png)',
+            backgroundImage: `url(${Image})`,
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -90,7 +91,7 @@ export default function SignInSide(props) {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ width: 50, height: 50, bgcolor: deepOrange[500] }}>
+            <Avatar sx={{ width: 50, height: 50, bgcolor: blue[800] }}>
               <PersonIcon fontSize="large" />
             </Avatar>
             <Typography component="h1" variant="h5">

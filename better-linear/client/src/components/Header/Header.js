@@ -10,6 +10,7 @@ import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
 import LoadingIcon from '../Utilities/LoadingIcon';
 import AbcIcon from '@mui/icons-material/Abc';
+import HandshakeIcon from '@mui/icons-material/Handshake';
 
 export default function Header(props) {
     let navigate = useNavigate();
@@ -63,6 +64,13 @@ export default function Header(props) {
                             </div>
                     )}
                     <BottomNavigationAction 
+                        style={{marginRight: "auto"}}
+                        label="Credits" 
+                        icon={<HandshakeIcon />}
+                        component={Link}
+                        to="/credits"
+                     />
+                    <BottomNavigationAction 
                         style={{marginLeft: "auto"}}
                         label="Sign-out" 
                         icon={<LogoutIcon />}
@@ -85,7 +93,12 @@ export default function Header(props) {
                         icon={<LoginIcon />}
                         component={Link}
                         to={state.pathMap[0]} />
-                        <BottomNavigationAction 
+                    <BottomNavigationAction 
+                        label="Credits" 
+                        icon={<HandshakeIcon />}
+                        component={Link}
+                        to="/credits"/>
+                    <BottomNavigationAction 
                         label="Sign-up" 
                         icon={<LoginIcon />}
                         component={Link}
