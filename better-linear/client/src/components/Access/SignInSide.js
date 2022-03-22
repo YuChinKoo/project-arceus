@@ -11,16 +11,16 @@ import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import LoadingIcon from './LoadingIcon';
-import gql from "graphql-tag";
-import { useMutation } from "@apollo/client";
 import { deepOrange } from '@mui/material/colors';
+import LoadingIcon from '../Utilities/LoadingIcon';
+import gql from 'graphql-tag';
+import { useMutation } from "@apollo/client";
 
 const theme = createTheme();
 
-const CREATE_USER = gql`
-  mutation($user: UserSignupInput!) {
-    createUser(user: $user) {
+const SIGN_IN_USER = gql`
+  mutation($user: UserLoginInput!) {
+    loginUser(user: $user) {
       _id
       firstname
       lastname
@@ -29,46 +29,35 @@ const CREATE_USER = gql`
   }
 `
 
-export default function SignUpSide() {
+export default function SignInSide(props) {
 
   const [ errorMessage, setErrorMessage ] = useState('');
 
-  const [ signUpLoad, setSignUpLoad ] = useState(false);
-
   let navigate = useNavigate();
 
-  // Creating mutation hook called createUser
-  const [ createUser ] = useMutation(CREATE_USER, {
+  const [ signInLoad, setSignInLoad ] = useState(false);
+
+  const [loginUser] = useMutation(SIGN_IN_USER, {
     onError: (err) => {
-      setSignUpLoad(false);
+      setSignInLoad(false);
       setErrorMessage(`${err}`);
-      console.log(`${err}`);
+      console.log(`Error! ${err}`);
     }
   });
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setSignUpLoad(true);
-    const formData = new FormData(event.currentTarget);
-    let firstname = formData.get('firstname');
-    let lastname = formData.get('lastname');
-    let email = formData.get('email');
-    let password = formData.get('password');
-    setErrorMessage('');
-    // eslint-disable-next-line no-console
-    console.log({
-      firstname,
-      lastname,
-      email,
-      password
-    });
-    await createUser({
-      variables: { 
-        user: { firstname, lastname, email, password }
+    setSignInLoad(true);
+    const data = new FormData(event.currentTarget);
+    let email = data.get('email');
+    let password = data.get('password');
+    await loginUser({
+      variables: {
+        user: { email, password }
       },
       onCompleted: (data) => {
-        // route back to sign in page
-        console.log(data);
-        navigate("../signin", { replace: true });
+        navigate("/homepage/my-task-boards", { replace: true });
+        window.location.reload();
       }
     });
   };
@@ -101,32 +90,13 @@ export default function SignUpSide() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{  width: 50, height: 50, bgcolor: deepOrange[500] }}>
+            <Avatar sx={{ width: 50, height: 50, bgcolor: deepOrange[500] }}>
               <PersonIcon fontSize="large" />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign up
+              Sign in
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="firstname"
-                label="First Name"
-                name="firstname"
-                autoComplete="firstname"
-                autoFocus 
-              /> 
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="lastname"
-                label="Last Name"
-                name="lastname"
-                autoComplete="lastname"
-              /> 
               <TextField
                 margin="normal"
                 required
@@ -135,6 +105,7 @@ export default function SignUpSide() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                autoFocus
               />
               <TextField
                 margin="normal"
@@ -152,30 +123,27 @@ export default function SignUpSide() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign Up
+                Sign In
               </Button>
               <Grid container>
                 <Grid item>
-                  {/* <Link to="/signin" className="">
-                    Already have an account? Sign In
-                  </Link>                 */}
-                  <Link component={RouterLink} to="/signin" variant="body2">
-                    {"Already have an account? Sign In"}
+                  <Link component={RouterLink} to="/signup" variant="body2">
+                    {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
                 <Grid>
-                  {signUpLoad && ( 
-                    <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
-                      <LoadingIcon /> 
-                    </div>
-                  )}
-                  {errorMessage && (
-                    <p className="error">
-                      {errorMessage}
-                    </p>
-                  )}
-                </Grid>
-            </Grid>
+                {signInLoad && ( 
+                  <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
+                    <LoadingIcon /> 
+                  </div>
+                )}
+                {errorMessage && (
+                  <p className="error">
+                    {errorMessage}
+                  </p>
+                )}
+              </Grid>
+              </Grid>
             </Box>
           </Box>
         </Grid>

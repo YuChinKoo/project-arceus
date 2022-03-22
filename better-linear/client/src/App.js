@@ -1,13 +1,13 @@
 import React from 'react';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import SignInSide from './components/SignInSide';
-import SignUpSide from './components/SignUpSide';
-import Homepage from './components/Homepage';
+import SignInSide from './components/Access/SignInSide';
+import SignUpSide from './components/Access/SignUpSide';
+import Homepage from './components/Homepage/Homepage';
 import './App.css';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
-import LoadingIcon from './components/LoadingIcon';
+import LoadingIcon from './components/Utilities/LoadingIcon';
 import Board from './components/Board/Board';
 
 const GET_CONTEXT = gql`

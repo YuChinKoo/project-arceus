@@ -2,17 +2,19 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import Profile from './Profile';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/client";
+import EditProfile from './EditProfile';
 import MyTaskBoards from './MyTaskBoards'
 import RequestedTaskBoards from './RequestedTaskBoards';
 import SharedTaskBoards from './SharedTaskBoards';
 import Profilecard from './Profilecard'
 import Navigation from './Navigation';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import gql from "graphql-tag";
-import { useMutation } from "@apollo/client";
-import LoadingIcon from './LoadingIcon';
+import LoadingIcon from '../Utilities/LoadingIcon';
+
+
 export default function Homepage(props) {
 
   let navigate = useNavigate();
@@ -115,7 +117,7 @@ export default function Homepage(props) {
             />
             <Route 
               path="profile" 
-              element={<Profile/>} 
+              element={<EditProfile/>} 
             />
           </Routes>
         </Grid>

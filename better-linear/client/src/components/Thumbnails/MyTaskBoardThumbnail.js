@@ -6,21 +6,25 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import DeleteButton from '@mui/icons-material/DeleteOutline';
 import gql from 'graphql-tag';
 import { useMutation } from "@apollo/client";
+import Editable from '../Editabled/Editable';
+import LoadingIcon from '../Utilities/LoadingIcon';
 
-import ClearIcon from '@mui/icons-material/Clear';
-
-import LoadingIcon from './LoadingIcon';
-
-const REMOVE_SHARED_TASKBOARD = gql`
-    mutation RemoveSharedTaskBoard($taskBoardId: ID!) {
-    removeSharedTaskBoard(taskBoardId: $taskBoardId)
+const DELETE_TASKBOARD = gql`
+    mutation DeleteTaskBoard($taskBoardId: ID!) {
+        deleteTaskBoard(taskBoardId: $taskBoardId)
     }
 `
 
+const REQUEST_HELPER = gql`
+    mutation RequestTaskBoardHelper($taskBoardId: ID!, $helperEmail: String!) {
+        requestTaskBoardHelper(taskBoardId: $taskBoardId, helperEmail: $helperEmail)
+    }
+`
 
-export default function RequestedTaskBoardThumbnail(props) {
+export default function MyTaskBoardThumbnail(props) {
 
     const {
         boardId,
@@ -32,7 +36,7 @@ export default function RequestedTaskBoardThumbnail(props) {
 
     const [ QLoading, setQLoading] = useState(false);
 
-    const [denyRequest] = useMutation(REMOVE_SHARED_TASKBOARD, {
+    const [deleteTaskBoard] = useMutation(DELETE_TASKBOARD, {
         onError: (err) => {
             setQLoading(false);
             setErrorMessage(`${err}`);
@@ -40,19 +44,44 @@ export default function RequestedTaskBoardThumbnail(props) {
         }
     });
 
-    const onRemove = async (event) => {
+    const [requestHelper] = useMutation(REQUEST_HELPER, {
+        onError: (err) => {
+            setQLoading(false);
+            setErrorMessage(`${err}`);
+            console.log(`Error! ${err}`);
+        }
+    })
+
+
+    const onDelete = async (event) => {
         event.preventDefault();
         setErrorMessage('');
         setQLoading(true);
-        await denyRequest({
+        await deleteTaskBoard({
             variables: {
-                taskBoardId: boardId,
+                taskBoardId: props.boardId,
             },
             onCompleted: (data) => {
-                console.log("taskboard no longer shared with you");
+                console.log("taskboard successfully deleted");
             }
         });
     };
+
+    const onRequest = async (requestedHelperEmail) => {
+        console.log('clicked share');
+        setErrorMessage('');
+        setQLoading(true);
+        await requestHelper({
+            variables: {
+                taskBoardId: props.boardId,
+                helperEmail: requestedHelperEmail,
+            },
+            onCompleted: (data) => {
+                setQLoading(false);
+                console.log("Request sent successfully");
+            }
+        });
+    }
 
     return (
         <div key={boardId}>
@@ -85,8 +114,15 @@ export default function RequestedTaskBoardThumbnail(props) {
                                         <LoadingIcon /> 
                                     </div>
                                 )}
-                                <IconButton aria-label="remove" onClick={onRemove}>
-                                    <ClearIcon />
+                                <Editable 
+                                    text="Add Helper" 
+                                    placeholder="Enter email" 
+                                    displayClass="thumbnail_add_helper" 
+                                    editClass="thumbnail_add_helper_edit" 
+                                    onSubmit={onRequest}
+                                />
+                                <IconButton aria-label="delete" onClick={onDelete}>
+                                    <DeleteButton/>
                                 </IconButton>
                             </Box>
                         </Grid>

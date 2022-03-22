@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/client";
-import LoadingIcon from './LoadingIcon';
-import RequestedTaskBoardThumbnail from './RequestedTaskBoardThumbnail';
+import LoadingIcon from '../Utilities/LoadingIcon';
+import RequestedTaskBoardThumbnail from '../Thumbnails/RequestedTaskBoardThumbnail';
 
 const GET_MY_REQUESTED_TASKBOARDS = gql`
   query {

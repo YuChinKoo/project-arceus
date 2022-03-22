@@ -8,7 +8,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
-import LoadingIcon from './LoadingIcon';
+import LoadingIcon from '../Utilities/LoadingIcon';
 import AbcIcon from '@mui/icons-material/Abc';
 
 export default function Header(props) {

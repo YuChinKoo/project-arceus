@@ -11,16 +11,16 @@ import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { deepOrange } from '@mui/material/colors';
-import LoadingIcon from './LoadingIcon';
-import gql from 'graphql-tag';
+import LoadingIcon from '../Utilities/LoadingIcon';
+import gql from "graphql-tag";
 import { useMutation } from "@apollo/client";
+import { deepOrange } from '@mui/material/colors';
 
 const theme = createTheme();
 
-const SIGN_IN_USER = gql`
-  mutation($user: UserLoginInput!) {
-    loginUser(user: $user) {
+const CREATE_USER = gql`
+  mutation($user: UserSignupInput!) {
+    createUser(user: $user) {
       _id
       firstname
       lastname
@@ -29,35 +29,46 @@ const SIGN_IN_USER = gql`
   }
 `
 
-export default function SignInSide(props) {
+export default function SignUpSide() {
 
   const [ errorMessage, setErrorMessage ] = useState('');
 
+  const [ signUpLoad, setSignUpLoad ] = useState(false);
+
   let navigate = useNavigate();
 
-  const [ signInLoad, setSignInLoad ] = useState(false);
-
-  const [loginUser] = useMutation(SIGN_IN_USER, {
+  // Creating mutation hook called createUser
+  const [ createUser ] = useMutation(CREATE_USER, {
     onError: (err) => {
-      setSignInLoad(false);
+      setSignUpLoad(false);
       setErrorMessage(`${err}`);
-      console.log(`Error! ${err}`);
+      console.log(`${err}`);
     }
   });
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setSignInLoad(true);
-    const data = new FormData(event.currentTarget);
-    let email = data.get('email');
-    let password = data.get('password');
-    await loginUser({
-      variables: {
-        user: { email, password }
+    setSignUpLoad(true);
+    const formData = new FormData(event.currentTarget);
+    let firstname = formData.get('firstname');
+    let lastname = formData.get('lastname');
+    let email = formData.get('email');
+    let password = formData.get('password');
+    setErrorMessage('');
+    // eslint-disable-next-line no-console
+    console.log({
+      firstname,
+      lastname,
+      email,
+      password
+    });
+    await createUser({
+      variables: { 
+        user: { firstname, lastname, email, password }
       },
       onCompleted: (data) => {
-        navigate("/homepage/my-task-boards", { replace: true });
-        window.location.reload();
+        // route back to sign in page
+        console.log(data);
+        navigate("../signin", { replace: true });
       }
     });
   };
@@ -90,13 +101,32 @@ export default function SignInSide(props) {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ width: 50, height: 50, bgcolor: deepOrange[500] }}>
+            <Avatar sx={{  width: 50, height: 50, bgcolor: deepOrange[500] }}>
               <PersonIcon fontSize="large" />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign up
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="firstname"
+                label="First Name"
+                name="firstname"
+                autoComplete="firstname"
+                autoFocus 
+              /> 
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="lastname"
+                label="Last Name"
+                name="lastname"
+                autoComplete="lastname"
+              /> 
               <TextField
                 margin="normal"
                 required
@@ -105,7 +135,6 @@ export default function SignInSide(props) {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                autoFocus
               />
               <TextField
                 margin="normal"
@@ -123,27 +152,30 @@ export default function SignInSide(props) {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Sign Up
               </Button>
               <Grid container>
                 <Grid item>
-                  <Link component={RouterLink} to="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  {/* <Link to="/signin" className="">
+                    Already have an account? Sign In
+                  </Link>                 */}
+                  <Link component={RouterLink} to="/signin" variant="body2">
+                    {"Already have an account? Sign In"}
                   </Link>
                 </Grid>
                 <Grid>
-                {signInLoad && ( 
-                  <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
-                    <LoadingIcon /> 
-                  </div>
-                )}
-                {errorMessage && (
-                  <p className="error">
-                    {errorMessage}
-                  </p>
-                )}
-              </Grid>
-              </Grid>
+                  {signUpLoad && ( 
+                    <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
+                      <LoadingIcon /> 
+                    </div>
+                  )}
+                  {errorMessage && (
+                    <p className="error">
+                      {errorMessage}
+                    </p>
+                  )}
+                </Grid>
+            </Grid>
             </Box>
           </Box>
         </Grid>

@@ -12,7 +12,7 @@ import { useMutation } from "@apollo/client";
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 
-import LoadingIcon from './LoadingIcon';
+import LoadingIcon from '../Utilities/LoadingIcon';
 
 const RESPONSE_TASKBOARD_HELPER_REQUEST = gql`
     mutation RespondTaskBoardHelperRequest($taskBoardId: ID!, $response: String!) {
