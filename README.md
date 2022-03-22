@@ -1,7 +1,7 @@
 # Project Arceus #
 
 ## Deployed Application:
-<insert url here>
+[insert url here]
 
 ## Team Members:
 Yu Chin Koo
