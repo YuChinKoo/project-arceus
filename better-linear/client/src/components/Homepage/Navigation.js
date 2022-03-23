@@ -4,7 +4,6 @@ import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import ShareIcon from '@mui/icons-material/Share';
-import PersonIcon from '@mui/icons-material/Person';
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
@@ -47,11 +46,6 @@ export default function Navigation() {
             icon={<NotificationsIcon />} 
             component={Link}
             to={state.pathMap[2]}/>
-          <BottomNavigationAction 
-            label="Edit Profile" 
-            icon={<PersonIcon />} 
-            component={Link}
-            to={state.pathMap[3]}/>
       </BottomNavigation>
     </Paper> 
   );
