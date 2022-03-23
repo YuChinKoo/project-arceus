@@ -10,6 +10,9 @@ export default function Credits() {
                 <li>
                     Signin/signup page: https://mui.com/getting-started/templates/sign-in/
                 </li>
+                <li>
+                    Avatar code: https://mui.com/components/avatars/
+                </li>
             </ul>
         </div>
     )
