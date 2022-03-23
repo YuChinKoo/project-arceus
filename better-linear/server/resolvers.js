@@ -115,10 +115,21 @@ const resolvers = {
             lastname = DOMPurify.sanitize(lastname);
             email = DOMPurify.sanitize(email);
             password = DOMPurify.sanitize(password);
+            // check email input
             if (!validator.isEmail(email)) throw new UserInputError('Invalid email');
-            if (!validator.isAlpha(firstname) || firstname.length > 12 || firstname.length < 1) throw new UserInputError('Invalid firstname');
-            if (!validator.isAlpha(lastname) || lastname.length > 12 || lastname.length < 1) throw new UserInputError('Invalid lastname');
-            if (!validator.isAlphanumeric(password)  || password.length > 15 || password.length < 1) throw new UserInputError('Invalid password');
+            if (email.length > 25) throw new UserInputError('Email must be less than 25 characters');
+            // check firstname input
+            if (!validator.isAlpha(firstname)) throw new UserInputError('Firstname must only use characters in the alphabet');
+            if (firstname.length > 12) throw new UserInputError('Firstmame must be no longer than 12 characters');
+            if (firstname.length < 1) throw new UserInputError('Firstname must be longer than 1 character');
+            // check lastname input
+            if (!validator.isAlpha(lastname)) throw new UserInputError('Lastname must only use characters in the alphabet');
+            if (lastname.length > 12) throw new UserInputError('Lastname must be no longer than 12 characters');
+            if (lastname.length < 1) throw new UserInputError('Lastname must be longer than 1 character');
+            // check password input
+            if (!validator.isAlphanumeric(password)) throw new UserInputError('Password must be alphanumeric');
+            if (password.length > 20) throw new UserInputError('Password must be no longer than 20 character');
+            if (password.length < 1) throw new UserInputError('Password must be longer than 1 character');
             hashedPassword = await bcrypt.hash(password, 10);
             let findExistingUser = await User.findOne({email})
             .catch(function(err) {

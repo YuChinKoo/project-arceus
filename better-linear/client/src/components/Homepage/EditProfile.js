@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-export default function EditProfile() {
+export default function EditProfile(props) {
 
   return(
     <Card sx={{mt: 1, mb: 1}}>
@@ -15,7 +15,7 @@ export default function EditProfile() {
           <Grid>
             <Typography component='div'>
               <Box sx={{fontSize: 25, mt: 1, mb: 1}}>
-                 Personal Information
+                 Change Profile Details
               </Box> 
             </Typography>
             <TextField

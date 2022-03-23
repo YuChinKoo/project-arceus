@@ -15,7 +15,7 @@ import { blue } from '@mui/material/colors';
 import LoadingIcon from '../Utilities/LoadingIcon';
 import gql from 'graphql-tag';
 import { useMutation } from "@apollo/client";
-import Image from './blueBackground.jpg';
+import Image from '../Images/blueBackground.jpg';
 
 const theme = createTheme();
 

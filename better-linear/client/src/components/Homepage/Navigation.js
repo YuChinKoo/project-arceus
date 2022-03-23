@@ -48,7 +48,7 @@ export default function Navigation() {
             component={Link}
             to={state.pathMap[2]}/>
           <BottomNavigationAction 
-            label="Profile" 
+            label="Edit Profile" 
             icon={<PersonIcon />} 
             component={Link}
             to={state.pathMap[3]}/>

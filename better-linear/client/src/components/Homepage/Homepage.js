@@ -117,7 +117,7 @@ export default function Homepage(props) {
             />
             <Route 
               path="profile" 
-              element={<EditProfile/>} 
+              element={<EditProfile userData={props.userData}/>} 
             />
           </Routes>
         </Grid>
