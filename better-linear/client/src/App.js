@@ -71,7 +71,11 @@ function App() {
             <Route 
               path="/credits"
               element={<Credits />}
-            />            
+            />   
+            <Route 
+              path={"*"}
+              element={<Navigate to="/signin" replace />}
+            />         
           </Routes>
         </div>
       </div>

@@ -2,13 +2,15 @@ const User = require('./models/User.model');
 const { AuthenticationError, UserInputError } = require('apollo-server-express');
 const { TaskBoard, Column, Task} = require('./models/Taskboard.model');
 const bcrypt = require('bcrypt');
-const { sign } = require('jsonwebtoken');
-const validator = require('validator');
 const { PubSub, withFilter } = require('graphql-subscriptions');
+// Input text validation
+const validator = require('validator');
 const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const window = new JSDOM('').window;
 const DOMPurify = createDOMPurify(window);
+// Express session purposes
+const cookie = require('cookie');
 
 require('dotenv').config();
 
@@ -17,11 +19,10 @@ const pubsub = new PubSub();
 const resolvers = {
     Query: {
         me: async (parent, args, context, info) => {
-            const { req } = context;
-            if (!req.userId) {
+            if (!context.req.session.userId) {
                 return null;
             }
-            const foundUser = User.findOne({_id: req.userId})
+            const foundUser = User.findOne({_id: context.req.session.userId})
             .catch(function(err) {
                 throw new Error(err)
             }); 
@@ -152,7 +153,7 @@ const resolvers = {
             });
             return user;
         },
-        loginUser: async (parent, args, { res }, info) => {
+        loginUser: async (parent, args, { req, res }, info) => {
             let { email, password } = args.user;
             let user = await User.findOne({email})
             .catch(function(err) {
@@ -161,41 +162,26 @@ const resolvers = {
             if (!user) throw new UserInputError("Username not found");
             let validatePassword = await bcrypt.compare(password, user.hashedPassword);
             if (!validatePassword) throw new UserInputError("Incorrect Password");
-            // jwt stuff
-            let accessToken = sign(
-                { userId: user.id }, 
-                process.env.ACCESS_TOKEN_SECRET, { 
-                    expiresIn: "1d"
-                }
-            );
-            res.cookie("access-token", accessToken, { 
-                maxAge: 1000*60*60*24, //one day 
-                sameSite: "none", 
-                secure: true,
-                httpOnly: true
+            req.session.userId = user.id;
+            res.cookie('userId', user.id, {
+                secure: process.env.NODE_ENV === 'production',
+                path : '/', 
+                maxAge: 60 * 60 * 24 * 1000  // 1 day in number of seconds
             });
             return user;
         },
         logoutUser: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
-            let { id } = args;
             let { res } = context;
             let user = await User.findById(context.req.userId)
             .catch(function(err) {
                 throw new Error(err)
             });
-            // assign new token that expires immediately
-            let accessToken = sign(
-                { userId: user.id }, 
-                process.env.ACCESS_TOKEN_SECRET, { 
-                    expiresIn: 1
-                }
-            );
-            res.cookie("access-token", accessToken, { 
-                maxAge: 1,  
-                sameSite: "none", 
-                secure: true,
-                httpOnly: true
+            context.req.session.destroy();
+            res.cookie('userId', '', {
+                secure: process.env.NODE_ENV === 'production',
+                path : '/', 
+                maxAge: 60 * 60 * 24 * 1000  // 1 day in number of seconds
             });
             return "successfully signed out";
         },
