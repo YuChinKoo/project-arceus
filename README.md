@@ -29,7 +29,7 @@ Real time functionality using websockets (graphql subscriptions)
 ## Additional Features
 - Video chat tab while on a specific taskboard
 - Allow for users to modify the sound levels of video chat participants
-- See which users have updated the taskboard through logs
+- See which users are currently on a specific taskboard
 - 
 
 ## Technology
