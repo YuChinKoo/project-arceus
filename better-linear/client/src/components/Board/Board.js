@@ -391,7 +391,7 @@ function Board(){
           </div>
           <div className="voice_button">
             <Fab label="Clickable" 
-              onClick={() => {console.log("clicked")}}
+              onClick={() => {setInVideo(!inVideo)}}
               color={"primary"}
             >
               <PhoneInTalkIcon/>
