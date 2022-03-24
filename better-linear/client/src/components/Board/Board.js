@@ -7,9 +7,16 @@ import AvatarGroup from '@mui/material/AvatarGroup';
 import Fab from '@mui/material/Fab';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 
+import { Route, Routes, Navigate, useParams } from 'react-router-dom';
+
+import LoadingIcon from '../Utilities/LoadingIcon';
+
 import "./Board.css";
 import Column from "../Column/Column";
 import Editable from '../Editabled/Editable';
+
+import BoardNavigation from './BoardNavigation';
+
 
 const GET_TASKBOARD = gql`
   query GetTaskBoardById($taskBoardId: ID!) {
@@ -181,7 +188,10 @@ function Board(){
 
   const [ errorMessage, setErrorMessage ] = useState('');
 
-  const boardId = window.location.pathname.split('/').slice(-1)[0];
+  const [ inVideo, setInVideo ] = useState(false);
+
+  let { id } = useParams();
+  const boardId = id;
 
   const { loading, error, data, subscribeToMore } = useQuery(GET_TASKBOARD, {
     onError: (err) => {
@@ -324,7 +334,7 @@ function Board(){
     }); 
   };
 
-  if (loading) return (<div>loading</div>);
+  if (loading) return ( <div> <LoadingIcon /> </div> );
   if (error) {
     return (
       <div>
@@ -332,6 +342,35 @@ function Board(){
       </div>
     );
   }
+
+  let board_content = (
+    <div className="board_columns_container">
+      <div className="board_columns">
+        {data.getTaskBoardById.columns.map((item) => (
+          <Column
+            key={item._id}
+            board={item}
+            addCard={addCard}
+            removeBoard={() => removeBoard(item._id)}
+            removeCard={removeCard}
+            dragEnded={dragEnded}
+            dragEntered={dragEntered}
+            updateCard={updateCard}
+          />
+        ))}
+        <div className="board_columns_footer">
+          <Editable
+            displayClass="board_columns_add-columns"
+            editClass="board_columns_add-columns_edit"
+            placeholder="Enter Column Name"
+            text="Add Column"
+            buttonText="Add Column"
+            onSubmit={addboard}
+          />
+        </div> 
+      </div>
+    </div>
+  );
 
   return (
     <div className="board_container">
@@ -343,48 +382,62 @@ function Board(){
             </p>
           )}
         </div>
-        <div className="board_nav">
+        <div className="board_info_container">
           <div className="board_name">
             <h1>{data.getTaskBoardById.name}</h1>
           </div>
-          <div className="board_voice_call">
-          <Fab color="primary" size="small" aria-label="add">
-            <PhoneInTalkIcon />
-          </Fab>
-            <AvatarGroup total={24}>
-              <Avatar alt="Remy Sharp" />
-              <Avatar alt="Travis Howard" />
-              <Avatar alt="Agnes Walker" />
-              <Avatar alt="Trevor Henderson" />
-            </AvatarGroup>
+          <div className="board_nav">
+            <BoardNavigation />
+          </div>
+          <div className="voice_button">
+            <Fab label="Clickable" 
+              onClick={() => {console.log("clicked")}}
+              color={"primary"}
+            >
+              <PhoneInTalkIcon/>
+            </Fab>  
           </div>
         </div>
-        <div className="board_columns_container">
-          <div className="board_columns">
-            {data.getTaskBoardById.columns.map((item) => (
-              <Column
-                key={item._id}
-                board={item}
-                addCard={addCard}
-                removeBoard={() => removeBoard(item._id)}
-                removeCard={removeCard}
-                dragEnded={dragEnded}
-                dragEntered={dragEntered}
-                updateCard={updateCard}
+        {inVideo ? (
+          <div className="board_display_container_split">
+            <div className="board_content_info_split">
+            <Routes>
+              <Route 
+                path="board" 
+                element={board_content} 
               />
-            ))}
-            <div className="board_columns_footer">
-              <Editable
-                displayClass="board_columns_add-columns"
-                editClass="board_columns_add-columns_edit"
-                placeholder="Enter Column Name"
-                text="Add Column"
-                buttonText="Add Column"
-                onSubmit={addboard}
+              <Route 
+                path="information" 
+                element={<div>info</div>} 
               />
-            </div> 
+              <Route 
+                path={"*"}
+                element={<Navigate to="board" replace />}
+              />   
+              </Routes>
+            </div>
+            <div className="video_container"> video </div>
           </div>
-        </div>
+        ) : (
+          <div className="board_display_container">
+            <div className="board_content_info">
+              <Routes>
+                <Route 
+                  path="board" 
+                  element={board_content} 
+                />
+                <Route 
+                  path="information" 
+                  element={<div>info</div>} 
+                />
+                <Route 
+                  path={"*"}
+                  element={<Navigate to="board" replace />}
+                />   
+              </Routes>
+            </div>
+          </div>
+        )}    
       </div>
     </div>
   );

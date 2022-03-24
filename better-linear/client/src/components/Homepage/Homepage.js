@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import gql from "graphql-tag";
@@ -104,7 +104,7 @@ export default function Homepage(props) {
               element={<MyTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
             />
             <Route 
-              path="my-task-boards/*" 
+              path="my-task-boards" 
               element={<MyTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
             />
             <Route
@@ -119,6 +119,10 @@ export default function Homepage(props) {
               path="profile" 
               element={<EditProfile userData={props.userData}/>} 
             />
+            <Route 
+              path={"*"}
+              element={<Navigate to="my-task-boards" replace />}
+            />    
           </Routes>
         </Grid>
       </Grid>

@@ -37,14 +37,13 @@ function App() {
           </div>
         </div>
         <Routes>
-              <Route path={"/homepage/*"} element={<Homepage userData={data.me}/>}/>
-              <Route path={"/taskboard/:id"} element={<Board />}/>
-              <Route path="/credits" element={<Credits />}/>  
-              <Route 
-                path={"*"}
-                element={<Navigate to="/homepage/my-task-boards" replace />}
-              />
-
+          <Route path={"/homepage/*"} element={<Homepage userData={data.me}/>}/>
+          <Route path={"/taskboard/:id/*"} element={<Board />}/>
+          <Route path={"/credits"} element={<Credits />}/>  
+          <Route 
+            path={"*"}
+            element={<Navigate to="/homepage/my-task-boards" replace />}
+          />
         </Routes>
       </div>
     ); 

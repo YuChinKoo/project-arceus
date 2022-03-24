@@ -3,18 +3,16 @@ import {Link} from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import ShareIcon from '@mui/icons-material/Share';
 import ViewComfyIcon from '@mui/icons-material/ViewComfy';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import VideoCallIcon from '@mui/icons-material/VideoCall';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-export default function Navigation() {
+export default function BoardNavigation() {
   const state = {
     value: 0,
     pathMap:[
-      '/homepage/my-task-boards',
-      '/homepage/shared-task-board',
-      '/homepage/incoming-requests',
-      '/homepage/profile'
+      'board',
+      'information',
     ]
   };
 
@@ -32,20 +30,15 @@ export default function Navigation() {
         }}
       >
           <BottomNavigationAction 
-            label="My Task Boards" 
+            label="Board" 
             icon={<ViewComfyIcon />} 
             component={Link}
             to={state.pathMap[0]}/>
           <BottomNavigationAction 
-            label="Shared Task Boards" 
-            icon={<ShareIcon />} 
+            label="Information" 
+            icon={<HelpOutlineIcon />} 
             component={Link}
             to={state.pathMap[1]}/>
-          <BottomNavigationAction 
-            label="Incoming Requests" 
-            icon={<NotificationsIcon />} 
-            component={Link}
-            to={state.pathMap[2]}/>
       </BottomNavigation>
     </Paper> 
   );
