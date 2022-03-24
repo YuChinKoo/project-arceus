@@ -26,10 +26,6 @@ Owner and helpers have the ability to modify the taskboard
 Real time functionality using websockets (graphql subscriptions)
 - Any updates to the taskboard, or taskboard requests/response should be seen by the receiver immediately
 
-SOMETHING ELSE HERE
-- 
-
-implementation of signin/signup/logout
 ## Additional Features
 - Video chat tab while on a specific taskboard
 - Allow for users to modify the sound levels of video chat participants
