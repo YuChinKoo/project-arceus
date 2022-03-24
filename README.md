@@ -37,7 +37,7 @@ MERN STACK + GRAPHQL
 - React framework (frontend)
 - Expressjs (backend)
 - MongoDB (database) 
-- GraphQL
+- GraphQL (query language)
 
 ## Top Technical Challenges
 - Implementing websockets for real time updates
