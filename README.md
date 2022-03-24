@@ -11,34 +11,30 @@ Manav Patel
 Yuanyuan Li
 
 ## Description
-The purpose of this web application is to allow users to auto-generate their portfolio website. The user is prompted to input information they would like to be added to a website, and then utilized and implemented into website templates of their choosing. If a template was not selected, a set of options will be given to the user like what color scheme to use, what kind of webpage they would like (single scrollable page vs. tabbed), etc. This web application is a single-tenanted system, but supports user authentication for multiple users. Upon auto generating a personal website, this application will provide the auto generated code to the rightful users as that code will be owned and maintained by them.
+The purpose of this web application is to allow users to create taskboards in order to plan work flow. The user will be prompted to make an account at first and then be give the ability to create taskboards. Within these taskboards, the user can request other users of the application to help in the taskboard. These helpers will have the ability to modify the taskboard as well as be given the option to join a video chat with the members currently on the taskboard. The owner of the board will be able to remove members as well as delete the taskboard entirely. The requested helpers have the ability to stop being a helper of a taskboard if they wish.
 
 ## Key Features
-note: store input values in cookie so that if user wants to go back, the user would not have to put in those values again
-- Input form 
+Initial form to create a taskboard
+- Input form to create taskboards by entering a taskboard name
 
-initial form for their experiences, etc
-- Input form to support and edit pdfs (cherry pick information off of a pdf)
+Give owners the ability to add and remove helpers 
+- Helpers will be identified using emails which are stored as unique strings
+
+Owner and helpers have the ability to modify the taskboard
+- Adding tasks, removing tasks, moving tasks
   
-if they want to upload pdf instead of typing everything out, like this: https://itsjafer.com/#/parser
-- Storing user input information
+Real time functionality using websockets (graphql subscriptions)
+- Any updates to the taskboard, or taskboard requests/response should be seen by the receiver immediately
 
-store as json object
-- Website templates
-  
-website templates to choose from
-- Website auto-generated using templates and information from input form
-
-generate code
-- Authentication and authorization
+SOMETHING ELSE HERE
+- 
 
 implementation of signin/signup/logout
 ## Additional Features
-- Set of options for template modifications
-  - what color scheme to use, what kind of webpage they would like (single scrollable page vs. tabbed)
-- Send website template code to users (email)
-- Allow for more file type parsing instead of just PDF
-- Allow website auto-generated, and also resume and cover letter (in latex)
+- Video chat tab while on a specific taskboard
+- Allow for users to modify the sound levels of video chat participants
+- See which users have updated the taskboard through logs
+- 
 
 ## Technology
 MERN STACK + GRAPHQL
@@ -48,9 +44,8 @@ MERN STACK + GRAPHQL
 - GraphQL
 
 ## Top Technical Challenges
-- Parsing different file types in order to retrieve personal information
-- Sending emails (for authentication, email confirmation)
-  (required to create a business email if we want to do this)
-- Auto generate website based on input forms
-- Storage of multiple users and multiple auto generated websites.
-- Options for users to change when constructing a template website
+- Implementing websockets for real time updates
+- Using webRTC for video chat feature
+- CI/CD
+- 
+- 
