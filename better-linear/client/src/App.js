@@ -31,14 +31,12 @@ function App() {
     // Client with valid auth token  
     return (
       <div>
-        <div className="app center w85">
-          <div style={{marginBottom: "5px"}}>
-            <Header style={{marginBottom: "5px"}} authorization={true} userData={data.me}/>
-          </div>
+        <div className="app_header_container">
+          <Header authorization={true} userData={data.me}/>
         </div>
         <Routes>
           <Route path={"/homepage/*"} element={<Homepage userData={data.me}/>}/>
-          <Route path={"/taskboard/:id/*"} element={<Board />}/>
+          <Route path={"/taskboard/:id/*"} element={<Board userData={data.me}/>}/>
           <Route path={"/credits"} element={<Credits />}/>  
           <Route 
             path={"*"}
@@ -53,7 +51,6 @@ function App() {
     return (
       <div className="app center w85" style={{height: '100vh'}}>
         <Header authorization={false} />
-        <div className="ph3 pv1 background-gray">
           <Routes>
             <Route 
               path="/" 
@@ -76,7 +73,6 @@ function App() {
               element={<Navigate to="/signin" replace />}
             />         
           </Routes>
-        </div>
       </div>
     );
   }

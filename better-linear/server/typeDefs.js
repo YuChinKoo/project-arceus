@@ -49,12 +49,20 @@ const typeDefs = gql`
         password: String!
     }
 
+    type Helper {
+        _id: ID
+        firstname: String
+        lastname: String
+        email: String
+    }
+
     type Query {
         me: User
         getMyTaskBoards: [Taskboard]
         getTaskBoardById(taskBoardId: ID!): Taskboard
         getRequestedTaskBoards: [RequestedTaskBoard]
         getSharedTaskBoards: [Taskboard]
+        getTaskBoardHelpers(taskBoardId: ID!): [Helper]
     }
 
     type Mutation {
@@ -78,6 +86,7 @@ const typeDefs = gql`
         # "accept" to accept, "deny" to deny
         respondTaskBoardHelperRequest(taskBoardId: ID!, response: String!): String
         removeSharedTaskBoard(taskBoardId: ID!): String
+        removeTaskBoardHelper(taskBoardId: ID!, helperId: ID!): String 
     }
 
     type Subscription {

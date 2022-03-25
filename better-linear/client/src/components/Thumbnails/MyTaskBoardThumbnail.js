@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Link from '@mui/material/Link';
+import { Link as MuiLink } from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -11,6 +11,10 @@ import gql from 'graphql-tag';
 import { useMutation } from "@apollo/client";
 import Editable from '../Editabled/Editable';
 import LoadingIcon from '../Utilities/LoadingIcon';
+
+import Button from '@mui/material/Button';
+
+import { Link } from 'react-router-dom';
 
 const DELETE_TASKBOARD = gql`
     mutation DeleteTaskBoard($taskBoardId: ID!) {
@@ -89,12 +93,12 @@ export default function MyTaskBoardThumbnail(props) {
                 <CardContent>
                     <Grid container spacing={2} alignItems="center" justifyContent="center">
                         <Grid item xs={10}>
-                            <Link href={`/taskboard/${boardId}`} variant='h6'>
-                                {boardName}
+                            <Link to={`/taskboard/${boardId}`} style={{textDecoration: 'none' }}>
+                                <Button disableElevation variant="contained">{boardName}</Button>    
                             </Link>
                             <Typography component='div'>
                                 <Box sx={{ fontSize: 13, mt: 1, mb: 1 }}>
-                                    {boardOwner}
+                                    Owner: {boardOwner}
                                 </Box>
                             </Typography>
                             <Typography component='div'>

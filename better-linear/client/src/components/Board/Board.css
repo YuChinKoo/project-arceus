@@ -32,7 +32,7 @@
   margin-bottom: auto;
 }
   
-.board_info_container {
+.board_navigation_container {
   padding: 20px;
   box-shadow: 0 1px 20px rgba(56, 40, 40, 0.05);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -109,7 +109,8 @@
 }
 
 .board_content_info_split {
-  width: 50%;
+  min-width: 50%;
+  max-width: 50%;
 }
 
 .video_container {

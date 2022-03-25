@@ -16,7 +16,7 @@ import Column from "../Column/Column";
 import Editable from '../Editabled/Editable';
 
 import BoardNavigation from './BoardNavigation';
-
+import BoardInformation from './BoardInformation';
 
 const GET_TASKBOARD = gql`
   query GetTaskBoardById($taskBoardId: ID!) {
@@ -184,7 +184,9 @@ subscription TaskBoardContentModified($taskBoardId: ID!) {
 }
 ` 
 
-function Board(){ 
+function Board(props){
+    
+  const userData = props.userData;
 
   const [ errorMessage, setErrorMessage ] = useState('');
 
@@ -382,7 +384,7 @@ function Board(){
             </p>
           )}
         </div>
-        <div className="board_info_container">
+        <div className="board_navigation_container">
           <div className="board_name">
             <h1>{data.getTaskBoardById.name}</h1>
           </div>
@@ -408,7 +410,7 @@ function Board(){
               />
               <Route 
                 path="information" 
-                element={<div>info</div>} 
+                element={<BoardInformation data={data.getTaskBoardById} userData={userData}/>} 
               />
               <Route 
                 path={"*"}
@@ -428,7 +430,7 @@ function Board(){
                 />
                 <Route 
                   path="information" 
-                  element={<div>info</div>} 
+                  element={<BoardInformation data={data.getTaskBoardById} userData={userData}/>} 
                 />
                 <Route 
                   path={"*"}

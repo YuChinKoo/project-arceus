@@ -38,7 +38,7 @@ export default function Header(props) {
                 onCompleted: (data) => {
                     console.log(data);
                     // route back to sign in page
-                    navigate("../signin", { replace: true });
+                    // navigate("../signin", { replace: true });
                     window.location.reload();
                 }
             });
@@ -79,12 +79,6 @@ export default function Header(props) {
             </Paper> 
         )
     } else {
-        const state = {
-            pathMap:[
-              '/signin',
-              '/signup'
-            ]
-          };
         return (
             <Paper>
                 <BottomNavigation showLabels style={{justifyContent: "right"}}>
@@ -92,7 +86,7 @@ export default function Header(props) {
                         label="Sign-in" 
                         icon={<LoginIcon />}
                         component={Link}
-                        to={state.pathMap[0]} />
+                        to={'/signin'} />
                     <BottomNavigationAction 
                         label="Credits" 
                         icon={<HandshakeIcon />}
@@ -102,7 +96,7 @@ export default function Header(props) {
                         label="Sign-up" 
                         icon={<LoginIcon />}
                         component={Link}
-                        to={state.pathMap[1]} />
+                        to={'/signup'} />
                 </BottomNavigation>
           </Paper> 
         )
