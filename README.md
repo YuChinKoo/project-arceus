@@ -39,7 +39,7 @@ MERN STACK + GRAPHQL
 - MongoDB (database) 
 - GraphQL (query language)
 
-## Top Technical Challenges
+## Top 5 Technical Challenges
 - Implementing websockets for real time updates
 - Using webRTC for video chat feature
 - CI/CD
