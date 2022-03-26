@@ -38,10 +38,12 @@ MERN STACK + GRAPHQL
 - Expressjs (backend)
 - MongoDB (database) 
 - GraphQL (query language)
+- Docker (Containerization Software)
+- Digital Ocean (Cloud Platform)
 
 ## Top 5 Technical Challenges
 - Implementing websockets for real time updates
 - Using webRTC for video chat feature
 - CI/CD
-- 
+- Local mongodb database setup (?)
 - 
