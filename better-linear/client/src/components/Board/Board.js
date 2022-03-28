@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
-
-import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
 import Fab from '@mui/material/Fab';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
-
 import { Route, Routes, Navigate, useParams } from 'react-router-dom';
-
 import LoadingIcon from '../Utilities/LoadingIcon';
-
 import "./Board.css";
 import Column from "../Column/Column";
 import Editable from '../Editabled/Editable';
-
 import BoardNavigation from './BoardNavigation';
 import BoardInformation from './BoardInformation';
 
@@ -410,7 +403,13 @@ function Board(props){
               />
               <Route 
                 path="information" 
-                element={<BoardInformation data={data.getTaskBoardById} userData={userData}/>} 
+                element={
+                  <BoardInformation 
+                    data={data.getTaskBoardById} 
+                    userData={userData} 
+                    setErrorMessage={(message) => {setErrorMessage(message)}} 
+                    timeStamp={new Date().getTime().toString()}/>
+                  } 
               />
               <Route 
                 path={"*"}
@@ -430,7 +429,13 @@ function Board(props){
                 />
                 <Route 
                   path="information" 
-                  element={<BoardInformation data={data.getTaskBoardById} userData={userData}/>} 
+                  element={
+                    <BoardInformation 
+                      data={data.getTaskBoardById} 
+                      userData={userData} 
+                      setErrorMessage={(message) => {setErrorMessage(message)}} 
+                      timeStamp={new Date().getTime().toString()}/>
+                    } 
                 />
                 <Route 
                   path={"*"}

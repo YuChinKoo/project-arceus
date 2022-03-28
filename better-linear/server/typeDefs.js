@@ -94,6 +94,7 @@ const typeDefs = gql`
         taskBoardRequestModified(requestUserId: ID!): [RequestedTaskBoard]
         sharedTaskBoardModified(sharedHelperId: ID!): [Taskboard]
         taskBoardContentModified(taskBoardId: ID!): Taskboard
+        taskBoardHelpersModified(taskBoardId: ID!): [Helper]
     }
 `
 module.exports = typeDefs;

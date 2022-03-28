@@ -723,6 +723,8 @@ const resolvers = {
                 pubsub.publish('TASKBOARD_HELPER_REQUEST_MODIFIED', { modifiedBoard: updatedTaskBoard, requestedHelper: updatedHelper }); 
                 // publish subscription data for adding a shared taskboard
                 pubsub.publish('TASKBOARD_HELPER_MODIFIED', { modifiedBoard: updatedTaskBoard, helper: updatedHelper });
+                // publish subscription data for a helper being added to a taskboard
+                pubsub.publish('HELPER_MODIFIED', { modifiedBoard: updatedTaskBoard, helper: updatedHelper });
                 return "Request accepted";
             } else {
                 // publish subscription data for removing a requested taskboard
@@ -772,13 +774,54 @@ const resolvers = {
 
             // publish subscription data for removing a shared taskboard 
             pubsub.publish('TASKBOARD_HELPER_MODIFIED', { modifiedBoard: taskBoard, helper: user });
-
+            // publish subscription data for a helper being removed from a taskboard
+            pubsub.publish('HELPER_MODIFIED', { modifiedBoard: taskBoard, helper: user });
             return "Taskboard no longer shared with you"
         },
-        removeTaskBoardHelper: async (oarent, args, context, info) => {
+        removeTaskBoardHelper: async (parent, args, context, info) => {
             if (!context.req.userId) throw new AuthenticationError("Unauthorized");
             const { taskBoardId, helperId } = args;
-            return "filler";
+            // check if taskboard exists
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (!taskBoard) throw new Error("Taskboard does not exist");
+            // check if the user is the owner of the taskboard
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (user.email != taskBoard.owner) throw new Error("You do not own this taskboard");
+            // check if the helperId is a helper of the taskboard
+            let flag = false;
+            for(let curHelperId of taskBoard.helpers){
+                if(curHelperId == helperId){
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) throw new Error("The given helper is not a helper of this taskboard");
+            // Remove taskboard from the helper's sharedTaskboards list
+            user = await User.findByIdAndUpdate(
+                { _id: helperId },
+                { $pull: {sharedTaskBoards: taskBoardId} },
+                { new: true })
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // Remove the helper from the taskboard's helper list
+            taskBoard = await TaskBoard.findByIdAndUpdate(
+                { _id: taskBoardId },
+                { $pull: {helpers: helperId} },
+                { new: true })
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // Publish event that a taskboard helper was modified
+            pubsub.publish('TASKBOARD_HELPER_MODIFIED', { modifiedBoard: taskBoard, helper: user });
+            pubsub.publish('HELPER_MODIFIED', { modifiedBoard: taskBoard, helper: user });
+            return "Helper removed";
         }
     },
 
@@ -862,6 +905,34 @@ const resolvers = {
                 }
                 return allSharedBoards;
             },
+        },
+        taskBoardHelpersModified: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator(['HELPER_MODIFIED']),
+                (payload, variables) => {
+                    // check user and boardId
+                    let givenBoardId = variables.taskBoardId;
+                    let modifiedBoardId = payload.modifiedBoard._id;
+                    return (givenBoardId == modifiedBoardId);
+                }
+            ),
+            resolve: async (payload) => {
+                let taskBoard = payload.modifiedBoard;
+                let queryArray = [];
+                for(let helper of taskBoard.helpers){
+                    queryArray.push({ '_id': helper })
+                };
+                let allHelpers = [];
+                if(queryArray.length) {
+                    allHelpers = await User.find({
+                        $or: queryArray
+                    })
+                    .catch(function(err) {
+                        throw new Error(err)
+                    }); 
+                }
+                return allHelpers;
+            }
         },
     }
 };

@@ -8,3 +8,64 @@
     padding-right: 20px;
     align-items: center;
 }
+
+.board_information_header {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid #084787;
+    color: #1578dc;
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: auto;
+    padding-right: auto;
+    
+}
+
+.board_information_subdiv {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.board_information_owner {
+}
+
+.board_information_online {
+
+}
+
+.board_informations_helpers_list {
+    width: 100%;
+}
+
+.board_information_helper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.board_information_helper_info {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 50%;
+}
+
+.helper_centered {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.board_information_helper_delete {
+    display: flex;
+    margin-top: 2px;
+    align-items: center;
+    width: 50%;
+}
