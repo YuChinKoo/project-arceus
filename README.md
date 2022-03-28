@@ -1,3 +1,4 @@
+[![Publish React Skeleton to GHCR](https://github.com/UTSCC09/project-arceus/actions/workflows/build.yaml/badge.svg)](https://github.com/UTSCC09/project-arceus/actions/workflows/build.yaml)
 # Project Arceus #
 
 ## Deployed Application:
