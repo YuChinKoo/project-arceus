@@ -4,7 +4,6 @@ import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import ViewComfyIcon from '@mui/icons-material/ViewComfy';
-import VideoCallIcon from '@mui/icons-material/VideoCall';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 export default function BoardNavigation() {

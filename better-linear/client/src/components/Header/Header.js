@@ -1,4 +1,4 @@
-import { Link , useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
@@ -13,7 +13,6 @@ import AbcIcon from '@mui/icons-material/Abc';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 
 export default function Header(props) {
-    let navigate = useNavigate();
     const authorization = props.authorization;
 
     const [ signOutLoad, setSignOutLoad ] = useState(false);

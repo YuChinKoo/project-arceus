@@ -2,7 +2,6 @@ import './BoardInformation.css';
 import Button from '@mui/material/Button';
 import gql from 'graphql-tag';
 import { useMutation } from "@apollo/client";
-import { useState } from 'react';
 
 const REMOVE_TASKBOARD_HELPER = gql`
     mutation RemoveTaskBoardHelper($taskBoardId: ID!, $helperId: ID!) {
@@ -18,11 +17,8 @@ export default function BoardInformationHelper(props){
     let boardData = props.boardData;
     let setErrorMessage = props.setErrorMessage;
 
-    const [ QLoading, setQLoading] = useState(false);
-
     const [removeHelper] = useMutation(REMOVE_TASKBOARD_HELPER, {
         onError: (err) => {
-            setQLoading(false);
             setErrorMessage(`${err}`);
             console.log(`Error! ${err}`);
         }
@@ -31,7 +27,6 @@ export default function BoardInformationHelper(props){
     const onRemoveHelper = async (event) => {
         event.preventDefault();
         setErrorMessage('');
-        setQLoading(true);
         await removeHelper({
             variables: {
                 taskBoardId: boardData._id,

@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid';
 import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { blue } from '@mui/material/colors';
 import LoadingIcon from '../Utilities/LoadingIcon';
 import gql from 'graphql-tag';
@@ -33,8 +33,6 @@ const SIGN_IN_USER = gql`
 export default function SignInSide(props) {
 
   const [ errorMessage, setErrorMessage ] = useState('');
-
-  let navigate = useNavigate();
 
   const [ signInLoad, setSignInLoad ] = useState(false);
 

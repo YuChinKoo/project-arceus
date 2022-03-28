@@ -73,11 +73,13 @@ function BoardInformation(props){
                 </div>
                 {boardData.owner}
             </div>
-            <div className='board_information_online board_information_subdiv'>
-                <div className='board_information_header'>
-                    Online
+            {/*
+                <div className='board_information_online board_information_subdiv'>
+                    <div className='board_information_header'>
+                        Online
+                    </div>
                 </div>
-            </div>
+             */}
             <div className='board_information_helpers board_information_subdiv'>
                 <div className='board_information_header'>
                     Helpers

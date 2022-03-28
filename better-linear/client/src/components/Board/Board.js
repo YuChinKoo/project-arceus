@@ -10,6 +10,7 @@ import Column from "../Column/Column";
 import Editable from '../Editabled/Editable';
 import BoardNavigation from './BoardNavigation';
 import BoardInformation from './BoardInformation';
+import { useNavigate } from 'react-router-dom';
 
 const GET_TASKBOARD = gql`
   query GetTaskBoardById($taskBoardId: ID!) {
@@ -327,6 +328,12 @@ function Board(props){
         setErrorMessage('');
       }
     }); 
+  };
+
+  let navigate = useNavigate();
+
+  if (errorMessage.includes('Unauthorized')) {
+    navigate("/homepage/my-task-boards", { replace: true });
   };
 
   if (loading) return ( <div> <LoadingIcon /> </div> );

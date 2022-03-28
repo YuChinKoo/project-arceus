@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Modal from "../../Modal/Modal";
 import Editable from "../../Editabled/Editable";
