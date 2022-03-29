@@ -1,4 +1,4 @@
-name: Publish React Skeleton to GHCR
+name: Publish App Skeleton to GHCR
 
 on:
   push:
@@ -7,7 +7,8 @@ on:
       - master
 
 env:
-  IMAGE_NAME: betterlinear-client-project-arceus
+  IMAGE_NAME_CLIENT: betterlinear-client-project-arceus
+  IMAGE_NAME_SERVER: betterlinear-server-project-arceus
 
 jobs:
   # Push image to GitHub Packages.
@@ -17,21 +18,21 @@ jobs:
     if: github.event_name == 'push'
     defaults:
       run:
-        working-directory: better-linear/client
+        working-directory: .
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build image
-        run: docker build ../../better-linear/client --file Dockerfile --tag $IMAGE_NAME
+      - name: Build client docker image
+        run: docker build ../../better-linear/client --file Dockerfile --tag $IMAGE_NAME_CLIENT
 
       - name: Log into GitHub Container Registry
         # TODO: Create a Personal Access Tokens (PAT) with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
         run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Push image to GitHub Container Registry
+      - name: Push client docker image to GitHub Container Registry
         run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME_CLIENT
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           # Strip git ref prefix from version
@@ -42,6 +43,25 @@ jobs:
           [ "$VERSION" == "master" ] && VERSION=latest
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker tag $IMAGE_NAME_CLIENT $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+      - name: Build server docker image
+        run: docker build ../../better-linear/server --file Dockerfile --tag $IMAGE_NAME_SERVER
+
+      - name: Push server docker image to GitHub Container Registry
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME_SERVER
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME_SERVER $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
           
