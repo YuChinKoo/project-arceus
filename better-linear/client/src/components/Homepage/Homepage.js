@@ -85,7 +85,7 @@ export default function Homepage(props) {
               <Button type="submit" style={{marginTop: "8px", width: "100%"}} variant="contained" disableElevation>Create new Taskboard</Button>
             </form>
             {errorMessage && (
-              <p className="error">
+              <p className="error" style={{color: "red"}} >
                 {errorMessage}
               </p>
             )}

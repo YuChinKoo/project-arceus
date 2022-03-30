@@ -47,13 +47,7 @@ export default function MyTaskBoardThumbnail(props) {
         }
     });
 
-    const [requestHelper] = useMutation(REQUEST_HELPER, {
-        onError: (err) => {
-            setQLoading(false);
-            setErrorMessage(`${err}`);
-            console.log(`Error! ${err}`);
-        }
-    })
+
 
 
     const onDelete = async (event) => {
@@ -70,21 +64,7 @@ export default function MyTaskBoardThumbnail(props) {
         });
     };
 
-    const onRequest = async (requestedHelperEmail) => {
-        console.log('clicked share');
-        setErrorMessage('');
-        setQLoading(true);
-        await requestHelper({
-            variables: {
-                taskBoardId: props.boardId,
-                helperEmail: requestedHelperEmail,
-            },
-            onCompleted: (data) => {
-                setQLoading(false);
-                console.log("Request sent successfully");
-            }
-        });
-    }
+
 
     return (
         <div key={boardId}>
@@ -104,26 +84,19 @@ export default function MyTaskBoardThumbnail(props) {
                         </Typography>
                         </Grid> 
                         <Grid item xs={2} justifyContent="flex-end">
-                        <div>                
-                            {errorMessage && (
-                                <p className="error">
-                                    {errorMessage}
-                                </p>
-                            )}
-                        </div>    
-                        <Box display="flex" justifyContent="flex-end" alignItems="center" gap="10px">
+                            <div>                
+                                {errorMessage && (
+                                    <p className="error">
+                                        {errorMessage}
+                                    </p>
+                                )}
+                            </div>    
+                            <Box display="flex" justifyContent="flex-end" alignItems="center" gap="10px">
                                 {QLoading && ( 
                                     <div style={{width: "100%", display: "flex", justifyContent: "center"}}>
                                         <LoadingIcon /> 
                                     </div>
                                 )}
-                                <Editable 
-                                    text="Add Helper" 
-                                    placeholder="Enter email" 
-                                    displayClass="thumbnail_add_helper" 
-                                    editClass="thumbnail_add_helper_edit" 
-                                    onSubmit={onRequest}
-                                />
                                 <IconButton aria-label="delete" onClick={onDelete}>
                                     <DeleteButton/>
                                 </IconButton>

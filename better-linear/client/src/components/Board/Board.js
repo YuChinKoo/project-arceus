@@ -332,7 +332,7 @@ function Board(props){
 
   let navigate = useNavigate();
 
-  if (errorMessage.includes('Unauthorized')) {
+  if (errorMessage.includes('Unauthorized') || errorMessage.includes('does not exist')) {
     navigate("/homepage/my-task-boards", { replace: true });
   };
 
@@ -379,7 +379,7 @@ function Board(props){
       <div className="board_main">
         <div>
           {errorMessage && (
-            <p className="error">
+            <p className="error" style={{color: "red"}}>
               {errorMessage}
             </p>
           )}
@@ -389,7 +389,11 @@ function Board(props){
             <h1>{data.getTaskBoardById.name}</h1>
           </div>
           <div className="board_nav">
-            <BoardNavigation />
+            <BoardNavigation 
+              userData={userData}
+              boardData={data.getTaskBoardById} 
+              setErrorMessage={(message) => {setErrorMessage(message)}} 
+            />
           </div>
           <div className="voice_button">
             <Fab label="Clickable" 

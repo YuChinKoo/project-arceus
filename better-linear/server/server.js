@@ -18,18 +18,6 @@ const { v4: uuidv4 } = require('uuid');
 // Environment variables
 const dotenv = require('dotenv').config();
 
-// const getTokenData = accessToken => {
-//     try {
-//         if (accessToken) {
-//             return verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-//         } else {
-//             return null;
-//         }
-//     } catch (err) {
-//         return null;
-//     }
-// };
-
 async function startServer() {
     
     const schema = makeExecutableSchema({ 
@@ -84,7 +72,9 @@ async function startServer() {
                 // console.log(ctx.extra.request);
                 return { params: ctx };
             },
-            onConnect: async (ctx) => {
+            onConnect: async (connectionParams, webSocket) => {
+                console.log(connectionParams);
+                console.log(webSocket);
                 console.log("Connected!");
             },
             onDisconnect(ctx, code, reason) {
