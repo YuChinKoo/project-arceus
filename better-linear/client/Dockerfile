@@ -16,5 +16,10 @@ RUN npm install react-scripts@3.4.1 -g
 # add app
 COPY . ./
 
-# start app
-CMD ["npm", "start"]
+RUN npm run build
+
+# Serve these static files with NGINX.
+FROM nginx:1.21.6-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

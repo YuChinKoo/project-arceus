@@ -76,4 +76,5 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             cd /mnt
+            echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u ${{ secrets.PAT_USER }} --password-stdin
             docker-compose pull && docker-compose up -d
