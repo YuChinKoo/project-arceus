@@ -12,7 +12,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 
 // https://www.apollographql.com/docs/react/networking/authentication/
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: 'api.betrello.software',
   credentials: 'include',
 });
 
