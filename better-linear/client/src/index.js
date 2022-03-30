@@ -19,7 +19,7 @@ const httpLink = new HttpLink({
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "ws://localhost:4000/graphql",
+    url: "wss://api.betrello.software/graphql",
     options: {
       reconnect: true,
     }
