@@ -5,7 +5,7 @@ services:
     container_name: betterlinear-client
     restart: always
     expose: 
-      - 3000
+      - 80
     environment:
       - VIRTUAL_HOST=betrello.software
       - LETSENCRYPT_HOST=betrello.software
@@ -22,7 +22,7 @@ services:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
     ports:
-      - "3000:3000"
+      - "80:80"
       - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro

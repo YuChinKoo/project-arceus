@@ -67,3 +67,11 @@ jobs:
           docker tag $IMAGE_NAME_SERVER $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
           
+      - name: Executing into droplet using SSH and run docker images
+        uses: appleboy/ssh-action@master
+        with: 
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            whoami
