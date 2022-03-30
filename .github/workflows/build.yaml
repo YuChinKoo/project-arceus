@@ -75,4 +75,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            ls -al
+            cd /mnt
+            docker-compose pull && docker-compose up -d
