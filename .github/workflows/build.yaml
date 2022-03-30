@@ -68,7 +68,7 @@ jobs:
           docker push $IMAGE_ID:$VERSION
           
       - name: Executing into droplet using SSH and run docker images
-        uses: ./
+        uses: appleboy/ssh-action@master
         with: 
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
