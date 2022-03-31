@@ -2,7 +2,7 @@
 # Project Arceus #
 
 ## Deployed Application:
-[insert url here]
+https://betrello.software
 
 ## Team Members:
 Yu Chin Koo
@@ -45,6 +45,6 @@ MERN STACK + GRAPHQL
 ## Top 5 Technical Challenges
 - Implementing websockets for real time updates
 - Using webRTC for video chat feature
-- CI/CD
-- Local mongodb database setup (?)
+- Creating github actions workflow for CI/CD
+- Docker deployment for client, server, and nginx reverse proxy
 - 
