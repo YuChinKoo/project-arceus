@@ -29,7 +29,8 @@ export default function MyTaskBoardThumbnail(props) {
     const {
         boardId,
         boardName,
-        boardOwner
+        boardOwner,
+        userData
     } = props;
 
     const [ errorMessage, setErrorMessage ] = useState('');
@@ -89,7 +90,7 @@ export default function MyTaskBoardThumbnail(props) {
                 <CardContent>
                     <Grid container spacing={2} alignItems="center" justifyContent="center">
                         <Grid item xs={10}>
-                            <Link href={`/taskboard/${boardId}`} variant='h6'>
+                            <Link href={`/taskboard/${boardId}/${userData._id}`} variant='h6'>
                                 {boardName}
                             </Link>
                             <Typography component='div'>

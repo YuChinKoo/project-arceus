@@ -2,7 +2,7 @@
     min-width: 290px;
     flex-basis: 290px;
     height: fit-content;
-    max-height: 800px;
+    max-height: 640px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -48,6 +48,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 10px;
+  margin-bottom: 10px;
   background-color: rgb(233, 233, 233);
   border-radius: 10px;
 }

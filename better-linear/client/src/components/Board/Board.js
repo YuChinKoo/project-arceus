@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react"
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
+import { io } from "socket.io-client";
 
-import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
 import Fab from '@mui/material/Fab';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 
@@ -16,6 +15,7 @@ import Column from "../Column/Column";
 import Editable from '../Editabled/Editable';
 
 import BoardNavigation from './BoardNavigation';
+import Video from '../Video/Video';
 
 
 const GET_TASKBOARD = gql`
@@ -183,15 +183,15 @@ subscription TaskBoardContentModified($taskBoardId: ID!) {
   }
 }
 ` 
-
 function Board(){ 
 
   const [ errorMessage, setErrorMessage ] = useState('');
 
   const [ inVideo, setInVideo ] = useState(false);
 
-  let { id } = useParams();
-  const boardId = id;
+  let { boardid, userid } = useParams();
+  const boardId = boardid;
+  const userId = userid;
 
   const { loading, error, data, subscribeToMore } = useQuery(GET_TASKBOARD, {
     onError: (err) => {
@@ -334,6 +334,10 @@ function Board(){
     }); 
   };
 
+  const joinInVideo = async () => {
+    setInVideo(!inVideo);
+  };
+
   if (loading) return ( <div> <LoadingIcon /> </div> );
   if (error) {
     return (
@@ -389,14 +393,16 @@ function Board(){
           <div className="board_nav">
             <BoardNavigation />
           </div>
-          <div className="voice_button">
-            <Fab label="Clickable" 
-              onClick={() => {setInVideo(!inVideo)}}
-              color={"primary"}
-            >
-              <PhoneInTalkIcon/>
-            </Fab>  
-          </div>
+          {!inVideo && 
+            <div className="voice_button">
+              <Fab label="Clickable" 
+                onClick={() => {joinInVideo()}}
+                color={"primary"}
+              >
+                <PhoneInTalkIcon/>
+              </Fab>  
+            </div> 
+          }
         </div>
         {inVideo ? (
           <div className="board_display_container_split">
@@ -416,7 +422,9 @@ function Board(){
               />   
               </Routes>
             </div>
-            <div className="video_container"> video </div>
+            <div className="video_container"> 
+              <Video boardId={boardId} userId={userId}/> 
+            </div>
           </div>
         ) : (
           <div className="board_display_container">

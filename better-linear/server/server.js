@@ -132,7 +132,7 @@ async function startServer() {
             credentials: true,
         }, 
     });
-
+    
     await mongoose.connect(process.env.URI);
     console.log('Mongoose connected...');
 
