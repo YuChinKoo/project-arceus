@@ -8,21 +8,17 @@ import { createClient } from "graphql-ws";
 import './index.css';
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { getMainDefinition } from '@apollo/client/utilities';
-import { dotenv } from 'dotenv'
-
-const env = dotenv.config();
-
 
 // https://www.apollographql.com/docs/react/networking/authentication/
 const httpLink = new HttpLink({
-  uri: process.env.HTTP_URI,
+  uri: process.env.REACT_APP_HTTP_URI,
   credentials: 'include',
 });
 
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: process.env.WS_URL,
+    url: process.env.REACT_APP_WS_URL,
     options: {
       reconnect: true,
     }
