@@ -123,7 +123,7 @@ async function startServer() {
         }, 
     });
 
-    await mongoose.connect(process.env.URI);
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log('Mongoose connected...');
 
     httpServer.listen(4000, () => {

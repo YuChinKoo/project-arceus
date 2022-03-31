@@ -23,12 +23,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Create env file for client
+        working-directory: better-linear/client
+        run: |
+          touch .env
+          echo HTTP_URI=${{ secrets.HTTP_URI }} >> .env
+          echo WS_URL=${{ secrets.WS_URL }} >> .env
+
       - name: Build client docker image
         working-directory: better-linear/client
         run: docker build . --file Dockerfile --tag $IMAGE_NAME_CLIENT
 
       - name: Log into GitHub Container Registry
-        # TODO: Create a Personal Access Tokens (PAT) with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
         run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push client docker image to GitHub Container Registry
@@ -46,6 +52,14 @@ jobs:
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME_CLIENT $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+
+      - name: Create env file for server
+        working-directory: better-linear/server
+        run: |
+          touch .env
+          echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
+          echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
+          echo SESSION_SECRET=${{ secrets.SESSION_SECRET }} >> .env
 
       - name: Build server docker image
         working-directory: better-linear/server
@@ -66,7 +80,7 @@ jobs:
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME_SERVER $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
-          
+
       - name: Executing into droplet using SSH and run docker images
         uses: appleboy/ssh-action@master
         with: 

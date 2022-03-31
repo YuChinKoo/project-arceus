@@ -8,18 +8,21 @@ import { createClient } from "graphql-ws";
 import './index.css';
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { getMainDefinition } from '@apollo/client/utilities';
+import { dotenv } from 'dotenv'
+
+const env = dotenv.config();
 
 
 // https://www.apollographql.com/docs/react/networking/authentication/
 const httpLink = new HttpLink({
-  uri: 'https://api.betrello.software/graphql',
+  uri: process.env.HTTP_URI,
   credentials: 'include',
 });
 
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "wss://api.betrello.software/graphql",
+    url: process.env.WS_URL,
     options: {
       reconnect: true,
     }
