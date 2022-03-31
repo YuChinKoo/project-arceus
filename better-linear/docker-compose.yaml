@@ -29,6 +29,7 @@ services:
       - ./certs:/etc/nginx/certs 
       - ./vhost:/etc/nginx/vhost.d 
       - ./html:/usr/share/nginx/html 
+      - ./nginx:/etc/nginx/conf.d
   nginx-proxy-acme:
     image: nginxproxy/acme-companion
     container_name: nginx-proxy-acme
