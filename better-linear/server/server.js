@@ -7,10 +7,15 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 // Subscription functionality imports
 const { createServer } = require('http');
-const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
+const { 
+    ApolloServerPluginDrainHttpServer, 
+    ApolloServerPluginLandingPageLocalDefault,
+    ApolloServerPluginLandingPageDisabled,
+} = require("apollo-server-core");
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { WebSocketServer } = require('ws');
 const { useServer } = require('graphql-ws/lib/use/ws');
+
 // Sessions
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -99,19 +104,20 @@ async function startServer() {
                         },
                     };
                 },
-            },
+            },        
+            // Install a landing page plugin based on NODE_ENV
+            process.env.NODE_ENV === 'production' ? 
+                ApolloServerPluginLandingPageDisabled()
+            : 
+                ApolloServerPluginLandingPageLocalDefault({ footer: true }),
         ],
         context: ({ req, res }) => { 
-            // const accessToken = req.cookies['access-token'];
-            // const data = getTokenData(accessToken);
-            // req.userId = (data) ? data.userId : null;
-            // req.token = data;
             console.log("requested by: " + req.userId);
             return {
                 req, 
                 res
             } 
-        }
+        },
     });
     await apolloServer.start();
 
