@@ -108,10 +108,10 @@
   flex-direction: row;
   height: 100%;
   width: 100%;
-  gap: 5px;
 }
 
 .board_content_info_split {
+  height: 100%;
   min-width: 50%;
   max-width: 50%;
   margin-top: 10px;
@@ -121,8 +121,13 @@
 }
 
 .video_container {
+  background-color: #4288cf;
   display: flex;
   padding: 20px;
   height: 100%;
   width: 50%;
+  margin-top: 10px;
+  margin-left: 10px;
+  border: solid rgb(145, 145, 145) 2px;
+  border-radius: 5px;
 }
