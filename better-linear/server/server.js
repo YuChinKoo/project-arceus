@@ -32,7 +32,7 @@ async function startServer() {
     
     const app = express();
     app.use(cors({ 
-        origin: 'https://betrello.software',
+        origin: (process.env.NODE_ENV !== 'production') ? process.env.CORS_URL : true,
         credentials: true 
     }));
     app.use(cookieParser());
@@ -122,7 +122,7 @@ async function startServer() {
         app: app,
         cors: {
             origin: [
-                'https://betrello.software', 
+                process.env.CORS_URL, 
                 'https://studio.apollographql.com/*'
             ],
             credentials: true,
