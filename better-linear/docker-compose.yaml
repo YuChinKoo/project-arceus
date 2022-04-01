@@ -18,6 +18,12 @@ services:
     environment:
       - VIRTUAL_HOST=api.betrello.software
       - LETSENCRYPT_HOST=api.betrello.software
+  betterlinear-socket:
+    image: ghcr.io/utscc09/betterlinear-socket-project-arceus
+    container_name: betterlinear-socket
+    restart: always
+    expose: 
+      - 5000
   nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy

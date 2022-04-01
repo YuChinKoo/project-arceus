@@ -188,9 +188,9 @@ function Board(props){
 
   const [ inVideo, setInVideo ] = useState(false);
 
-  let { boardid, userid } = useParams();
-  const boardId = boardid;
-  const userId = userid;
+  let { id } = useParams();
+  const boardId = id;
+  const userId = userData._id;
 
   const { loading, error, data, subscribeToMore } = useQuery(GET_TASKBOARD, {
     onError: (err) => {
