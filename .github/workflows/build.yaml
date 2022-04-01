@@ -60,7 +60,6 @@ jobs:
           echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
           echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
           echo SESSION_SECRET=${{ secrets.SESSION_SECRET }} >> .env
-          echo CORS_URL=${{ secrets.CORS_URL }} >> .env
 
       - name: Build server docker image
         working-directory: better-linear/server
