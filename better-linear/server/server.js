@@ -32,7 +32,7 @@ async function startServer() {
     
     const app = express();
     app.use(cors({ 
-        origin: ['https://api.betrello.software/*', 'https://studio.apollographql.com/*'],
+        origin: ['https://betrello.software/*', 'https://api.betrello.software/*', 'https://studio.apollographql.com/*'],
         credentials: true 
     }));
     app.use(cookieParser());
