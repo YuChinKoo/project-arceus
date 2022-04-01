@@ -31,7 +31,10 @@ async function startServer() {
     });
     
     const app = express();
-    app.use(cors({ origin: true, credentials: true }));
+    app.use(cors({ 
+        origin: ['http://localhost:3000/*', 'https://studio.apollographql.com/*'],
+        credentials: true 
+    }));
     app.use(cookieParser());
     app.use(session({
         enid: (req) => uuidv4(),
