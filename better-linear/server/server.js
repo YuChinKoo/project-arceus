@@ -32,7 +32,7 @@ async function startServer() {
     
     const app = express();
     app.use(cors({ 
-        origin: (process.env.NODE_ENV !== 'production') ? process.env.CORS_URL : true,
+        origin: (process.env.NODE_ENV === 'production') ? process.env.CORS_URL : true,
         credentials: true 
     }));
     app.use(cookieParser());
