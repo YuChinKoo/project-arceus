@@ -5,7 +5,8 @@
   }
   
   html {
-    min-width: 1350px;
+    min-width: 1205px;
+    height: 100vh;
   }
 
   body {

@@ -1,0 +1,94 @@
+name: Publish App Skeleton to GHCR
+
+on:
+  push:
+    # Only run this workflow if it is a commit to master.
+    branches:
+      - master
+
+env:
+  IMAGE_NAME_CLIENT: betterlinear-client-project-arceus
+  IMAGE_NAME_SERVER: betterlinear-server-project-arceus
+
+jobs:
+  # Push image to GitHub Packages.
+  # See also https://docs.docker.com/docker-hub/builds/
+  push:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create env file for client
+        working-directory: better-linear/client
+        run: |
+          touch .env
+          echo REACT_APP_HTTP_URI=${{ secrets.REACT_APP_HTTP_URI }} >> .env
+          echo REACT_APP_WS_URL=${{ secrets.REACT_APP_WS_URL }} >> .env
+
+      - name: Build client docker image
+        working-directory: better-linear/client
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME_CLIENT
+
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push client docker image to GitHub Container Registry
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME_CLIENT
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME_CLIENT $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+      - name: Create env file for server
+        working-directory: better-linear/server
+        run: |
+          touch .env
+          echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
+          echo MONGODB_URI=${{ secrets.MONGODB_URI }} >> .env
+          echo SESSION_SECRET=${{ secrets.SESSION_SECRET }} >> .env
+
+      - name: Build server docker image
+        working-directory: better-linear/server
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME_SERVER
+
+      - name: Push server docker image to GitHub Container Registry
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME_SERVER
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME_SERVER $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+      - name: Executing into droplet using SSH and run docker images
+        uses: appleboy/ssh-action@master
+        with: 
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            cd /mnt
+            echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u ${{ secrets.PAT_USER }} --password-stdin
+            docker-compose pull && docker-compose up -d

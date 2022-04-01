@@ -48,7 +48,7 @@ export default function Profile(props) {
         <Typography variant='h5'>
           {firstname} {lastname}
         </Typography>
-        <Typography componenet='div'>
+        <Typography variant='h6'>
           <Box sx={{fontSize: 16, m: 1}}>
             {email}
           </Box>

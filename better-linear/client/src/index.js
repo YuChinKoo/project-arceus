@@ -9,17 +9,16 @@ import './index.css';
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { getMainDefinition } from '@apollo/client/utilities';
 
-
 // https://www.apollographql.com/docs/react/networking/authentication/
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: process.env.REACT_APP_HTTP_URI,
   credentials: 'include',
 });
 
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "ws://localhost:4000/graphql",
+    url: process.env.REACT_APP_WS_URL,
     options: {
       reconnect: true,
     }

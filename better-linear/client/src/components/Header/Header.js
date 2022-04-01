@@ -1,4 +1,4 @@
-import { Link , useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import BottomNavigation from '@mui/material/BottomNavigation';
@@ -13,7 +13,6 @@ import AbcIcon from '@mui/icons-material/Abc';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 
 export default function Header(props) {
-    let navigate = useNavigate();
     const authorization = props.authorization;
 
     const [ signOutLoad, setSignOutLoad ] = useState(false);
@@ -38,7 +37,7 @@ export default function Header(props) {
                 onCompleted: (data) => {
                     console.log(data);
                     // route back to sign in page
-                    navigate("../signin", { replace: true });
+                    // navigate("../signin", { replace: true });
                     window.location.reload();
                 }
             });
@@ -79,12 +78,6 @@ export default function Header(props) {
             </Paper> 
         )
     } else {
-        const state = {
-            pathMap:[
-              '/signin',
-              '/signup'
-            ]
-          };
         return (
             <Paper>
                 <BottomNavigation showLabels style={{justifyContent: "right"}}>
@@ -92,7 +85,7 @@ export default function Header(props) {
                         label="Sign-in" 
                         icon={<LoginIcon />}
                         component={Link}
-                        to={state.pathMap[0]} />
+                        to={'/signin'} />
                     <BottomNavigationAction 
                         label="Credits" 
                         icon={<HandshakeIcon />}
@@ -102,7 +95,7 @@ export default function Header(props) {
                         label="Sign-up" 
                         icon={<LoginIcon />}
                         component={Link}
-                        to={state.pathMap[1]} />
+                        to={'/signup'} />
                 </BottomNavigation>
           </Paper> 
         )

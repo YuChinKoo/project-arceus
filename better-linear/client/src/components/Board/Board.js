@@ -2,21 +2,17 @@ import React, { useEffect, useRef, useState } from "react"
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
 import { io } from "socket.io-client";
-
 import Fab from '@mui/material/Fab';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
-
 import { Route, Routes, Navigate, useParams } from 'react-router-dom';
-
 import LoadingIcon from '../Utilities/LoadingIcon';
-
 import "./Board.css";
 import Column from "../Column/Column";
 import Editable from '../Editabled/Editable';
-
 import BoardNavigation from './BoardNavigation';
 import Video from '../Video/Video';
-
+import BoardInformation from './BoardInformation';
+import { useNavigate } from 'react-router-dom';
 
 const GET_TASKBOARD = gql`
   query GetTaskBoardById($taskBoardId: ID!) {
@@ -183,7 +179,10 @@ subscription TaskBoardContentModified($taskBoardId: ID!) {
   }
 }
 ` 
-function Board(){ 
+
+function Board(props){
+    
+  const userData = props.userData;
 
   const [ errorMessage, setErrorMessage ] = useState('');
 
@@ -336,6 +335,12 @@ function Board(){
 
   const joinInVideo = async () => {
     setInVideo(!inVideo);
+  }
+
+  let navigate = useNavigate();
+
+  if (errorMessage.includes('Unauthorized') || errorMessage.includes('Taskboard does not exist')) {
+    navigate("/homepage/my-task-boards", { replace: true });
   };
 
   if (loading) return ( <div> <LoadingIcon /> </div> );
@@ -381,17 +386,21 @@ function Board(){
       <div className="board_main">
         <div>
           {errorMessage && (
-            <p className="error">
+            <p className="error" style={{color: "red"}}>
               {errorMessage}
             </p>
           )}
         </div>
-        <div className="board_info_container">
+        <div className="board_navigation_container">
           <div className="board_name">
             <h1>{data.getTaskBoardById.name}</h1>
           </div>
           <div className="board_nav">
-            <BoardNavigation />
+            <BoardNavigation 
+              userData={userData}
+              boardData={data.getTaskBoardById} 
+              setErrorMessage={(message) => {setErrorMessage(message)}} 
+            />
           </div>
           {!inVideo && 
             <div className="voice_button">
@@ -414,7 +423,13 @@ function Board(){
               />
               <Route 
                 path="information" 
-                element={<div>info</div>} 
+                element={
+                  <BoardInformation 
+                    data={data.getTaskBoardById} 
+                    userData={userData} 
+                    setErrorMessage={(message) => {setErrorMessage(message)}} 
+                    timeStamp={new Date().getTime().toString()}/>
+                  } 
               />
               <Route 
                 path={"*"}
@@ -436,7 +451,13 @@ function Board(){
                 />
                 <Route 
                   path="information" 
-                  element={<div>info</div>} 
+                  element={
+                    <BoardInformation 
+                      data={data.getTaskBoardById} 
+                      userData={userData} 
+                      setErrorMessage={(message) => {setErrorMessage(message)}} 
+                      timeStamp={new Date().getTime().toString()}/>
+                    } 
                 />
                 <Route 
                   path={"*"}

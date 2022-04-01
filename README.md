@@ -1,47 +1,40 @@
-# Project Arceus #
+[![Publish React Skeleton to GHCR](https://github.com/UTSCC09/project-arceus/actions/workflows/build.yaml/badge.svg)](https://github.com/UTSCC09/project-arceus/actions/workflows/build.yaml)
 
-## Deployed Application:
-[insert url here]
+# Project Arceus
 
-## Team Members:
-Yu Chin Koo
+## Project URL:
 
-Manav Patel
+https://betrello.software
 
-Yuanyuan Li
+## Project Video URL:
 
-## Description
-The purpose of this web application is to allow users to create taskboards in order to plan work flow. The user will be prompted to make an account at first and then be give the ability to create taskboards. Within these taskboards, the user can request other users of the application to help in the taskboard. These helpers will have the ability to modify the taskboard as well as be given the option to join a video chat with the members currently on the taskboard. The owner of the board will be able to remove members as well as delete the taskboard entirely. The requested helpers have the ability to stop being a helper of a taskboard if they wish.
+[youtube link here (make sure it is unlisted)]
 
-## Key Features
-Initial form to create a taskboard
-- Input form to create taskboards by entering a taskboard name
+## Project Description
 
-Give owners the ability to add and remove helpers 
-- Helpers will be identified using emails which are stored as unique strings
+**Task:** Leaving deployment aside, explain how the app is built. Please describe the overall code design and be specific about the programming languages, framework, libraries and third-party api that you have used.
 
-Owner and helpers have the ability to modify the taskboard
-- Adding tasks, removing tasks, moving tasks
-  
-Real time functionality using websockets (graphql subscriptions)
-- Any updates to the taskboard, or taskboard requests/response should be seen by the receiver immediately
+## Challenges
 
-## Additional Features
-- Video chat tab while on a specific taskboard
-- Allow for users to modify the sound levels of video chat participants
-- See which users are currently on a specific taskboard
-- 
+**Task:** What is the top 3 most challenging things that you have learned/developed for you app? Please restrict your answer to only three items.
 
-## Technology
-MERN STACK + GRAPHQL
-- React framework (frontend)
-- Expressjs (backend)
-- MongoDB (database) 
-- GraphQL (query language)
+## Contributions
 
-## Top Technical Challenges
-- Implementing websockets for real time updates
-- Using webRTC for video chat feature
-- CI/CD
-- 
-- 
+**Task:** Describe the contribution of each team member to the project. Please provide the full name of each team member (but no student number).
+
+1. Yu Chin Koo
+   1. a
+   2. b
+   3. c
+2. Manav Patel
+   1. a
+   2. b
+   3. c
+3. Yuanyuan Li
+   1. a
+   2. b
+   3. c
+
+## One more thing?
+
+**Task:** Any additional comment you want to share with the course staff?

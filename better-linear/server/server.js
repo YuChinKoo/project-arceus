@@ -7,28 +7,21 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 // Subscription functionality imports
 const { createServer } = require('http');
-const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
+const { 
+    ApolloServerPluginDrainHttpServer, 
+    ApolloServerPluginLandingPageLocalDefault,
+    ApolloServerPluginLandingPageDisabled,
+} = require("apollo-server-core");
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { WebSocketServer } = require('ws');
 const { useServer } = require('graphql-ws/lib/use/ws');
+
 // Sessions
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
 // Environment variables
 const dotenv = require('dotenv').config();
-
-// const getTokenData = accessToken => {
-//     try {
-//         if (accessToken) {
-//             return verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-//         } else {
-//             return null;
-//         }
-//     } catch (err) {
-//         return null;
-//     }
-// };
 
 async function startServer() {
     
@@ -48,7 +41,7 @@ async function startServer() {
         cookie: {
             // sameSite: 'none',
             // sameSite: (process.env.NODE_ENV === 'production') ? 'strict' : 'none',
-            secure: process.env.NODE_ENV === 'production',
+            // secure: process.env.NODE_ENV === 'production',
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24, //1 day
         }
@@ -78,13 +71,9 @@ async function startServer() {
         { 
             schema,
             context: (ctx, msg, args) => {
-                // uncomment the following and see 
-                // that there is a cookie field at the bottom
-                // not sure how to access it though
-                // console.log(ctx.extra.request);
                 return { params: ctx };
             },
-            onConnect: async (ctx) => {
+            onConnect: async (connectionParams, webSocket) => {
                 console.log("Connected!");
             },
             onDisconnect(ctx, code, reason) {
@@ -109,19 +98,20 @@ async function startServer() {
                         },
                     };
                 },
-            },
+            },        
+            // Install a landing page plugin based on NODE_ENV
+            process.env.NODE_ENV === 'production' ? 
+                ApolloServerPluginLandingPageDisabled()
+            : 
+                ApolloServerPluginLandingPageLocalDefault({ footer: true }),
         ],
         context: ({ req, res }) => { 
-            // const accessToken = req.cookies['access-token'];
-            // const data = getTokenData(accessToken);
-            // req.userId = (data) ? data.userId : null;
-            // req.token = data;
             console.log("requested by: " + req.userId);
             return {
                 req, 
                 res
             } 
-        }
+        },
     });
     await apolloServer.start();
 
@@ -132,8 +122,8 @@ async function startServer() {
             credentials: true,
         }, 
     });
-    
-    await mongoose.connect(process.env.URI);
+
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log('Mongoose connected...');
 
     httpServer.listen(4000, () => {

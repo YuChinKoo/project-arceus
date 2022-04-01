@@ -2,17 +2,19 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import gql from 'graphql-tag';
 import { useMutation } from "@apollo/client";
 
+import Button from '@mui/material/Button';
+
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 
 import LoadingIcon from '../Utilities/LoadingIcon';
+
 
 const RESPONSE_TASKBOARD_HELPER_REQUEST = gql`
     mutation RespondTaskBoardHelperRequest($taskBoardId: ID!, $response: String!) {
@@ -86,12 +88,10 @@ export default function RequestedTaskBoardThumbnail(props) {
                 <CardContent>
                     <Grid container spacing={2} alignItems="center" justifyContent="center">
                         <Grid item xs={10}>
-                            <Link href={'#'} variant='h6'>
-                                {boardName}
-                            </Link>
+                            <Button disabled variant="contained">{boardName}</Button>    
                             <Typography component='div'>
                                 <Box sx={{ fontSize: 13, mt: 1, mb: 1 }}>
-                                    {boardOwner}
+                                    Owner: {boardOwner}
                                 </Box>
                             </Typography>
                             <Typography component='div'>

@@ -76,7 +76,7 @@ export default function SignUpSide() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '94vh',  marginTop: '2px'}}>
+      <Grid container component="main" sx={{ height: 'calc(100vh - 58px)',  marginTop: '2px'}}>
         <CssBaseline />
         <Grid
           item

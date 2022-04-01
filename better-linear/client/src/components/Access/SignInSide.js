@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid';
 import PersonIcon from '@mui/icons-material/Person';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { blue } from '@mui/material/colors';
 import LoadingIcon from '../Utilities/LoadingIcon';
 import gql from 'graphql-tag';
@@ -34,8 +34,6 @@ export default function SignInSide(props) {
 
   const [ errorMessage, setErrorMessage ] = useState('');
 
-  let navigate = useNavigate();
-
   const [ signInLoad, setSignInLoad ] = useState(false);
 
   const [loginUser] = useMutation(SIGN_IN_USER, {
@@ -57,7 +55,7 @@ export default function SignInSide(props) {
         user: { email, password }
       },
       onCompleted: (data) => {
-        navigate("/homepage/my-task-boards", { replace: true });
+        // navigate("/homepage/my-task-boards", { replace: true });
         window.location.reload();
       }
     });
@@ -65,7 +63,7 @@ export default function SignInSide(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '94vh',  marginTop: '2px'}}>
+      <Grid container component="main" sx={{ height: 'calc(100vh - 58px)',  marginTop: '2px'}}>
         <CssBaseline />
         <Grid
           item

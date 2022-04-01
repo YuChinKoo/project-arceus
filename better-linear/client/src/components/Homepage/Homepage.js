@@ -68,7 +68,7 @@ export default function Homepage(props) {
 
   return (   
     <Box sx={{ flexGrow: 1}} display="flex" alignItems="center" justifyContent="center" >
-      <Grid container spacing={2} justify="center" sx={{maxWidth: 1200, minWidth: 900}}>
+      <Grid container spacing={2} justify="center" sx={{maxWidth: 1200, minWidth: 900, marginTop: '3px'}}>
         <Grid item xs={3}>
           <Box>
             <Profilecard userData={props.userData}/>
@@ -85,7 +85,7 @@ export default function Homepage(props) {
               <Button type="submit" style={{marginTop: "8px", width: "100%"}} variant="contained" disableElevation>Create new Taskboard</Button>
             </form>
             {errorMessage && (
-              <p className="error">
+              <p className="error" style={{color: "red"}} >
                 {errorMessage}
               </p>
             )}

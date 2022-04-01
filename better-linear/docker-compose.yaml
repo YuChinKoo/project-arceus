@@ -1,0 +1,41 @@
+version: '3.7'
+services:
+  betterlinear-client:
+    image: ghcr.io/utscc09/betterlinear-client-project-arceus
+    container_name: betterlinear-client
+    restart: always
+    expose: 
+      - 80
+    environment:
+      - VIRTUAL_HOST=betrello.software
+      - LETSENCRYPT_HOST=betrello.software
+  betterlinear-server:
+    image: ghcr.io/utscc09/betterlinear-server-project-arceus
+    container_name: betterlinear-server
+    restart: always
+    expose: 
+      - 4000
+    environment:
+      - VIRTUAL_HOST=api.betrello.software
+      - LETSENCRYPT_HOST=api.betrello.software
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs 
+      - ./vhost:/etc/nginx/vhost.d 
+      - ./html:/usr/share/nginx/html 
+  nginx-proxy-acme:
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./acme:/etc/acme.sh
+    environment:
+        - DEFAULT_EMAIL=eugenekoo777@gmail.com
