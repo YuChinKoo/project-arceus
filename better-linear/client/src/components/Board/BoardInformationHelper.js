@@ -41,9 +41,18 @@ export default function BoardInformationHelper(props){
 
     return (
         <div className='board_information_helper'>
-            <div className={`board_information_helper_info ${isOwner ? "" : "helper_centered"}`}>
-                {helper.email} [ {helper.firstname} {helper.lastname} ]  
-            </div>
+            {isOwner ? 
+                <div className={"board_information_helper_info"}>
+                    <div className={"board_information_helper_info_container"}>
+                        <div className='board_information_helper_info_email'>{helper.email}</div>
+                        <div className='board_information_helper_info_name'>[ {helper.firstname} {helper.lastname} ]</div> 
+                    </div>
+                </div>
+            :
+                <div className={"board_information_helper_info helper_centered"}>
+                    {helper.email} [ {helper.firstname} {helper.lastname} ]  
+                </div>
+            }
             { isOwner ? 
                 <div className='board_information_helper_delete'>
                     <Button 

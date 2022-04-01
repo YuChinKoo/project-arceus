@@ -332,7 +332,7 @@ function Board(props){
 
   let navigate = useNavigate();
 
-  if (errorMessage.includes('Unauthorized') || errorMessage.includes('does not exist')) {
+  if (errorMessage.includes('Unauthorized') || errorMessage.includes('Taskboard does not exist')) {
     navigate("/homepage/my-task-boards", { replace: true });
   };
 

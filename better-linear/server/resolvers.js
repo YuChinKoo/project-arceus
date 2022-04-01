@@ -144,7 +144,46 @@ const resolvers = {
                 }); 
             }
             return allHelpers;
-        }
+        },
+        getTaskBoardRequestedHelpers: async(parent, args, context, info) => {
+            if(!context.req.userId) throw new AuthenticationError("Unauthorized");
+            
+            let { taskBoardId } = args;
+
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // check if the logged in user is the owner of the taskboard
+            if (!taskBoard) throw new Error("Taskboard does not exist");
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // check if the logged in user is a helper for the taskboard
+            let helperFlag = false;
+            for(let requestedHelper of taskBoard.requestedHelpers) {
+                if (requestedHelper == context.req.userId) {
+                    helperFlag = true;
+                    break;
+                }
+            }
+            if(!helperFlag && (user.email != taskBoard.owner)) throw new AuthenticationError("Unauthorized");
+            let queryArray = [];
+            for(let requestedHelper of taskBoard.requestedHelpers){
+                queryArray.push({ '_id': requestedHelper })
+            };
+            let allRequestedHelpers = [];
+            if(queryArray.length) {
+                allRequestedHelpers = await User.find({
+                    $or: queryArray
+                })
+                .catch(function(err) {
+                    throw new Error(err)
+                }); 
+            }
+            return allRequestedHelpers;
+        },
     },
 
     Mutation: {
@@ -657,7 +696,8 @@ const resolvers = {
 
             // publish subscription data
             pubsub.publish('TASKBOARD_HELPER_REQUEST_MODIFIED', { modifiedBoard: updatedTaskBoard, requestedHelper: updatedHelper }); 
-
+            // publish subscroption data for taskboard requester being modified
+            pubsub.publish('REQUESTERS_MODIFIED', { modifiedBoard: updatedTaskBoard, requestedHelper: updatedHelper });
             return "Request sent";
         },
         respondTaskBoardHelperRequest: async (parent, args, context, info) => {
@@ -725,10 +765,15 @@ const resolvers = {
                 pubsub.publish('TASKBOARD_HELPER_MODIFIED', { modifiedBoard: updatedTaskBoard, helper: updatedHelper });
                 // publish subscription data for a helper being added to a taskboard
                 pubsub.publish('HELPER_MODIFIED', { modifiedBoard: updatedTaskBoard, helper: updatedHelper });
+                // publish subscroption data for taskboard requester being modified
+                pubsub.publish('REQUESTERS_MODIFIED', { modifiedBoard: updatedTaskBoard, requestedHelper: updatedHelper });
+                
                 return "Request accepted";
             } else {
                 // publish subscription data for removing a requested taskboard
                 pubsub.publish('TASKBOARD_HELPER_REQUEST_MODIFIED', { modifiedBoard: updatedTaskBoard, requestedHelper: updatedHelper }); 
+                // publish subscroption data for taskboard requester being modified
+                pubsub.publish('REQUESTERS_MODIFIED', { modifiedBoard: updatedTaskBoard, requestedHelper: updatedHelper });
                 return "Request deny";
             }
         },
@@ -821,6 +866,52 @@ const resolvers = {
             // Publish event that a taskboard helper was modified
             pubsub.publish('TASKBOARD_HELPER_MODIFIED', { modifiedBoard: taskBoard, helper: user });
             pubsub.publish('HELPER_MODIFIED', { modifiedBoard: taskBoard, helper: user });
+            return "Helper removed";
+        },
+        removeTaskBoardHelperRequest: async (parent, args, context, info) => {
+            if (!context.req.userId) throw new AuthenticationError("Unauthorized");
+            const { taskBoardId, requestedHelperId } = args;
+            // check if taskboard exists
+            let taskBoard = await TaskBoard.findById(taskBoardId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (!taskBoard) throw new Error("Taskboard does not exist");
+            // check if the user is the owner of the taskboard
+            let user = await User.findById(context.req.userId)
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            if (user.email != taskBoard.owner) throw new Error("You do not own this taskboard");
+            // check if the requestedHelperId is a requested helper of the taskboard
+            let flag = false;
+            for(let curRequestedHelperId of taskBoard.requestedHelpers){
+                if(curRequestedHelperId == requestedHelperId){
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) throw new Error("The given user is not a requested helper of this taskboard");
+            // Remove taskboard from the helper's requestedTaskboards list
+            user = await User.findByIdAndUpdate(
+                { _id: requestedHelperId },
+                { $pull: {requestedTaskBoards: taskBoardId} },
+                { new: true })
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // Remove the requested helper from the taskboard's helper list
+            taskBoard = await TaskBoard.findByIdAndUpdate(
+                { _id: taskBoardId },
+                { $pull: {requestedHelpers: requestedHelperId} },
+                { new: true })
+            .catch(function(err) {
+                throw new Error(err)
+            });
+            // publish subscription data for removing a requested taskboard
+            pubsub.publish('TASKBOARD_HELPER_REQUEST_MODIFIED', { modifiedBoard: taskBoard, requestedHelper: user }); 
+            // publish subscription data for modified the requested helpers of a taskboard
+            pubsub.publish('REQUESTERS_MODIFIED', { modifiedBoard: taskBoard, requestedHelper: user });
             return "Helper removed";
         }
     },
@@ -932,6 +1023,34 @@ const resolvers = {
                     }); 
                 }
                 return allHelpers;
+            }
+        },
+        taskBoardRequestersModified: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator(['REQUESTERS_MODIFIED']),
+                (payload, variables) => {
+                    // check user and boardId
+                    let givenBoardId = variables.taskBoardId;
+                    let modifiedBoardId = payload.modifiedBoard._id;
+                    return (givenBoardId == modifiedBoardId);
+                }
+            ),
+            resolve: async (payload) => {
+                let taskBoard = payload.modifiedBoard;
+                let queryArray = [];
+                for(let requestedHelper of taskBoard.requestedHelpers){
+                    queryArray.push({ '_id': requestedHelper })
+                };
+                let allRequestedHelpers = [];
+                if(queryArray.length) {
+                    allRequestedHelpers = await User.find({
+                        $or: queryArray
+                    })
+                    .catch(function(err) {
+                        throw new Error(err)
+                    }); 
+                }
+                return allRequestedHelpers;
             }
         },
     }

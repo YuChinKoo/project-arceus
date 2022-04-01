@@ -6,6 +6,7 @@ import LoadingIcon from '../Utilities/LoadingIcon';
 import BoardInformationHelper from './BoardInformationHelper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import BoardInformationRequests from './BoardInformationRequests'
 
 const GET_MY_TASKBOARD_HELPERS = gql`
     query GetTaskBoardHelpers($taskBoardId: ID!) {
@@ -110,16 +111,37 @@ function BoardInformation(props){
                 </div>
                 {boardData.owner}
             </div>
+            <div className='board_information_helpers board_information_subdiv'>
+                <div className='board_information_header'>
+                    Helpers
+                </div> 
+                <div className='board_informations_helpers_list'>
+                    {data.getTaskBoardHelpers.map((helper) =>
+                        <div key={helper._id}>
+                            <BoardInformationHelper 
+                                helper={helper} 
+                                boardData={boardData}
+                                isOwner={isOwner}
+                                setErrorMessage={(message) => {setErrorMessage(message)}} />
+                        </div>
+                    )}
+                </div>
+            </div>
             { isOwner ? 
                 <div className='board_information_request_helper board_information_subdiv'>
                     <div className='board_information_header'>
                         Request Helper
                     </div>  
-                    <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center',  width: '100%'}}>
+                    <div 
+                        style={{
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            justifyContent: 'center',  
+                            width: '100%'
+                            
+                        }}>
                         <form 
-                            style={{display: 'flex', flexDirection: 'column', justifyContent: 'center',  width: '100%'}}
-                            onSubmit={onRequest}
-                        >
+                            className='board_information_request_helper_form' onSubmit={onRequest} >
                             <TextField
                                 style={{marginTop: "12px", width: '100%'}}
                                 label="Email"
@@ -140,26 +162,14 @@ function BoardInformation(props){
                             </Button>
                         </form>
                     </div>   
+                    <div className='board_information_header'>
+                        Outgoing Requests
+                    </div> 
+                    <BoardInformationRequests boardData={boardData} setErrorMessage={setErrorMessage}/>
                 </div>
                 :
                 null
             }
-            <div className='board_information_helpers board_information_subdiv'>
-                <div className='board_information_header'>
-                    Helpers
-                </div> 
-                <div className='board_informations_helpers_list'>
-                    {data.getTaskBoardHelpers.map((helper) =>
-                        <div key={helper._id}>
-                            <BoardInformationHelper 
-                                helper={helper} 
-                                boardData={boardData}
-                                isOwner={isOwner}
-                                setErrorMessage={(message) => {setErrorMessage(message)}} />
-                        </div>
-                    )}
-                </div>
-            </div>
         </div>
     )
 }

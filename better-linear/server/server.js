@@ -40,7 +40,7 @@ async function startServer() {
         saveUninitialized: true,
         cookie: {
             // sameSite: 'none',
-            sameSite: (process.env.NODE_ENV === 'production') ? 'strict' : 'none',
+            // sameSite: (process.env.NODE_ENV === 'production') ? 'strict' : 'none',
             // secure: process.env.NODE_ENV === 'production',
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24, //1 day
@@ -71,15 +71,9 @@ async function startServer() {
         { 
             schema,
             context: (ctx, msg, args) => {
-                // uncomment the following and see 
-                // that there is a cookie field at the bottom
-                // not sure how to access it though
-                // console.log(ctx.extra.request);
                 return { params: ctx };
             },
             onConnect: async (connectionParams, webSocket) => {
-                console.log(connectionParams);
-                console.log(webSocket);
                 console.log("Connected!");
             },
             onDisconnect(ctx, code, reason) {

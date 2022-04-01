@@ -63,6 +63,7 @@ const typeDefs = gql`
         getRequestedTaskBoards: [RequestedTaskBoard]
         getSharedTaskBoards: [Taskboard]
         getTaskBoardHelpers(taskBoardId: ID!): [Helper]
+        getTaskBoardRequestedHelpers(taskBoardId: ID!): [Helper]
     }
 
     type Mutation {
@@ -87,6 +88,7 @@ const typeDefs = gql`
         respondTaskBoardHelperRequest(taskBoardId: ID!, response: String!): String
         removeSharedTaskBoard(taskBoardId: ID!): String
         removeTaskBoardHelper(taskBoardId: ID!, helperId: ID!): String 
+        removeTaskBoardHelperRequest(taskBoardId: ID!, requestedHelperId: ID!): String 
     }
 
     type Subscription {
@@ -95,6 +97,7 @@ const typeDefs = gql`
         sharedTaskBoardModified(sharedHelperId: ID!): [Taskboard]
         taskBoardContentModified(taskBoardId: ID!): Taskboard
         taskBoardHelpersModified(taskBoardId: ID!): [Helper]
+        taskBoardRequestersModified(taskBoardId: ID!): [Helper]
     }
 `
 module.exports = typeDefs;
