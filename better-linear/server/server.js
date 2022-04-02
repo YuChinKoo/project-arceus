@@ -46,7 +46,7 @@ async function startServer() {
         saveUninitialized: true,
         cookie: {
             sameSite: (process.env.NODE_ENV === 'production') ? 'strict' : 'lax',
-            // secure: process.env.NODE_ENV === 'production',
+            secure: process.env.NODE_ENV === 'production',
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24, //1 day
         }
