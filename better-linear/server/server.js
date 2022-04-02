@@ -112,6 +112,7 @@ async function startServer() {
         ],
         context: ({ req, res }) => { 
             console.log(req);
+            console.log(res)
             console.log("requested by: " + req.userId);
             return {
                 req, 
