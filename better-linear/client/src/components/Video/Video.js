@@ -2,19 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
+import CallEndIcon from '@mui/icons-material/CallEnd';
+import Fab from '@mui/material/Fab';
 
-const Container = styled.div`
-    padding: 20px;
-    display: flex;
-    height: 100%;
-    width: 100%;
-    margin: auto;
-    flex-wrap: wrap;
-`;
+import './Video.css';
 
 const StyledVideo = styled.video`
-    height: 40%;
-    width: 50%;
+    width: 49%;
+    height: fit-content;
 `;
 
 const Video = (props) => {
@@ -31,12 +26,6 @@ const Video = (props) => {
     );
 }
 
-
-const videoConstraints = {
-    height: window.innerHeight / 2,
-    width: window.innerWidth / 2
-};
-
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
     const socketRef = useRef();
@@ -46,7 +35,7 @@ const Room = (props) => {
 
     useEffect(() => {
         socketRef.current = io.connect("http://localhost:5000");
-        navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             // User join a room
             socketRef.current.emit("join room", roomID);
@@ -65,7 +54,7 @@ const Room = (props) => {
                 setPeers(peers);
             });
 
-            // when new user join the call, set peerRef
+            
             socketRef.current.on("user joined", payload => {
                 const peer = addPeer(payload.signal, payload.callerID, stream);
                 peersRef.current.push({
@@ -84,6 +73,7 @@ const Room = (props) => {
         })
     }, []);
 
+    // boardcast to other users in the chat
     function createPeer(userToSignal, callerID, stream) {
         const peer = new Peer({
             initiator: true,
@@ -98,6 +88,7 @@ const Room = (props) => {
         return peer;
     }
 
+    // add newly join user in the cat
     function addPeer(incomingSignal, callerID, stream) {
         const peer = new Peer({
             initiator: false,
@@ -114,15 +105,44 @@ const Room = (props) => {
         return peer;
     }
 
+    // leave the vioce call
+    function leaveVoiceCall() {
+        peersRef.current.forEach(peerInCall => {
+            peerInCall.peer.destroy();
+        });
+
+        setPeers([]);
+
+        userVideo.current.srcObject.getTracks().forEach(function(track){
+            track.stop();
+        });
+
+        socketRef.current.disconnect();
+        props.changeVideoState();
+    }
+
     return (
-        <Container>
-            <StyledVideo muted ref={userVideo} autoPlay playsInline />
-            {peers.map((peer, index) => {
-                return (
-                    <Video key={index} peer={peer} />
-                );
-            })}
-        </Container>
+        <div style={{width: '100%', height: '100%'}}>
+            <div className="video_body">
+                <StyledVideo muted ref={userVideo} autoPlay playsInline />
+                {peers.map((peer, index) => {
+                    return (
+                        <Video key={index} peer={peer} />
+                    );
+                })}
+            </div>
+            <div className="video_footer">
+              <Fab 
+                label="Clickable" 
+                onClick={() => {leaveVoiceCall(props)}}
+                color={"primary"}
+              >
+                <CallEndIcon
+                    fontSize="large"
+                />
+              </Fab>
+            </div> 
+        </div>   
     );
 };
 

@@ -31,7 +31,13 @@ async function startServer() {
     });
     
     const app = express();
-    app.use(cors({ origin: true, credentials: true }));
+    app.use(cors({ 
+        origin: (process.env.NODE_ENV === 'production') ? 
+                'https://betrello.software' 
+            : 
+                true,
+        credentials: true 
+    }));
     app.use(cookieParser());
     app.use(session({
         enid: (req) => uuidv4(),
@@ -39,8 +45,7 @@ async function startServer() {
         resave: false,
         saveUninitialized: true,
         cookie: {
-            // sameSite: 'none',
-            // sameSite: (process.env.NODE_ENV === 'production') ? 'strict' : 'none',
+            sameSite: (process.env.NODE_ENV === 'production') ? 'strict' : 'lax',
             // secure: process.env.NODE_ENV === 'production',
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24, //1 day
@@ -118,7 +123,10 @@ async function startServer() {
     apolloServer.applyMiddleware({ 
         app: app,
         cors: {
-            origin: ['http://localhost:3000/*', 'https://studio.apollographql.com/*'],
+            origin: (process.env.NODE_ENV === 'production') ? 
+                    'https://betrello.software' 
+                : 
+                    true,
             credentials: true,
         }, 
     });
