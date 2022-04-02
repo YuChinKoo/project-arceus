@@ -111,6 +111,7 @@ async function startServer() {
                 ApolloServerPluginLandingPageLocalDefault({ footer: true }),
         ],
         context: ({ req, res }) => { 
+            console.log(req);
             console.log("requested by: " + req.userId);
             return {
                 req, 
