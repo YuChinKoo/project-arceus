@@ -26,6 +26,7 @@ const Video = (props) => {
     );
 }
 
+
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
     const socketRef = useRef();
@@ -42,7 +43,7 @@ const Room = (props) => {
             // User receieve all users in the room
             socketRef.current.on("all users", users => {
               // push all users and set peersRef
-                const peers = [];
+                let peers = [];
                 users.forEach(userID => {
                     const peer = createPeer(userID, socketRef.current.id, stream);
                     peersRef.current.push({
@@ -50,11 +51,10 @@ const Room = (props) => {
                         peer,
                     })
                     peers.push(peer);
-                })
+                });
                 setPeers(peers);
             });
 
-            
             socketRef.current.on("user joined", payload => {
                 const peer = addPeer(payload.signal, payload.callerID, stream);
                 peersRef.current.push({
@@ -65,12 +65,37 @@ const Room = (props) => {
                 setPeers(users => [...users, peer]);
             });
 
-            
             socketRef.current.on("receiving returned signal", payload => {
                 const item = peersRef.current.find(p => p.peerID === payload.id);
                 item.peer.signal(payload.signal);
             });
-        })
+
+            socketRef.current.on("user left", payload => {
+               let peers = [];
+
+               peersRef.current.forEach(p => {
+                   if(p.peerID !== payload.id){
+                       peers.push(p.peer);
+                   }
+               });
+
+               peersRef.current = peersRef.current.filter(p => p.peerID != payload.id);
+
+               setPeers(peers);
+
+            });
+        });
+        const userVideoRef = userVideo.current;
+        return () => {
+            console.log(socketRef.current);
+            if(socketRef.current) {
+                socketRef.current.disconnect();
+                console.log(userVideoRef);
+                userVideoRef.srcObject.getTracks().forEach(function(track){
+                    track.stop();
+                });
+            }
+        }
     }, []);
 
     // boardcast to other users in the chat
@@ -107,17 +132,14 @@ const Room = (props) => {
 
     // leave the vioce call
     function leaveVoiceCall() {
-        peersRef.current.forEach(peerInCall => {
-            peerInCall.peer.destroy();
-        });
-
-        setPeers([]);
+        // socketRef.current.emit("user disconnect", roomID);
 
         userVideo.current.srcObject.getTracks().forEach(function(track){
             track.stop();
         });
 
         socketRef.current.disconnect();
+
         props.changeVideoState();
     }
 
@@ -132,17 +154,14 @@ const Room = (props) => {
                 })}
             </div>
             <div className="video_footer">
-              <Fab 
-                label="Clickable" 
+              <Fab label="Clickable" 
                 onClick={() => {leaveVoiceCall(props)}}
                 color={"primary"}
               >
-                <CallEndIcon
-                    fontSize="large"
-                />
+                <CallEndIcon fontSize="medium"/>
               </Fab>
             </div> 
-        </div>   
+        </div>  
     );
 };
 

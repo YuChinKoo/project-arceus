@@ -3,20 +3,20 @@ const io = require("socket.io")(5000, {
     cors: true,
 });
  
-const users = {};
+const rooms = {};
 
 const socketToRoom = {};
 
 io.on('connection', socket => {
     socket.on("join room", roomID => {
-        console.log("new user join room " + roomID);
-        if (users[roomID]) {
-            users[roomID].push(socket.id);
+        console.log(`new user ${socket.id} join room ${roomID}`);
+        if (rooms[roomID]) {
+            rooms[roomID].push(socket.id);
         } else {
-            users[roomID] = [socket.id];
+            rooms[roomID] = [socket.id];
         }
         socketToRoom[socket.id] = roomID;
-        const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
+        const usersInThisRoom = rooms[roomID].filter(id => id !== socket.id);
         socket.emit("all users", usersInThisRoom);
     });
 
@@ -29,15 +29,20 @@ io.on('connection', socket => {
     });
 
     socket.on('disconnect', () => {
-        console.log('user disconnect')
+        console.log(`user disconnect: ${socket.id}`);
         const roomID = socketToRoom[socket.id];
-        let room = users[roomID];
+        let room = rooms[roomID];
         if (room) {
             room = room.filter(id => id !== socket.id);
-            users[roomID] = room;
-        } 
+            rooms[roomID] = room;
+            if(rooms[roomID]){
+                const usersInThisRoom = rooms[roomID].filter(id => id !== socket.id);
+                usersInThisRoom.forEach(user => {
+                    socket.to(user).emit("user left", {id: socket.id});
+                }); 
+            }
+        }     
     });
-
 })
 
 console.log("Socket is on 5000 ...");
