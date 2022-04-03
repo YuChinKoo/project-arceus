@@ -31,18 +31,12 @@ async function startServer() {
         typeDefs, 
         resolvers
     });
-
-    const metricsApp = express();
-    metricsApp.listen('6666',  () => {
-        console.log('Apollo Prometheus Exporter server running on :6666');
-    })
-    const prometheusExporterPlugin = createPrometheusExporterPlugin({ 
-        metricsApp,
-        defaultMetrics: true,
-    });
-
     
     const app = express();
+    const prometheusExporterPlugin = createPrometheusExporterPlugin({ 
+        app,
+        defaultMetrics: true,
+    });
     app.use(cors({ 
         origin: (process.env.NODE_ENV === 'production') ? 
                 'https://betrello.software' 
