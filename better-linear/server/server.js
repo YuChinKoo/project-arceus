@@ -23,6 +23,8 @@ const { v4: uuidv4 } = require('uuid');
 // Environment variables
 const dotenv = require('dotenv').config();
 
+const { createPrometheusExporterPlugin } = require('@bmatei/apollo-prometheus-exporter');
+
 async function startServer() {
     
     const schema = makeExecutableSchema({ 
@@ -31,6 +33,10 @@ async function startServer() {
     });
     
     const app = express();
+    const prometheusExporterPlugin = createPrometheusExporterPlugin({ 
+        app,
+         
+    });
     app.use(cors({ 
         origin: (process.env.NODE_ENV === 'production') ? 
                 'https://betrello.software' 
@@ -109,10 +115,9 @@ async function startServer() {
                 ApolloServerPluginLandingPageDisabled()
             : 
                 ApolloServerPluginLandingPageLocalDefault({ footer: true }),
+            prometheusExporterPlugin,
         ],
         context: ({ req, res }) => { 
-            console.log(req);
-            console.log(res)
             console.log("requested by: " + req.userId);
             return {
                 req, 
