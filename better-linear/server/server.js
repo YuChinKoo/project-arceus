@@ -35,7 +35,7 @@ async function startServer() {
     const app = express();
     const prometheusExporterPlugin = createPrometheusExporterPlugin({ 
         app,
-         
+        defaultMetrics: true,
     });
     app.use(cors({ 
         origin: (process.env.NODE_ENV === 'production') ? 
