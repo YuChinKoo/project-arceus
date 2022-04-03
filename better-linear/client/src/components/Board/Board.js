@@ -438,7 +438,7 @@ function Board(props){
                 </Routes>
               </div>
               <div className="video_container"> 
-                <Video boardId={boardId} userId={userId} changeVideoState={changeVideoState}/> 
+                <Video boardId={boardId} userData={userData} changeVideoState={changeVideoState}/> 
               </div>
             </div>
           ) : (

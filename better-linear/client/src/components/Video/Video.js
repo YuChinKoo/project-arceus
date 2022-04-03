@@ -33,9 +33,10 @@ const Room = (props) => {
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomID = props.boardId;
+    const userData = props.userData;
 
     useEffect(() => {
-        socketRef.current = io.connect("http://localhost:5000");
+        socketRef.current = io.connect(process.env.REACT_APP_SOCKET_URL);
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             // User join a room

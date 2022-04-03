@@ -58,6 +58,9 @@ export default function Credits(props) {
                     <li>
                         Display Avatar code:  <a href="https://mui.com/components/avatars/" target="_blank" rel="noopener noreferrer">https://mui.com/components/avatars/</a>
                     </li>
+                    <li>
+                      Simple-peer webRTC video chat guide:  <a href="https://www.youtube.com/watch?v=R1sfHPwEH7A" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=R1sfHPwEH7A</a>
+                    </li>
                 </ul>
             </div>
           </Box>

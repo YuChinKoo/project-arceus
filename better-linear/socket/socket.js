@@ -1,6 +1,12 @@
 // socket.io
 const io = require("socket.io")(5000, {
-    cors: true,
+    cors: {
+        origin: (process.env.NODE_ENV === 'production') ? 
+                'https://betrello.software' 
+            : 
+                true,
+        credentials: true,
+    }
 });
  
 const rooms = {};

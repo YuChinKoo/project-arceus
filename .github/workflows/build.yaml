@@ -23,6 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      #  Client ==========================================================
       - name: Create env file for client
         working-directory: better-linear/client
         run: |
@@ -53,6 +54,7 @@ jobs:
           docker tag $IMAGE_NAME_CLIENT $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
+      #  Server ==========================================================
       - name: Create env file for server
         working-directory: better-linear/server
         run: |
@@ -80,6 +82,36 @@ jobs:
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME_SERVER $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+
+      #  Socket ==========================================================
+      - name: Create env file for socket
+        working-directory: better-linear/socket
+        run: |
+          touch .env
+          echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
+        # ADD THE REACT_APP_SOCKET_URL WHEN WE FIGURE OUT WHAT IT IS
+
+      - name: Build socket docker image
+        working-directory: better-linear/socket
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME_SOCKET
+
+      - name: Push socket docker image to GitHub Container Registry
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME_SOCKET
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME_SOCKET $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+      # =====================================================================
 
       - name: Executing into droplet using SSH and run docker images
         uses: appleboy/ssh-action@master
