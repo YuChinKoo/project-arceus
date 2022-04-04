@@ -24,6 +24,9 @@ services:
     restart: always
     expose: 
       - 5000
+    environment:
+      - VIRTUAL_HOST=socket.betrello.software
+      - LETSENCRYPT_HOST=socket.betrello.software
   nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
