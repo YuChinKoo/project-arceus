@@ -113,6 +113,15 @@ jobs:
           docker push $IMAGE_ID:$VERSION
 
       # =====================================================================
+      - name: Upload docker compose file to droplet
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          source: "betterlinear/docker-compose.yaml"
+          target: "/mnt"
 
       - name: Executing into droplet using SSH and run docker images
         uses: appleboy/ssh-action@master

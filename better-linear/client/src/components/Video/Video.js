@@ -88,10 +88,8 @@ const Room = (props) => {
         });
         const userVideoRef = userVideo.current;
         return () => {
-            console.log(socketRef.current);
             if(socketRef.current) {
                 socketRef.current.disconnect();
-                console.log(userVideoRef);
                 userVideoRef.srcObject.getTracks().forEach(function(track){
                     track.stop();
                 });

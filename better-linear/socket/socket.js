@@ -4,24 +4,23 @@ const cors = require('cors');
 const http = require("http");
 const app = express();
 app.use(cors({
-    origin: true,
-    credentials: true
+    origin: (process.env.NODE_ENV === 'production') ? 
+            'https://betrello.software/' 
+        : 
+            true,
+    credentials: true,
 }))
 const server = http.createServer(app);
 const socket = require("socket.io");
 const io = socket(server, {
     cors: {
-        origin: true,
-        credentials: true
+        origin: (process.env.NODE_ENV === 'production') ? 
+                'https://betrello.software/' 
+            : 
+                true,
+        credentials: true,
     },
 });
-// cors: {
-//     origin: (process.env.NODE_ENV === 'production') ? 
-//             'https://betrello.software' 
-//         : 
-//             true,
-//     credentials: true,
-// }
 const rooms = {};
 
 const socketToRoom = {};
