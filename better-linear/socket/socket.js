@@ -1,8 +1,11 @@
 // socket.io
-const io = require("socket.io")(5000, {
-    cors: {
-        origin: true,
-    }
+const express = require("express");
+const http = require("http");
+const app = express();
+const server = http.createServer(app);
+const socket = require("socket.io");
+const io = socket(server, {
+    cors: true
 });
  
 const rooms = {};
@@ -47,4 +50,4 @@ io.on('connection', socket => {
     });
 })
 
-console.log("Socket is on 5000 ...");
+server.listen(5000, () => console.log('server is running on port 8000'));
