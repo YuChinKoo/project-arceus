@@ -9,7 +9,7 @@ on:
 env:
   IMAGE_NAME_CLIENT: betterlinear-client-project-arceus
   IMAGE_NAME_SERVER: betterlinear-server-project-arceus
-  IMAGE_NAME_SERVER: betterlinear-socket-project-arceus
+  IMAGE_NAME_SOCKET: betterlinear-socket-project-arceus
 
 jobs:
   # Push image to GitHub Packages.
