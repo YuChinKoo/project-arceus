@@ -15,7 +15,6 @@ services:
     restart: always
     expose: 
       - 4000
-      - 4001
     environment:
       - VIRTUAL_HOST=api.betrello.software
       - LETSENCRYPT_HOST=api.betrello.software

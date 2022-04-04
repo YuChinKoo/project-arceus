@@ -48,10 +48,7 @@ async function startServer() {
     const app = express();
 
     app.use(cors({ 
-        origin: (process.env.NODE_ENV === 'production') ? 
-                'https://betrello.software' 
-            : 
-                true,
+        origin: true,
         credentials: true 
     }));
     app.use(cookieParser());
