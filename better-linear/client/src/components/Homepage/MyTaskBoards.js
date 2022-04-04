@@ -57,6 +57,7 @@ function MyTaskBoards(props) {
       <div>
           {data.getMyTaskBoards.map((board) =>
             <MyTaskBoardThumbnail 
+                userData={props.userData}
                 key={board._id}
                 boardId={board._id}
                 boardName={board.name}

@@ -28,7 +28,8 @@ export default function RequestedTaskBoardThumbnail(props) {
     const {
         boardId,
         boardName,
-        boardOwner
+        boardOwner,
+        userData
     } = props;
 
     const [ errorMessage, setErrorMessage ] = useState('');

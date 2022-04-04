@@ -32,16 +32,19 @@ async function startServer() {
         resolvers
     });
     const app = express();
+    app.use(cors({ 
+        origin: (process.env.NODE_ENV === 'production') ? 
+                'https://betrello.software' 
+            : 
+                true,
+                credentials: true 
+    }));
 
     const prometheusExporterPlugin = createPrometheusExporterPlugin({ 
         app: app,
         defaultMetrics: true,
     });
-    
-    app.use(cors({ 
-        origin: true,
-        credentials: true 
-    }));
+        
     app.use(cookieParser());
     app.use(session({
         enid: (req) => uuidv4(),

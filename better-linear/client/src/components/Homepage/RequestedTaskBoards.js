@@ -56,7 +56,8 @@ function RequestedTaskBoards(props) {
   return (
       <div>
           {data.getRequestedTaskBoards.map((board) =>
-            <RequestedTaskBoardThumbnail 
+            <RequestedTaskBoardThumbnail
+                userData={props.userData} 
                 key={board._id}
                 boardId={board._id}
                 boardName={board.name}

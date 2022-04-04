@@ -32,7 +32,8 @@ export default function MyTaskBoardThumbnail(props) {
     const {
         boardId,
         boardName,
-        boardOwner
+        boardOwner,
+        userData
     } = props;
 
     const [ errorMessage, setErrorMessage ] = useState('');

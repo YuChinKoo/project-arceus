@@ -57,6 +57,7 @@ function SharedTaskBoards(props) {
       <div>
           {data.getSharedTaskBoards.map((board) =>
             <SharedTaskBoardThumbnail 
+                userData={props.userData}
                 key={board._id}
                 boardId={board._id}
                 boardName={board.name}

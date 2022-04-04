@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react"
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
 import Fab from '@mui/material/Fab';
@@ -9,8 +9,10 @@ import "./Board.css";
 import Column from "../Column/Column";
 import Editable from '../Editabled/Editable';
 import BoardNavigation from './BoardNavigation';
+import Video from '../Video/Video';
 import BoardInformation from './BoardInformation';
 import { useNavigate } from 'react-router-dom';
+import Chip from '@mui/material/Chip';
 
 const GET_TASKBOARD = gql`
   query GetTaskBoardById($taskBoardId: ID!) {
@@ -188,6 +190,7 @@ function Board(props){
 
   let { id } = useParams();
   const boardId = id;
+  const userId = userData._id;
 
   const { loading, error, data, subscribeToMore } = useQuery(GET_TASKBOARD, {
     onError: (err) => {
@@ -336,6 +339,10 @@ function Board(props){
     navigate("/homepage/my-task-boards", { replace: true });
   };
 
+  const changeVideoState = async () => {
+    setInVideo(!inVideo);
+  };
+
   if (loading) return ( <div> <LoadingIcon /> </div> );
   if (error) {
     return (
@@ -395,44 +402,20 @@ function Board(props){
               setErrorMessage={(message) => {setErrorMessage(message)}} 
             />
           </div>
-          <div className="voice_button">
-            <Fab label="Clickable" 
-              onClick={() => {setInVideo(!inVideo)}}
-              color={"primary"}
-            >
-              <PhoneInTalkIcon/>
-            </Fab>  
-          </div>
+          {!inVideo && 
+            <Chip
+              color="primary"
+              label="Join Call"
+              onClick={() => {changeVideoState()}}
+              variant="outlined"
+              icon={<PhoneInTalkIcon />}
+            /> 
+          }
         </div>
-        {inVideo ? (
-          <div className="board_display_container_split">
-            <div className="board_content_info_split">
-            <Routes>
-              <Route 
-                path="board" 
-                element={board_content} 
-              />
-              <Route 
-                path="information" 
-                element={
-                  <BoardInformation 
-                    data={data.getTaskBoardById} 
-                    userData={userData} 
-                    setErrorMessage={(message) => {setErrorMessage(message)}} 
-                    timeStamp={new Date().getTime().toString()}/>
-                  } 
-              />
-              <Route 
-                path={"*"}
-                element={<Navigate to="board" replace />}
-              />   
-              </Routes>
-            </div>
-            <div className="video_container"> video </div>
-          </div>
-        ) : (
-          <div className="board_display_container">
-            <div className="board_content_info">
+        <div className="board_display"> 
+          {inVideo ? (
+            <div className="board_display_container_split">
+              <div className="board_content_info_split">
               <Routes>
                 <Route 
                   path="board" 
@@ -452,10 +435,39 @@ function Board(props){
                   path={"*"}
                   element={<Navigate to="board" replace />}
                 />   
-              </Routes>
+                </Routes>
+              </div>
+              <div className="video_container"> 
+                <Video boardId={boardId} userData={userData} changeVideoState={changeVideoState}/> 
+              </div>
             </div>
-          </div>
-        )}    
+          ) : (
+            <div className="board_display_container">
+              <div className="board_content_info">
+                <Routes>
+                  <Route 
+                    path="board" 
+                    element={board_content} 
+                  />
+                  <Route 
+                    path="information" 
+                    element={
+                      <BoardInformation 
+                        data={data.getTaskBoardById} 
+                        userData={userData} 
+                        setErrorMessage={(message) => {setErrorMessage(message)}} 
+                        timeStamp={new Date().getTime().toString()}/>
+                      } 
+                  />
+                  <Route 
+                    path={"*"}
+                    element={<Navigate to="board" replace />}
+                  />   
+                </Routes>
+              </div>
+            </div>
+          )}    
+        </div>
       </div>
     </div>
   );
