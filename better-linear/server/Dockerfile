@@ -16,7 +16,7 @@ RUN npm install --silent
 # Bundle app source
 COPY . ./
 
-EXPOSE 4000 6969
+EXPOSE 4000 4001
 CMD [ "node", "server.js" ]
 
 # # Dockerfile adapted from
