@@ -33,6 +33,13 @@ async function startServer() {
     });
     
     const metricsApp = express();
+    metricsApp.use(cors({ 
+        origin: (process.env.NODE_ENV === 'production') ? 
+                'https://betrello.software' 
+            : 
+                true,
+        credentials: true 
+    }));
     const prometheusExporterPlugin = createPrometheusExporterPlugin({ 
         app: metricsApp,
         defaultMetrics: true,
