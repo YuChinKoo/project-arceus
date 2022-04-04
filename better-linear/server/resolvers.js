@@ -243,6 +243,7 @@ const resolvers = {
             req.session.userId = user.id;
             res.cookie('userId', user.id, {
                 secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
                 path : '/', 
                 maxAge: 60 * 60 * 24 * 1000  // 1 day in number of seconds
             });
