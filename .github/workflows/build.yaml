@@ -31,6 +31,7 @@ jobs:
           touch .env
           echo REACT_APP_HTTP_URI=${{ secrets.REACT_APP_HTTP_URI }} >> .env
           echo REACT_APP_WS_URL=${{ secrets.REACT_APP_WS_URL }} >> .env
+          echo REACT_APP_SOCKET_URL=${{ secrets.REACT_APP_SOCKET_URL }} >> .env
 
       - name: Build client docker image
         working-directory: better-linear/client
@@ -90,7 +91,6 @@ jobs:
         run: |
           touch .env
           echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
-        # ADD THE REACT_APP_SOCKET_URL WHEN WE FIGURE OUT WHAT IT IS
 
       - name: Build socket docker image
         working-directory: better-linear/socket
