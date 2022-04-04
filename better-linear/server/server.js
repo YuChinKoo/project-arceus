@@ -37,7 +37,7 @@ async function startServer() {
                 'https://betrello.software' 
             : 
                 true,
-                credentials: true 
+        credentials: true,
     }));
 
     const prometheusExporterPlugin = createPrometheusExporterPlugin({ 
