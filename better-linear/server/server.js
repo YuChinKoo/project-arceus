@@ -31,22 +31,13 @@ async function startServer() {
         typeDefs, 
         resolvers
     });
-    
-    const metricsApp = express();
-    metricsApp.use(cors({ 
-        origin: true,
-        credentials: true 
-    }));
-    const prometheusExporterPlugin = createPrometheusExporterPlugin({ 
-        app: metricsApp,
-        defaultMetrics: true,
-    });
-    metricsApp.listen(4001, () => {
-        console.log('Apollo Prometheus Exporter running on port 4001');
-    })
-
     const app = express();
 
+    const prometheusExporterPlugin = createPrometheusExporterPlugin({ 
+        app: app,
+        defaultMetrics: true,
+    });
+    
     app.use(cors({ 
         origin: true,
         credentials: true 
