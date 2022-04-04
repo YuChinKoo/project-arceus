@@ -1,13 +1,25 @@
 // socket.io
 const express = require("express");
+const cors = require('cors');
 const http = require("http");
 const app = express();
+app.use(cors({
+    origin: true,
+}))
 const server = http.createServer(app);
 const socket = require("socket.io");
 const io = socket(server, {
-    cors: true
+    cors: {
+        origin: true,
+    },
 });
- 
+// cors: {
+//     origin: (process.env.NODE_ENV === 'production') ? 
+//             'https://betrello.software' 
+//         : 
+//             true,
+//     credentials: true,
+// }
 const rooms = {};
 
 const socketToRoom = {};
@@ -50,4 +62,4 @@ io.on('connection', socket => {
     });
 })
 
-server.listen(5000, () => console.log('server is running on port 8000'));
+server.listen(5000, () => console.log('server is running on port 5000'));
