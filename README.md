@@ -36,7 +36,7 @@ We deployed our application through DigitalOcean's droplet. Firstly, we created 
 
 **Task:** Explain how you monitor your deployed app to make sure that everything is working as expected.
 
-We utilized apollo-prometheus-exporter plugin for apollo server in order to export metrics. Next, we installed and configured a grafana agent in the droplet, and route the metrics to grafana cloud. From this cloud, we are able to see dashboards such as cpu usage, memory usage, errors/second, etc, for our application. We are able to observe that everything is working as expected from the cloud. We have also created alerts that sends a notification to our emails when our server is down.
+We utilized apollo-prometheus-exporter plugin for apollo server in order to export metrics. Next, we installed and configured a grafana agent in the droplet, and route the metrics to grafana cloud. From this cloud, we are able to see dashboards such as cpu usage, memory usage, errors/second, etc, for our application. We are able to observe that everything is working as expected from the cloud. We have also created alerts that sends a notification to our emails when our nodejs/apollo server is down, when the CPU Usage or Memory Usage of the server exceeds a certain limit, and other relevant alerts. In order to monitor our droplet information, we configured alerts on DigitalOcean that will also send an email when CPU Usage or Memory Usage of the droplet exceeds a certain limit.
 
 ## Challenges
 
@@ -51,10 +51,17 @@ We utilized apollo-prometheus-exporter plugin for apollo server in order to expo
 **Task:** Describe the contribution of each team member to the project. Please provide the full name of each team member (but no student number).
 
 Yu Chin Koo
+- Made frontend connection with the backend
+- Deployed our application and set up CI/CD pipeline
 
 Manav Patel
+- Configured the apollo server backend for the application
+- Created resolvers and made connections between frontend and backend
+- Styled front-end
 
 Yuanyuan Li
+- Main layout of homepage and taskboard frontend
+- Setting up video chat socket server and connections to frontend
 
 # One more thing? 
 
