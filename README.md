@@ -6,9 +6,9 @@
 
 https://betrello.software
 
-## Project Video URL 
+## Project Video URL
 
-**Task:** Provide the link to your youtube video. Please make sure the link works. 
+**Task:** Provide the link to your youtube video. Please make sure the link works.
 
 ## Project Description
 
@@ -16,19 +16,21 @@ The purpose of this web application is to allow users to create taskboards in or
 
 ## Development
 
-**Task:** Leaving deployment aside, explain how the app is built. Please describe the overall code design and be specific about the programming languages, framework, libraries and third-party api that you have used. 
+**Task:** Leaving deployment aside, explain how the app is built. Please describe the overall code design and be specific about the programming languages, framework, libraries and third-party api that you have used.
 
-We have constructed the app using a popular stack called MERN stack + graphql. 
+We have constructed the app using a popular stack called MERN stack + graphql.
 
-We built the frontend using React framework, material-ui for styling, and socket.io for video call component. With react, we used javascript as our underlying language, and css to style our components. 
+We built the frontend using React framework and material-ui for styling. With react, we used javascript as our underlying language, and css to style our components. We used ApolloClient in order to connect the front-end to the back-end Apollo Server.
 
-We built the backend using expressjs and apollo as our http server and used express-sessions in order to authenticate users.
+We built the backend using expressjs, apollo-server-express for our server and used express-sessions in order to authenticate users. We used graphql-subscriptions in order to allow for real time updates in the front-end.
 
-We used mongodb as our database and graphql as our database query..
+We created a dedicated server (socket/socket.js)) strictly for the video chat functionality that utilizes socket.io. Simple-peer and socket.io-client was used in the front-end in order to connect the front-end to the socket server.
+
+We used cloud mongodb as our database, used mongoose in order to make the connection to the database, and graphql as our query language.
 
 ## Deployment
 
-**Task:** Explain how you have deployed your application. 
+**Task:** Explain how you have deployed your application.
 
 We deployed our application through DigitalOcean's droplet. Firstly, we created individual Dockerfiles for the client-side, server-side, and socket components so that we can build and run those images in our droplet. Next, we created a github actions workflow that will create, build, and push these docker images into the Github Container Registry upon any pushes to the master branch. After verifying that the images are stored in the GHCR, we build a docker-compose file that will grab the docker images from GHCR, provision letsencrypt certificate manager docker images, and build and run these images in the droplet, thus starting up our application in the droplet. In order to allow routing, we created and configured a custom nginx file for reverse proxy on the client-side. So far, we are able to set up CI/CD pipline for automatic deployment to our virtual machine. Next, we registered a domain on name.com, and created DNS records on DigitalOcean to have the registered domain (as well as the subdomains) to point to the ip of our virtual machine (our droplet). This way, our registered domain will display our deployed application, as wanted.
 
@@ -40,10 +42,10 @@ We utilized apollo-prometheus-exporter plugin for apollo server in order to expo
 
 ## Challenges
 
-**Task:** What is the top 3 most challenging things that you have learned/developed for you app? Please restrict your answer to only three items. 
+**Task:** What is the top 3 most challenging things that you have learned/developed for you app? Please restrict your answer to only three items.
 
 1. Implementing websockets/graphql subscriptions for real-time updates on the taskboard
-2. Deploying our application and creating a CI/CD pipline 
+2. Deploying our application and creating a CI/CD pipline
 3. Setting up a video chat feature using simple-peer
 
 ## Contributions
@@ -51,18 +53,21 @@ We utilized apollo-prometheus-exporter plugin for apollo server in order to expo
 **Task:** Describe the contribution of each team member to the project. Please provide the full name of each team member (but no student number).
 
 Yu Chin Koo
+
 - Made frontend connection with the backend
 - Deployed our application and set up CI/CD pipeline
 
 Manav Patel
+
 - Configured the apollo server backend for the application
 - Created resolvers and made connections between frontend and backend
 - Styled front-end
 
 Yuanyuan Li
+
 - Main layout of homepage and taskboard frontend
 - Setting up video chat socket server and connections to frontend
 
-# One more thing? 
+# One more thing?
 
 **Task:** Any additional comment you want to share with the course staff?
