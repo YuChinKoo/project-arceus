@@ -1,4 +1,4 @@
-name: Publish App Skeleton to GHCR
+name: Deploy Betrello Application
 
 on:
   push:
