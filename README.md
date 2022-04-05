@@ -22,7 +22,7 @@ We have constructed the app using a popular stack called MERN stack + graphql.
 
 We built the frontend using React framework, material-ui for styling, and socket.io for video call component. With react, we used javascript as our underlying language, and css to style our components. 
 
-We built the backend using expressjs and apollo as our http server.. (something about cors, express-session, etc)
+We built the backend using expressjs and apollo as our http server and used express-sessions in order to authenticate users.
 
 We used mongodb as our database and graphql as our database query..
 
