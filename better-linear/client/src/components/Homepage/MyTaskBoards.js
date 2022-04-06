@@ -25,9 +25,12 @@ const GET_MY_TASKBOARD_UPDATES = gql`
 `
 
 function MyTaskBoards(props) {  
+
+  let setErrorMessage = props.setErrorMessage;
+
   let { loading, error, data, subscribeToMore, refetch } = useQuery(GET_MY_TASKBOARDS, {
     onError: (err) => {
-      console.log(`${err}`);
+      setErrorMessage(`${err}`);
     }
   });
 

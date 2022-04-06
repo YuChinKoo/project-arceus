@@ -26,9 +26,11 @@ const GET_MY_SHARED_TASKBOARDS_UPDATES = gql`
 
 function SharedTaskBoards(props) {
 
+  let setErrorMessage = props.setErrorMessage;
+
   const { loading, error, data, subscribeToMore, refetch } = useQuery(GET_MY_SHARED_TASKBOARDS, {
     onError: (err) => {
-        console.log(`${err}`);
+      setErrorMessage(`${err}`);
     }
   });
 

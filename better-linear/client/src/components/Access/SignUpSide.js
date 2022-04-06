@@ -43,7 +43,6 @@ export default function SignUpSide() {
     onError: (err) => {
       setSignUpLoad(false);
       setErrorMessage(`${err}`);
-      console.log(`${err}`);
     }
   });
   const handleSubmit = async (event) => {
@@ -55,20 +54,11 @@ export default function SignUpSide() {
     let email = formData.get('email');
     let password = formData.get('password');
     setErrorMessage('');
-    // eslint-disable-next-line no-console
-    console.log({
-      firstname,
-      lastname,
-      email,
-      password
-    });
     await createUser({
       variables: { 
         user: { firstname, lastname, email, password }
       },
       onCompleted: (data) => {
-        // route back to sign in page
-        console.log(data);
         navigate("../signin", { replace: true });
       }
     });

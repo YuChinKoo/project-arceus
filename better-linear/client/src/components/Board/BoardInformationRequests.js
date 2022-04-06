@@ -34,7 +34,7 @@ export default function BoardInformationRequests(props){
 
     let { loading, error, data, subscribeToMore, refetch } = useQuery(GET_MY_TASKBOARD_REQUESTED_HELPERS, {
         onError: (err) => {
-          console.log(`${err}`);
+          setErrorMessage(`${err}`);
         },
         variables: { taskBoardId: boardData._id }
     });

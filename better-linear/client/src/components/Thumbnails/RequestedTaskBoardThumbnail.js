@@ -40,7 +40,6 @@ export default function RequestedTaskBoardThumbnail(props) {
         onError: (err) => {
             setQLoading(false);
             setErrorMessage(`${err}`);
-            console.log(`Error! ${err}`);
         }
     });
 
@@ -48,7 +47,6 @@ export default function RequestedTaskBoardThumbnail(props) {
         onError: (err) => {
             setQLoading(false);
             setErrorMessage(`${err}`);
-            console.log(`Error! ${err}`);
         }
     });
 
@@ -62,7 +60,6 @@ export default function RequestedTaskBoardThumbnail(props) {
                 response: "accept",
             },
             onCompleted: (data) => {
-                console.log("taskboard added to shared-taskboards");
             }
         });
     };
@@ -77,7 +74,6 @@ export default function RequestedTaskBoardThumbnail(props) {
                 response: "deny",
             },
             onCompleted: (data) => {
-                console.log("taskboard request rejected");
             }
         });
     };

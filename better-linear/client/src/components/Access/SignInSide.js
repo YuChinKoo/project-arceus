@@ -40,7 +40,6 @@ export default function SignInSide(props) {
     onError: (err) => {
       setSignInLoad(false);
       setErrorMessage(`${err}`);
-      console.log(`Error! ${err}`);
     }
   });
 

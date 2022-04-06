@@ -53,7 +53,6 @@ export default function BoardNavigation(props) {
   
   let { loading, error, data, subscribeToMore } = useQuery(GET_MY_TASKBOARD_HELPERS, {
     onError: (err) => {
-      console.log(`${err}`);
       setErrorMessage(`${err}`);
     },
     variables: { taskBoardId: boardData._id }

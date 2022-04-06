@@ -46,7 +46,7 @@ function BoardInformation(props){
 
     let { loading, error, data, subscribeToMore, refetch } = useQuery(GET_MY_TASKBOARD_HELPERS, {
         onError: (err) => {
-          console.log(`${err}`);
+            setErrorMessage(`${err}`);
         },
         variables: { taskBoardId: boardData._id }
     });
@@ -54,7 +54,6 @@ function BoardInformation(props){
     const [requestHelper] = useMutation(REQUEST_HELPER, {
         onError: (err) => {
             setErrorMessage(`${err}`);
-            console.log(`Error! ${err}`);
         }
     })
 
@@ -88,7 +87,6 @@ function BoardInformation(props){
                 helperEmail: requestedHelperEmail,
             },
             onCompleted: (data) => {
-                console.log("Request sent successfully");
             }
         });
     }

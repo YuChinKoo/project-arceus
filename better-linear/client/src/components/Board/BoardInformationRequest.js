@@ -18,7 +18,6 @@ export default function BoardInformationRequest(props){
     const [removeHelperRequest] = useMutation(REMOVE_TASKBOARD_HELPER_REQUEST, {
         onError: (err) => {
             setErrorMessage(`${err}`);
-            console.log(`Error! ${err}`);
         }
     });
 
@@ -32,7 +31,6 @@ export default function BoardInformationRequest(props){
             },
             onCompleted: (data) => {
                 setErrorMessage("");
-                console.log("Helper request removed");
             }
         });
     }

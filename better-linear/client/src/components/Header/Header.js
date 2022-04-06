@@ -24,7 +24,6 @@ export default function Header(props) {
     const [ logoutUser ] = useMutation(LOGOUT_USER, {
         onError: (err) => {
             setSignOutLoad(false);
-            console.log(`${err}`);
         }
     });
     if (authorization) {
@@ -35,9 +34,7 @@ export default function Header(props) {
                     logoutUserId: props.userData._id
                 },
                 onCompleted: (data) => {
-                    console.log(data);
                     // route back to sign in page
-                    // navigate("../signin", { replace: true });
                     window.location.reload();
                 }
             });

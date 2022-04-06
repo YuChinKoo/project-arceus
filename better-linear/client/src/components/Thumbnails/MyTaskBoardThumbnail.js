@@ -44,7 +44,6 @@ export default function MyTaskBoardThumbnail(props) {
         onError: (err) => {
             setQLoading(false);
             setErrorMessage(`${err}`);
-            console.log(`Error! ${err}`);
         }
     });
 
@@ -60,7 +59,6 @@ export default function MyTaskBoardThumbnail(props) {
                 taskBoardId: props.boardId,
             },
             onCompleted: (data) => {
-                console.log("taskboard successfully deleted");
             }
         });
     };

@@ -194,7 +194,6 @@ function Board(props){
 
   const { loading, error, data, subscribeToMore } = useQuery(GET_TASKBOARD, {
     onError: (err) => {
-        console.log(`${err}`);
         setErrorMessage(`${err}`);
     },
     variables: { taskBoardId: boardId }
@@ -216,42 +215,36 @@ function Board(props){
   
   const [ add_column ] = useMutation(ADD_COLUMN, {
     onError: (err) => {
-        console.log(`${err}`);
         setErrorMessage(`${err}`);
     }
   }); 
 
   const [ delete_column ] = useMutation(DELETE_COLUMN, {
     onError: (err) => {
-        console.log(`${err}`);
         setErrorMessage(`${err}`);
     }
   });
 
   const [ add_task ] = useMutation(ADD_TASK, {
     onError: (err) => {
-        console.log(`${err}`);
         setErrorMessage(`${err}`);
     }
   });
 
   const [ delete_task ] = useMutation(DELETE_TASK, {
     onError: (err) => {
-        console.log(`${err}`);
         setErrorMessage(`${err}`);
     }
   });
 
   const [ move_task ] = useMutation(MOVE_TASK, {
     onError: (err) => {
-        console.log(`${err}`);
         setErrorMessage(`${err}`);
     }
   });
 
   const [ update_task ] = useMutation(UPDATE_TASK, {
     onError: (err) => {
-        console.log(`${err}`);
         setErrorMessage(`${err}`);
     }
   });
@@ -265,7 +258,6 @@ function Board(props){
     await add_column({
       variables: { taskBoardId: boardId, columnName: name },
       onCompleted: (data) => {
-        console.log('added column!');
         setErrorMessage('');
       }
     });
@@ -275,7 +267,6 @@ function Board(props){
     await delete_column({
       variables: { taskBoardId: boardId, columnId: id },
       onCompleted: (data) => {
-        console.log('delete column!');
         setErrorMessage('');
       }
     });
@@ -285,7 +276,6 @@ function Board(props){
     await add_task({
       variables: { taskBoardId: boardId, columnId: id, taskName: title, taskContent: content},
       onCompleted: (data) => {
-        console.log('added task!');
         setErrorMessage('');
       }
     });
@@ -295,7 +285,6 @@ function Board(props){
     await delete_task({
       variables: { taskBoardId: boardId, columnId: bid, taskId: cid},
       onCompleted: (data) => {
-        console.log('deleted task!');
         setErrorMessage('');
       }
     });
@@ -305,7 +294,6 @@ function Board(props){
     await move_task({
       variables: { taskBoardId: boardId, sColumnId: bid, sTaskId: cid, tColumnId: targetCard.bid, tTaskId: targetCard.cid},
       onCompleted: (data) => {
-        console.log('moved task!');
         setErrorMessage('');
       }
     });
@@ -327,7 +315,6 @@ function Board(props){
     await update_task({
       variables: { taskBoardId: boardId, columnId: bid, taskId: cid, taskName: card.taskTitle, taskContent: card.content},
       onCompleted: (data) => {
-        console.log('updated task!');
         setErrorMessage('');
       }
     }); 

@@ -40,7 +40,6 @@ export default function RequestedTaskBoardThumbnail(props) {
         onError: (err) => {
             setQLoading(false);
             setErrorMessage(`${err}`);
-            console.log(`Error! ${err}`);
         }
     });
 
@@ -53,7 +52,6 @@ export default function RequestedTaskBoardThumbnail(props) {
                 taskBoardId: boardId,
             },
             onCompleted: (data) => {
-                console.log("taskboard no longer shared with you");
             }
         });
     };

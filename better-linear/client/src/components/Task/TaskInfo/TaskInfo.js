@@ -12,12 +12,10 @@ function TaskInfo(props) {
   });
 
   const updateTitle = (value) => {
-    console.log(values)
     setValues({ ...values, taskTitle: value });
   };
 
   const updateContent = (value) => {
-    console.log(value)
     setValues({ ...values, content: value });
   };
 

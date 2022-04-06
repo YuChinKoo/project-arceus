@@ -40,7 +40,6 @@ export default function Homepage(props) {
         setFormContent('');
         setLoading(false);
         setErrorMessage(`${err}`);
-        console.log(`${err}`);
     }
   });
 
@@ -101,19 +100,19 @@ export default function Homepage(props) {
           <Routes>
             <Route 
               path="" 
-              element={<MyTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
+              element={<MyTaskBoards userData={props.userData} setErrorMessage={(message) => {setErrorMessage(message)}}  timeStamp={new Date().getTime().toString()}/>} 
             />
             <Route 
               path="my-task-boards" 
-              element={<MyTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
+              element={<MyTaskBoards userData={props.userData} setErrorMessage={(message) => {setErrorMessage(message)}}  timeStamp={new Date().getTime().toString()}/>} 
             />
             <Route
               path="shared-task-board" 
-              element={<SharedTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
+              element={<SharedTaskBoards userData={props.userData} setErrorMessage={(message) => {setErrorMessage(message)}}  timeStamp={new Date().getTime().toString()}/>} 
             />
             <Route 
               path="incoming-requests" 
-              element={<RequestedTaskBoards userData={props.userData} timeStamp={new Date().getTime().toString()}/>} 
+              element={<RequestedTaskBoards userData={props.userData} setErrorMessage={(message) => {setErrorMessage(message)}}  timeStamp={new Date().getTime().toString()}/>} 
             />
             <Route 
               path="profile" 
