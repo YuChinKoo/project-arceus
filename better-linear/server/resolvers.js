@@ -196,7 +196,7 @@ const resolvers = {
             password = DOMPurify.sanitize(password);
             // check email input
             if (!validator.isEmail(email)) throw new UserInputError('Invalid email');
-            if (email.length > 25) throw new UserInputError('Email must be less than 25 characters');
+            if (email.length > 35) throw new UserInputError('Email must at most 35 characters');
             // check firstname input
             if (!validator.isAlpha(firstname)) throw new UserInputError('Firstname must only use characters in the alphabet');
             if (firstname.length > 12) throw new UserInputError('Firstmame must be no longer than 12 characters');
