@@ -61,6 +61,9 @@ export default function Credits(props) {
                     <li>
                       Simple-peer webRTC video chat guide:  <a href="https://www.youtube.com/watch?v=R1sfHPwEH7A" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=R1sfHPwEH7A</a>
                     </li>
+                    <li>
+                      Drag and Drop guide: <a href="https://www.youtube.com/watch?v=zOOwVT1HC7g&t=2283s" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=zOOwVT1HC7g&t=2283s</a>
+                    </li>
                 </ul>
             </div>
           </Box>
