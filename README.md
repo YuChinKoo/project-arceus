@@ -24,7 +24,7 @@ We built the frontend using React framework and material-ui for styling. With re
 
 We built the backend using expressjs, apollo-server-express for our server and used express-sessions in order to authenticate users. We used graphql-subscriptions in order to allow for real time updates in the front-end.
 
-We created a dedicated server (socket/socket.js)) strictly for the video chat functionality that utilizes socket.io. Simple-peer and socket.io-client was used in the front-end in order to connect the front-end to the socket server.
+We created a dedicated server (socket/socket.js) strictly for the video chat functionality that utilizes socket.io. Simple-peer and socket.io-client was used in the front-end in order to connect the front-end to the socket server and establish communication channels between users.
 
 We used cloud mongodb as our database, used mongoose in order to make the connection to the database, and graphql as our query language.
 
