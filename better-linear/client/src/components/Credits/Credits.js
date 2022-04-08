@@ -1,4 +1,3 @@
-import './Credits.css'
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Paper from '@mui/material/Paper';
@@ -60,7 +59,7 @@ export default function Credits(props) {
                         Signin/signup/credits page (Material UI template): <a href="https://github.com/mui/material-ui/tree/v5.5.2/docs/data/material/getting-started/templates/sign-in" target="_blank" rel="noopener noreferrer">here</a>
                     </li>
                     <li>
-                        Hashing firstname/lastname to colour (Material UI codesandbox):  <a href="https://codesandbox.io/s/hpid9y?file=/demo.js" target="_blank" rel="noopener noreferrer">here</a>
+                        Hashing firstname/lastname to colour (from Material UI documentation codesandbox):  <a href="https://codesandbox.io/s/hpid9y?file=/demo.js" target="_blank" rel="noopener noreferrer">here</a>
                     </li>
                     <li>
                         Some of the code for drag-and-drop elements and editable taskboard task element: <a href="https://github.com/handyDev2/Kanban/tree/master/src" target="_blank" rel="noopener noreferrer">here</a>
@@ -75,7 +74,7 @@ export default function Credits(props) {
                         Simple-peer API github repository:  <a href="https://github.com/feross/simple-peer" target="_blank" rel="noopener noreferrer">here</a>
                     </li>
                     <li>
-                        Some of the code to use simple-peer library (for video chat):  <a href="https://github.com/coding-with-chaim/group-video-final" target="_blank" rel="noopener noreferrer">here</a>
+                        Simple-peer tutorial code (for video chat):  <a href="https://github.com/coding-with-chaim/group-video-final" target="_blank" rel="noopener noreferrer">here</a>
                     </li>
                 </ul>
             </div>
