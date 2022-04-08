@@ -26,7 +26,7 @@ We built the backend using expressjs, apollo-server-express for our server and u
 
 We created a dedicated server (socket/socket.js) strictly for the video chat functionality that utilizes socket.io. Simple-peer and socket.io-client was used in the front-end in order to connect the front-end to the socket server and establish communication channels between users.
 
-We used cloud mongodb as our database, used mongoose in order to make the connection to the database, and graphql as our query language.
+We used cloud mongodb as our database, used mongoose in order to make the connection to the database, and graphql as our query language to allow for the front-end to modify the back-end.
 
 ## Deployment
 
