@@ -48,21 +48,31 @@ export default function Credits(props) {
               Credits
             </Typography>
             <div className='credits_container'>
-                <ul>
+                <h1>Front-end References</h1>
+                <ul style={{paddingLeft: '20px'}}>
                     <li>
-                        "Free Abstract Cloudy Sky Gradient Dark Blue Background" by webtreats is marked with CC BY 2.0. To view the terms, visit  <a href="https://creativecommons.org/licenses/by/2.0/?ref=openverse" target="_blank" rel="noopener noreferrer">https://creativecommons.org/licenses/by/2.0/?ref=openverse</a> 
+                        "Free Abstract Cloudy Sky Gradient Dark Blue Background" by webtreats is marked with CC BY 2.0. To view the terms, visit  <a href="https://creativecommons.org/licenses/by/2.0/?ref=openverse" target="_blank" rel="noopener noreferrer">here</a> 
                     </li>
                     <li>
-                        Signin/signup/credits page: <a href="https://github.com/mui/material-ui/tree/v5.5.2/docs/data/material/getting-started/templates/sign-in" target="_blank" rel="noopener noreferrer">https://github.com/mui/material-ui/tree/v5.5.2/docs/data/material/getting-started/templates/sign-in</a>
+                        Main UI elements used: <a href="https://mui.com/getting-started/installation/" target="_blank" rel="noopener noreferrer">Material UI</a>
                     </li>
                     <li>
-                        Display Avatar code:  <a href="https://mui.com/components/avatars/" target="_blank" rel="noopener noreferrer">https://mui.com/components/avatars/</a>
+                        Signin/signup/credits page (Material UI template): <a href="https://github.com/mui/material-ui/tree/v5.5.2/docs/data/material/getting-started/templates/sign-in" target="_blank" rel="noopener noreferrer">here</a>
                     </li>
                     <li>
-                      Simple-peer webRTC video chat guide:  <a href="https://www.youtube.com/watch?v=R1sfHPwEH7A" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=R1sfHPwEH7A</a>
+                        Hashing firstname/lastname to colour (Material UI codesandbox):  <a href="https://codesandbox.io/s/hpid9y?file=/demo.js" target="_blank" rel="noopener noreferrer">here</a>
                     </li>
                     <li>
-                      Drag and Drop guide: <a href="https://www.youtube.com/watch?v=zOOwVT1HC7g" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=zOOwVT1HC7g&t=2283s</a>
+                        Some of the code for drag-and-drop elements and editable taskboard task element: <a href="https://www.youtube.com/watch?v=zOOwVT1HC7g" target="_blank" rel="noopener noreferrer">here</a>
+                    </li>
+                </ul>
+                <h1>Back-end References</h1>
+                <ul style={{paddingLeft: '20px'}}>
+                    <li>
+                        Some of the code to use simple-peer library (for video chat):  <a href="https://www.youtube.com/watch?v=R1sfHPwEH7A" target="_blank" rel="noopener noreferrer">here</a>
+                    </li>
+                    <li>
+                        Simple-peer API github repository:  <a href="https://github.com/feross/simple-peer" target="_blank" rel="noopener noreferrer">here</a>
                     </li>
                 </ul>
             </div>
