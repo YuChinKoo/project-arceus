@@ -8,6 +8,8 @@ import { CardActionArea } from '@mui/material';
 import "./Task.css";
 import CardInfo from "./TaskInfo/TaskInfo";
 
+// Referenced https://youtu.be/zOOwVT1HC7g?t=440 for strictly the UI portion
+
 function Task(props) {
   const [showModal, setShowModal] = useState(false);
 

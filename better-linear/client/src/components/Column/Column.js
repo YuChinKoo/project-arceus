@@ -6,6 +6,8 @@ import Editable from '../Editabled/Editable';
 
 import "./Column.css";
 
+// Referenced https://youtu.be/zOOwVT1HC7g?t=440 for strictly the UI portion
+
 function Column(props) {
 
   return (
