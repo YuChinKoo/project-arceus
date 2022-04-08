@@ -63,16 +63,19 @@ export default function Credits(props) {
                         Hashing firstname/lastname to colour (Material UI codesandbox):  <a href="https://codesandbox.io/s/hpid9y?file=/demo.js" target="_blank" rel="noopener noreferrer">here</a>
                     </li>
                     <li>
-                        Some of the code for drag-and-drop elements and editable taskboard task element: <a href="https://www.youtube.com/watch?v=zOOwVT1HC7g" target="_blank" rel="noopener noreferrer">here</a>
+                        Some of the code for drag-and-drop elements and editable taskboard task element: <a href="https://github.com/handyDev2/Kanban/tree/master/src" target="_blank" rel="noopener noreferrer">here</a>
                     </li>
                 </ul>
                 <h1>Back-end References</h1>
                 <ul style={{paddingLeft: '20px'}}>
                     <li>
-                        Some of the code to use simple-peer library (for video chat):  <a href="https://www.youtube.com/watch?v=R1sfHPwEH7A" target="_blank" rel="noopener noreferrer">here</a>
+                        Apollo Server Documentation:  <a href="https://www.apollographql.com/docs/apollo-server/" target="_blank" rel="noopener noreferrer">here</a>
                     </li>
                     <li>
                         Simple-peer API github repository:  <a href="https://github.com/feross/simple-peer" target="_blank" rel="noopener noreferrer">here</a>
+                    </li>
+                    <li>
+                        Some of the code to use simple-peer library (for video chat):  <a href="https://github.com/coding-with-chaim/group-video-final" target="_blank" rel="noopener noreferrer">here</a>
                     </li>
                 </ul>
             </div>
